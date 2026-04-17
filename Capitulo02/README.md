@@ -2313,8 +2313,6 @@ dist/assets/index-XXX.js  xxx kB
 
 ### Próximos Pasos
 
-- En el **Capítulo 3** conectarás este dashboard con un backend Spring Boot: implementarás un `ApiService` que reemplace el `mock-data.js` con llamadas reales a endpoints REST, y aprenderás a manejar estados de carga y error en los componentes Lit.
-- En el **Laboratorio 3** integrarás el frontend con el backend mediante fetch y CORS, y desplegarás ambos servicios en contenedores Docker tal como se introduce en el Capítulo 6.
 - Practica los conceptos de este laboratorio extendiendo el dashboard: agrega un componente `project-form` con Lit para crear nuevos proyectos, utilizando `@state` para manejar el estado del formulario y emitiendo un `project-created` `CustomEvent` al guardar.
 - Explora el sistema de reactividad avanzado de Lit estudiando `willUpdate()`, `updated()` y los `PropertyDeclaration` con `hasChanged` para optimizar renders en listas grandes.
 
