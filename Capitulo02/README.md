@@ -1,269 +1,260 @@
----LAB_START---
-LAB_ID: 02-00-01
----MARKDOWN---
 # Laboratorio 2. Proyecto Integrado usando tecnologías Frontend
 
-## Metadatos
+## 1. Metadatos
 
-| Campo            | Valor                                                                 |
-|------------------|-----------------------------------------------------------------------|
-| **Duración**     | 260 minutos (recomendado: 3 sesiones de ~90 min con pausas)          |
-| **Complejidad**  | Alta                                                                  |
-| **Nivel Bloom**  | Crear                                                                 |
-| **Módulo**       | Módulo 2 — Tecnologías Frontend Modernas                             |
-| **Laboratorio**  | Lab 02-00-01                                                          |
+| Campo            | Valor                                       |
+|------------------|---------------------------------------------|
+| **Duración**     | 260 minutos (7 fases; ver tabla de tiempos) |
+| **Complejidad**  | Alta                                        |
+| **Nivel Bloom**  | Crear                                       |
+| **Laboratorio**  | 02-00-01                                    |
 
----
+### Distribución de Tiempos por Fase
 
-## Descripción General
+| Fase | Título                                        | Duración |
+|------|-----------------------------------------------|----------|
+| 1    | Configuración del Entorno y Estructura Base   | 40 min   |
+| 2    | Web Components Nativos                        | 40 min   |
+| 3    | Introducción a Lit                            | 35 min   |
+| 4    | Propiedades Reactivas y Templates             | 40 min   |
+| 5    | Comunicación entre Componentes                | 35 min   |
+| 6    | Pruebas Unitarias con Vitest                  | 30 min   |
+| 7    | Integración Final y Refinamiento              | 40 min   |
 
-En este laboratorio construirás una **aplicación web de página única (SPA)** que funciona como catálogo interactivo de productos empresariales. Comenzarás desde cero con HTML5 semántico y CSS3 avanzado, añadirás interactividad con JavaScript ES6+, refactorizarás la interfaz hacia Web Components nativos y finalmente migrarás los componentes a **Lit 3.x** con propiedades reactivas y Shadow DOM. Al finalizar, tendrás un proyecto frontend modular, probado con Vitest y listo para integrarse con el backend del Laboratorio 7.
-
-> **Punto de pausa sugerido para el instructor:**
-> - **Sesión 1 (0–90 min):** Pasos 1–3 (Entorno, HTML5 y CSS3)
-> - **Sesión 2 (90–180 min):** Pasos 4–6 (JavaScript, Web Components nativos)
-> - **Sesión 3 (180–260 min):** Pasos 7–9 (Lit, comunicación entre componentes, pruebas)
-
----
-
-## Objetivos de Aprendizaje
-
-- [ ] Construir la estructura HTML5 semántica completa de una SPA usando elementos como `<header>`, `<main>`, `<section>`, `<article>`, `<aside>` y `<footer>`, aplicando atributos `data-*` para enlazar datos con comportamiento JavaScript.
-- [ ] Aplicar CSS3 avanzado con Flexbox, CSS Grid, Custom Properties (variables CSS) y animaciones para crear una interfaz responsiva y visualmente coherente.
-- [ ] Implementar Web Components nativos con el ciclo de vida completo (`connectedCallback`, `disconnectedCallback`, `attributeChangedCallback`) y Shadow DOM para encapsular estilos y comportamiento.
-- [ ] Desarrollar componentes Lit con `@property`, `@state`, directivas `repeat` e `ifDefined`, y establecer comunicación padre-hijo mediante `CustomEvent`.
-- [ ] Configurar un entorno profesional con Vite como bundler y escribir pruebas unitarias de componentes con Vitest.
+> **⏸ Puntos de pausa recomendados:** Entre Fase 2 y 3 (80 min), y entre Fase 4 y 5 (155 min). Cada pausa debe durar al menos 10 minutos.
 
 ---
 
-## Prerrequisitos
+## 2. Descripción General
 
-### Conocimientos
-
-| Área                     | Nivel requerido                                              |
-|--------------------------|--------------------------------------------------------------|
-| HTML y CSS básico        | Estructura de documento, selectores, box model              |
-| JavaScript               | Variables, funciones, arrays, objetos, eventos básicos      |
-| POO                      | Clases, herencia, encapsulamiento                           |
-| Terminal/Línea de comandos | Navegación básica, ejecución de comandos npm               |
-
-### Software y Acceso
-
-| Herramienta          | Versión mínima | Verificación                     |
-|----------------------|----------------|----------------------------------|
-| Node.js              | 20.x LTS       | `node -v`                        |
-| npm                  | 10.x           | `npm -v`                         |
-| Visual Studio Code   | 1.88+          | Extensiones: Lit-plugin, ESLint  |
-| Google Chrome        | Última estable | DevTools disponibles             |
-| Git                  | 2.44+          | `git --version`                  |
-
-> **Checkpoint de recuperación:** Si no completaste un laboratorio anterior, clona la rama de inicio:
-> ```bash
-> git clone https://github.com/curso-fullstack/labs.git
-> cd labs
-> git checkout lab02-start
-> ```
+En este laboratorio integrador construirás un **Dashboard de Gestión de Tareas y Proyectos** completo, aplicando directamente los fundamentos de HTML5 semántico aprendidos en la Lección 2.1. Partirás desde cero con un entorno profesional basado en Vite, progresarás por la API nativa de Web Components y finalizarás con componentes Lit reactivos, comunicación bidireccional entre componentes y una suite de pruebas unitarias con Vitest. El resultado será una aplicación frontend empresarial lista para integrarse con un backend en laboratorios posteriores.
 
 ---
 
-## Entorno de Laboratorio
+## 3. Objetivos de Aprendizaje
 
-### Verificación del Entorno
+- [ ] Configurar un entorno de desarrollo profesional con Node.js, NPM, Vite y Vitest, y estructurar el proyecto con HTML5 semántico correcto.
+- [ ] Crear Web Components nativos implementando el ciclo de vida completo (`connectedCallback`, `disconnectedCallback`, `attributeChangedCallback`) y Shadow DOM.
+- [ ] Migrar componentes nativos a Lit, utilizando `LitElement`, `` html`\`` ``, `` css`\`` ``, `@property` y `@state` con directivas avanzadas (`repeat`, `when`, `classMap`).
+- [ ] Implementar comunicación bidireccional entre componentes mediante propiedades, `CustomEvent` y un servicio de estado simple.
+- [ ] Escribir y ejecutar pruebas unitarias con Vitest y `happy-dom` validando renderizado, reactividad y emisión de eventos.
 
-Antes de comenzar, ejecuta los siguientes comandos en tu terminal para confirmar que el entorno está listo:
+---
 
-```bash
-# Verificar Node.js y npm
-node -v    # Debe mostrar v20.x.x
-npm -v     # Debe mostrar 10.x.x
+## 4. Prerrequisitos
 
-# Verificar Git
-git --version   # Debe mostrar 2.44.x o superior
-```
+### Conocimiento Previo
+
+| Área                          | Nivel requerido                                          |
+|-------------------------------|----------------------------------------------------------|
+| HTML y CSS básicos            | Nociones básicas (la Lección 2.1 cubre lo necesario)     |
+| JavaScript (ES6+)             | Variables, funciones, clases, módulos, promesas          |
+| Línea de comandos             | Navegación de directorios, ejecución de comandos         |
+| Conceptos de componentes      | Deseable; se explica desde cero en este laboratorio      |
+
+### Acceso y Software Requerido
+
+| Software           | Versión mínima | Verificación                    |
+|--------------------|----------------|---------------------------------|
+| Node.js            | 20.x LTS       | `node --version`                |
+| NPM                | 10.x           | `npm --version`                 |
+| Visual Studio Code | 1.88+          | `code --version`                |
+| Google Chrome      | Última estable | Abrir `chrome://version`        |
+| Git                | 2.44+          | `git --version`                 |
 
 ### Extensiones de VS Code Recomendadas
 
-Abre VS Code y verifica que estas extensiones estén instaladas:
-
-```
-lit-plugin           (runem.lit-plugin)
-ESLint               (dbaeumer.vscode-eslint)
-Prettier             (esbenp.prettier-vscode)
-```
-
-Para instalarlas desde la terminal:
+Instalar antes de comenzar:
 
 ```bash
-code --install-extension runem.lit-plugin
-code --install-extension dbaeumer.vscode-eslint
+code --install-extension lit-plugin.vscode-lit-plugin
 code --install-extension esbenp.prettier-vscode
+code --install-extension dbaeumer.vscode-eslint
+code --install-extension ZixuanChen.vitest-explorer
 ```
 
 ---
 
-## Instrucciones Paso a Paso
+## 5. Entorno del Laboratorio
+
+### Configuración Previa (ejecutar antes del laboratorio)
+
+Verificar que Node.js y NPM estén disponibles:
+
+```bash
+# Windows (PowerShell), macOS y Linux
+node --version    # debe mostrar v20.x.x
+npm --version     # debe mostrar 10.x.x
+```
+
+Si Node.js no está instalado, descargarlo desde [https://nodejs.org](https://nodejs.org) (versión LTS).
+
+### Estructura Final del Proyecto
+
+Al terminar el laboratorio, el proyecto tendrá esta estructura:
+
+```
+task-dashboard/
+├── index.html
+├── package.json
+├── vite.config.js
+├── vitest.config.js
+├── .eslintrc.cjs
+├── .prettierrc
+├── src/
+│   ├── main.js
+│   ├── styles/
+│   │   ├── global.css
+│   │   └── variables.css
+│   ├── services/
+│   │   └── state-service.js
+│   ├── components/
+│   │   ├── native/
+│   │   │   └── status-badge.js
+│   │   └── lit/
+│   │       ├── app-dashboard.js
+│   │       ├── project-card.js
+│   │       ├── task-list.js
+│   │       ├── notification-panel.js
+│   │       └── theme-toggle.js
+│   └── data/
+│       └── mock-data.js
+└── src/tests/
+    ├── project-card.test.js
+    ├── task-list.test.js
+    └── notification-panel.test.js
+```
 
 ---
 
-### Paso 1 — Inicialización del Proyecto con Vite
+## 6. Instrucciones Paso a Paso
 
-**Objetivo:** Crear la estructura base del proyecto usando Vite como bundler y configurar las herramientas de calidad de código.
+---
+
+### Fase 1: Configuración del Entorno y Estructura Base (40 min)
+
+**Objetivo:** Inicializar el proyecto con Vite, definir la estructura de directorios y crear el esqueleto HTML5 semántico con el sistema de estilos base.
+
+#### Paso 1.1 – Crear el Proyecto con Vite
 
 **Instrucciones:**
 
-1. Abre una terminal en el directorio donde deseas crear el proyecto y ejecuta:
+1. Abrir una terminal en el directorio donde almacenarás el proyecto.
+2. Ejecutar el siguiente comando para crear el proyecto:
 
 ```bash
-npm create vite@latest catalogo-productos -- --template vanilla
-cd catalogo-productos
+npm create vite@latest task-dashboard -- --template vanilla
+```
+
+3. Ingresar al directorio del proyecto e instalar dependencias base:
+
+```bash
+cd task-dashboard
 npm install
 ```
 
-2. Instala las dependencias principales del proyecto:
+4. Instalar Lit y las dependencias de desarrollo:
 
 ```bash
-# Dependencias de producción
 npm install lit
-
-# Dependencias de desarrollo
-npm install -D vitest @web/test-runner eslint prettier eslint-config-prettier
+npm install --save-dev vitest @vitest/ui happy-dom eslint prettier
 ```
 
-3. Reemplaza el contenido de `package.json` con la siguiente configuración completa:
+5. Instalar el plugin de Vite para soporte de decoradores:
 
-```json
-{
-  "name": "catalogo-productos",
-  "version": "1.0.0",
-  "description": "Catálogo interactivo de productos - Lab 02",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "lint": "eslint src --ext .js",
-    "format": "prettier --write src/**/*.{js,html,css}"
-  },
-  "dependencies": {
-    "lit": "^3.1.0"
-  },
-  "devDependencies": {
-    "vite": "^5.2.0",
-    "vitest": "^1.5.0",
-    "eslint": "^8.57.0",
-    "prettier": "^3.2.5",
-    "eslint-config-prettier": "^9.1.0"
-  }
-}
+```bash
+npm install --save-dev @babel/core @babel/plugin-proposal-decorators
 ```
 
-4. Crea el archivo de configuración de Vite `vite.config.js` en la raíz del proyecto:
+**Resultado esperado:**
+
+```
+added 150 packages in 15s
+```
+
+El directorio `node_modules/` debe existir y `package.json` debe contener `"lit"` en `dependencies`.
+
+**Verificación:**
+
+```bash
+npm run dev
+# Debe mostrar: VITE vX.X.X ready in XXXms
+# ➜  Local: http://localhost:5173/
+```
+
+Abrir `http://localhost:5173` en Chrome. Debe verse la página de bienvenida de Vite. Detener el servidor con `Ctrl+C`.
+
+---
+
+#### Paso 1.2 – Configurar Vite y Vitest
+
+**Instrucciones:**
+
+1. Reemplazar el contenido de `vite.config.js` con:
 
 ```javascript
 // vite.config.js
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  server: {
-    port: 3000,
-    open: true
+  esbuild: {
+    target: 'es2022',
   },
   build: {
-    outDir: 'dist',
-    sourcemap: true
+    target: 'es2022',
   },
-  test: {
-    environment: 'happy-dom',
-    globals: true
-  }
 });
 ```
 
-5. Crea el archivo `.eslintrc.json` en la raíz:
+2. Crear el archivo `vitest.config.js` en la raíz del proyecto:
+
+```javascript
+// vitest.config.js
+import { defineConfig } from 'vitest/config';
+
+export default defineConfig({
+  test: {
+    environment: 'happy-dom',
+    globals: true,
+    setupFiles: [],
+    include: ['src/tests/**/*.test.js'],
+    coverage: {
+      reporter: ['text', 'html'],
+    },
+  },
+});
+```
+
+3. Actualizar la sección `"scripts"` en `package.json`:
 
 ```json
 {
-  "env": {
-    "browser": true,
-    "es2022": true
-  },
-  "extends": ["eslint:recommended", "prettier"],
-  "parserOptions": {
-    "ecmaVersion": "latest",
-    "sourceType": "module"
-  },
-  "rules": {
-    "no-unused-vars": "warn",
-    "no-console": "off"
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui"
   }
 }
 ```
-
-6. Crea el archivo `.prettierrc` en la raíz:
-
-```json
-{
-  "singleQuote": true,
-  "semi": true,
-  "tabWidth": 2,
-  "trailingComma": "es5",
-  "printWidth": 100
-}
-```
-
-7. Limpia los archivos de ejemplo que genera Vite:
-
-```bash
-# Elimina archivos de ejemplo
-rm src/main.js src/style.css src/counter.js
-rm public/vite.svg
-```
-
-8. Crea la estructura de directorios del proyecto:
-
-```bash
-mkdir -p src/components src/styles src/data src/utils src/tests
-```
-
-La estructura final debe verse así:
-
-```
-catalogo-productos/
-├── src/
-│   ├── components/
-│   ├── styles/
-│   ├── data/
-│   ├── utils/
-│   └── tests/
-├── public/
-├── index.html
-├── vite.config.js
-├── package.json
-├── .eslintrc.json
-└── .prettierrc
-```
-
-**Resultado Esperado:** El directorio `catalogo-productos` contiene la estructura de proyecto completa sin errores de instalación.
 
 **Verificación:**
 
 ```bash
-npm run dev
-# El servidor debe iniciar en http://localhost:3000 sin errores
-# Presiona Ctrl+C para detenerlo
+npm test
+# Debe mostrar: "No test files found"
+# Esto es correcto – aún no hemos escrito pruebas
 ```
 
 ---
 
-### Paso 2 — Estructura HTML5 Semántica
-
-**Objetivo:** Construir el documento HTML5 base de la SPA con estructura semántica completa, usando los elementos aprendidos en la Lección 2.1.
+#### Paso 1.3 – Crear la Estructura HTML5 Semántica
 
 **Instrucciones:**
 
-1. Reemplaza el contenido de `index.html` en la raíz del proyecto con la siguiente estructura semántica completa:
+1. Reemplazar completamente el contenido de `index.html` con la siguiente estructura semántica:
 
 ```html
 <!DOCTYPE html>
@@ -271,371 +262,106 @@ npm run dev
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Catálogo interactivo de productos empresariales"
-    />
-    <meta name="author" content="Equipo de Desarrollo" />
-    <title>CatálogoTech — Gestión de Productos</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="stylesheet" href="/src/styles/main.css" />
+    <meta name="description" content="Dashboard de gestión de tareas y proyectos empresariales" />
+    <title>TaskDash – Gestión de Proyectos</title>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="/src/styles/variables.css" />
+    <link rel="stylesheet" href="/src/styles/global.css" />
   </head>
   <body>
-    <!-- Cabecera principal de la aplicación -->
+    <!-- Encabezado principal de la aplicación -->
     <header class="app-header" role="banner">
       <div class="header-brand">
-        <span class="brand-icon" aria-hidden="true">🛒</span>
-        <h1 class="brand-title">CatálogoTech</h1>
-        <span class="brand-subtitle">Gestión de Productos</span>
+        <h1 class="app-title">
+          <span aria-hidden="true">📋</span> TaskDash
+        </h1>
+        <p class="app-subtitle">Gestión de Proyectos Empresariales</p>
       </div>
-
-      <nav class="header-nav" role="navigation" aria-label="Navegación principal">
-        <ul class="nav-list">
-          <li class="nav-item">
-            <a href="#catalogo" class="nav-link active" data-section="catalogo">
-              Catálogo
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#agregar" class="nav-link" data-section="agregar">
-              Agregar Producto
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#estadisticas" class="nav-link" data-section="estadisticas">
-              Estadísticas
-            </a>
-          </li>
+      <nav class="header-nav" aria-label="Navegación principal">
+        <ul role="list">
+          <li><a href="#dashboard" aria-current="page">Dashboard</a></li>
+          <li><a href="#proyectos">Proyectos</a></li>
+          <li><a href="#tareas">Tareas</a></li>
         </ul>
       </nav>
-
-      <div class="header-actions">
-        <button
-          class="btn-icon"
-          id="btn-toggle-theme"
-          aria-label="Cambiar tema"
-          title="Alternar tema claro/oscuro"
-        >
-          🌙
-        </button>
-        <div class="cart-indicator" aria-live="polite">
-          <span class="cart-icon">🛍️</span>
-          <span class="cart-count" id="cart-count" data-count="0">0</span>
-        </div>
-      </div>
+      <!-- theme-toggle se montará aquí en Fase 4 -->
+      <div id="theme-toggle-container"></div>
     </header>
 
-    <!-- Contenido principal de la aplicación -->
-    <main class="app-main" id="app-main" role="main">
-
-      <!-- Sección: Barra de búsqueda y filtros -->
-      <section
-        class="search-section"
-        aria-labelledby="search-heading"
-        id="seccion-busqueda"
-      >
-        <h2 id="search-heading" class="visually-hidden">
-          Búsqueda y filtros
-        </h2>
-
-        <div class="search-bar">
-          <label for="input-busqueda" class="visually-hidden">
-            Buscar productos
-          </label>
-          <input
-            type="search"
-            id="input-busqueda"
-            class="search-input"
-            placeholder="Buscar productos por nombre o categoría..."
-            aria-label="Buscar productos"
-            autocomplete="off"
-          />
-          <button class="btn-search" aria-label="Ejecutar búsqueda">
-            🔍
-          </button>
-        </div>
-
-        <div class="filter-bar" role="group" aria-label="Filtros de categoría">
-          <button
-            class="filter-chip active"
-            data-categoria="todas"
-            aria-pressed="true"
-          >
-            Todas
-          </button>
-          <button
-            class="filter-chip"
-            data-categoria="electronica"
-            aria-pressed="false"
-          >
-            Electrónica
-          </button>
-          <button
-            class="filter-chip"
-            data-categoria="software"
-            aria-pressed="false"
-          >
-            Software
-          </button>
-          <button
-            class="filter-chip"
-            data-categoria="perifericos"
-            aria-pressed="false"
-          >
-            Periféricos
-          </button>
-          <button
-            class="filter-chip"
-            data-categoria="servicios"
-            aria-pressed="false"
-          >
-            Servicios
-          </button>
-        </div>
-      </section>
-
-      <!-- Sección: Catálogo de productos -->
-      <section
-        class="catalog-section"
-        aria-labelledby="catalog-heading"
-        id="catalogo"
-      >
-        <div class="section-header">
-          <h2 id="catalog-heading">Catálogo de Productos</h2>
-          <p class="product-count" id="product-count" aria-live="polite">
-            Cargando productos...
-          </p>
-        </div>
-
-        <!-- Contenedor donde se inyectarán los componentes de productos -->
-        <div
-          class="products-grid"
-          id="products-grid"
-          role="list"
-          aria-label="Lista de productos"
-        >
-          <!-- Los productos se renderizan dinámicamente aquí -->
-        </div>
-      </section>
-
-      <!-- Sección: Formulario para agregar producto -->
-      <section
-        class="form-section"
-        aria-labelledby="form-heading"
-        id="agregar"
-        hidden
-      >
-        <h2 id="form-heading">Agregar Nuevo Producto</h2>
-
-        <form
-          class="product-form"
-          id="form-producto"
-          novalidate
-          aria-label="Formulario de nuevo producto"
-        >
-          <fieldset class="form-fieldset">
-            <legend>Información del Producto</legend>
-
-            <div class="form-group">
-              <label for="producto-nombre">
-                Nombre del producto <span aria-hidden="true">*</span>
-              </label>
-              <input
-                type="text"
-                id="producto-nombre"
-                name="nombre"
-                required
-                minlength="3"
-                maxlength="100"
-                placeholder="Ej: Laptop Pro 15"
-                data-field="nombre"
-              />
-              <span class="field-error" id="error-nombre" role="alert"></span>
-            </div>
-
-            <div class="form-group">
-              <label for="producto-categoria">Categoría</label>
-              <select id="producto-categoria" name="categoria" required data-field="categoria">
-                <option value="">Selecciona una categoría</option>
-                <option value="electronica">Electrónica</option>
-                <option value="software">Software</option>
-                <option value="perifericos">Periféricos</option>
-                <option value="servicios">Servicios</option>
-              </select>
-              <span class="field-error" id="error-categoria" role="alert"></span>
-            </div>
-
-            <div class="form-group">
-              <label for="producto-precio">
-                Precio (USD) <span aria-hidden="true">*</span>
-              </label>
-              <input
-                type="number"
-                id="producto-precio"
-                name="precio"
-                required
-                min="0.01"
-                max="99999.99"
-                step="0.01"
-                placeholder="0.00"
-                data-field="precio"
-              />
-              <span class="field-error" id="error-precio" role="alert"></span>
-            </div>
-
-            <div class="form-group">
-              <label for="producto-descripcion">Descripción</label>
-              <textarea
-                id="producto-descripcion"
-                name="descripcion"
-                rows="3"
-                maxlength="500"
-                placeholder="Descripción breve del producto..."
-                data-field="descripcion"
-              ></textarea>
-            </div>
-
-            <div class="form-group">
-              <label for="producto-stock">Stock disponible</label>
-              <input
-                type="number"
-                id="producto-stock"
-                name="stock"
-                min="0"
-                value="0"
-                data-field="stock"
-              />
-            </div>
-          </fieldset>
-
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary">
-              Guardar Producto
-            </button>
-            <button type="reset" class="btn btn-secondary">
-              Limpiar
-            </button>
-          </div>
-        </form>
-      </section>
-
-      <!-- Sección: Estadísticas -->
-      <section
-        class="stats-section"
-        aria-labelledby="stats-heading"
-        id="estadisticas"
-        hidden
-      >
-        <h2 id="stats-heading">Estadísticas del Catálogo</h2>
-        <div class="stats-grid" id="stats-grid">
-          <!-- Tarjetas de estadísticas se renderizan dinámicamente -->
-        </div>
-
-        <figure class="stats-chart">
-          <canvas
-            id="chart-categorias"
-            width="600"
-            height="300"
-            aria-label="Gráfico de distribución por categorías"
-            role="img"
-          ></canvas>
-          <figcaption>Distribución de productos por categoría</figcaption>
-        </figure>
-      </section>
+    <!-- Contenido principal -->
+    <main id="main-content" class="app-main" role="main">
+      <!-- El componente principal del dashboard se montará aquí -->
+      <app-dashboard id="dashboard"></app-dashboard>
     </main>
 
-    <!-- Barra lateral: detalles del producto seleccionado -->
-    <aside
-      class="product-detail-panel"
-      id="detail-panel"
-      role="complementary"
-      aria-label="Detalle del producto"
-      hidden
-    >
-      <div class="panel-header">
-        <h3>Detalle del Producto</h3>
-        <button
-          class="btn-icon btn-close-panel"
-          id="btn-close-panel"
-          aria-label="Cerrar panel de detalle"
-        >
-          ✕
-        </button>
-      </div>
-      <div class="panel-content" id="panel-content">
-        <!-- Contenido dinámico -->
-      </div>
+    <!-- Panel de notificaciones (fuera del flujo principal) -->
+    <aside id="notification-area" aria-label="Notificaciones" aria-live="polite">
+      <notification-panel></notification-panel>
     </aside>
 
     <!-- Pie de página -->
     <footer class="app-footer" role="contentinfo">
-      <div class="footer-content">
-        <p class="footer-copy">
-          &copy; 2024 CatálogoTech — Laboratorio de Tecnologías Frontend
-        </p>
-        <nav aria-label="Navegación de pie de página">
-          <a href="#" class="footer-link">Documentación</a>
-          <a href="#" class="footer-link">API Reference</a>
-          <a href="#" class="footer-link">Soporte</a>
-        </nav>
-      </div>
+      <p>&copy; 2024 TaskDash – Plataforma de Gestión Empresarial</p>
     </footer>
 
-    <!-- Notificaciones tipo toast -->
-    <div
-      class="toast-container"
-      id="toast-container"
-      aria-live="assertive"
-      aria-atomic="true"
-      role="status"
-    ></div>
-
-    <!-- Punto de entrada JavaScript -->
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
 ```
 
-**Resultado Esperado:** El archivo `index.html` contiene una estructura HTML5 semántica completa con `<header>`, `<nav>`, `<main>`, múltiples `<section>`, `<aside>`, `<footer>` y atributos ARIA correctos.
-
-**Verificación:** Abre Chrome DevTools (F12) → pestaña **Elements** y verifica que el árbol DOM muestra la jerarquía semántica correcta. En la pestaña **Accessibility** verifica que el árbol de accesibilidad reconoce los landmarks.
+> **Nota pedagógica:** Observa el uso de `role="banner"`, `role="main"`, `role="contentinfo"` y `aria-label`. Estos atributos ARIA complementan los elementos semánticos HTML5 para mejorar la accesibilidad con lectores de pantalla, tal como se explicó en la Lección 2.1.
 
 ---
 
-### Paso 3 — Estilos CSS3 con Variables, Flexbox y Grid
-
-**Objetivo:** Aplicar CSS3 avanzado para crear la interfaz visual responsiva usando Custom Properties, Flexbox y CSS Grid.
+#### Paso 1.4 – Crear el Sistema de Estilos CSS3
 
 **Instrucciones:**
 
-1. Crea el archivo `src/styles/main.css`:
+1. Crear el directorio de estilos:
+
+```bash
+# Windows (PowerShell)
+New-Item -ItemType Directory -Path src/styles
+
+# macOS / Linux
+mkdir -p src/styles
+```
+
+2. Crear `src/styles/variables.css`:
 
 ```css
-/* ============================================================
-   VARIABLES CSS (Custom Properties)
-   ============================================================ */
+/* src/styles/variables.css – Variables CSS globales (Design Tokens) */
 :root {
-  /* Paleta de colores */
+  /* Paleta de colores – Tema Claro */
   --color-primary: #2563eb;
-  --color-primary-dark: #1d4ed8;
-  --color-primary-light: #dbeafe;
+  --color-primary-hover: #1d4ed8;
   --color-secondary: #7c3aed;
   --color-success: #16a34a;
   --color-warning: #d97706;
   --color-danger: #dc2626;
+  --color-info: #0891b2;
 
-  /* Escala de grises */
+  /* Superficies */
   --color-bg: #f8fafc;
   --color-surface: #ffffff;
-  --color-surface-alt: #f1f5f9;
+  --color-surface-raised: #f1f5f9;
   --color-border: #e2e8f0;
-  --color-text: #1e293b;
-  --color-text-muted: #64748b;
-  --color-text-inverse: #ffffff;
+
+  /* Texto */
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94a3b8;
+
+  /* Espaciado */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
 
   /* Tipografía */
   --font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
   --font-size-base: 1rem;
   --font-size-lg: 1.125rem;
@@ -643,1579 +369,1962 @@ npm run dev
   --font-size-2xl: 1.5rem;
   --font-size-3xl: 1.875rem;
 
-  /* Espaciado */
-  --spacing-1: 0.25rem;
-  --spacing-2: 0.5rem;
-  --spacing-3: 0.75rem;
-  --spacing-4: 1rem;
-  --spacing-6: 1.5rem;
-  --spacing-8: 2rem;
-  --spacing-12: 3rem;
-
   /* Bordes y sombras */
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
   --radius-full: 9999px;
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-  --shadow-hover: 0 20px 25px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 
   /* Transiciones */
   --transition-fast: 150ms ease;
   --transition-base: 250ms ease;
   --transition-slow: 400ms ease;
-
-  /* Layout */
-  --header-height: 64px;
-  --sidebar-width: 360px;
-  --content-max-width: 1400px;
 }
 
-/* Tema oscuro */
-[data-theme='dark'] {
+/* Tema Oscuro */
+[data-theme="dark"] {
   --color-bg: #0f172a;
   --color-surface: #1e293b;
-  --color-surface-alt: #334155;
+  --color-surface-raised: #334155;
   --color-border: #475569;
-  --color-text: #f1f5f9;
-  --color-text-muted: #94a3b8;
-  --color-primary-light: #1e3a5f;
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #64748b;
 }
+```
 
-/* ============================================================
-   RESET Y BASE
-   ============================================================ */
-*,
-*::before,
-*::after {
+3. Crear `src/styles/global.css`:
+
+```css
+/* src/styles/global.css – Estilos globales de la aplicación */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 html {
-  scroll-behavior: smooth;
   font-size: 16px;
+  scroll-behavior: smooth;
 }
 
 body {
   font-family: var(--font-family);
   font-size: var(--font-size-base);
-  color: var(--color-text);
+  color: var(--color-text-primary);
   background-color: var(--color-bg);
   line-height: 1.6;
   min-height: 100vh;
   display: grid;
-  grid-template-rows: var(--header-height) 1fr auto;
-  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
   grid-template-areas:
-    'header'
-    'main'
-    'footer';
+    "header"
+    "main"
+    "footer";
+  transition: background-color var(--transition-base), color var(--transition-base);
 }
 
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-/* ============================================================
-   HEADER
-   ============================================================ */
+/* Header */
 .app-header {
   grid-area: header;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-md) var(--space-xl);
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl);
   position: sticky;
   top: 0;
   z-index: 100;
-  background-color: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-6);
-  padding: 0 var(--spacing-6);
-  height: var(--header-height);
 }
 
-.header-brand {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-2);
-  flex-shrink: 0;
-}
-
-.brand-icon {
-  font-size: var(--font-size-xl);
-}
-
-.brand-title {
-  font-size: var(--font-size-xl);
+.app-title {
+  font-size: var(--font-size-2xl);
   font-weight: 700;
   color: var(--color-primary);
 }
 
-.brand-subtitle {
-  font-size: var(--font-size-xs);
+.app-subtitle {
+  font-size: var(--font-size-sm);
   color: var(--color-text-muted);
-  display: none;
 }
 
-@media (min-width: 768px) {
-  .brand-subtitle {
-    display: inline;
-  }
-}
-
-.header-nav {
-  flex: 1;
-}
-
-.nav-list {
-  display: flex;
+.header-nav ul {
   list-style: none;
-  gap: var(--spacing-1);
+  display: flex;
+  gap: var(--space-lg);
 }
 
-.nav-link {
-  display: inline-block;
-  padding: var(--spacing-2) var(--spacing-4);
-  border-radius: var(--radius-md);
+.header-nav a {
   text-decoration: none;
-  color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
   font-weight: 500;
-  transition: all var(--transition-fast);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-md);
+  transition: color var(--transition-fast), background-color var(--transition-fast);
 }
 
-.nav-link:hover,
-.nav-link.active {
+.header-nav a:hover,
+.header-nav a[aria-current="page"] {
   color: var(--color-primary);
-  background-color: var(--color-primary-light);
+  background-color: var(--color-surface-raised);
 }
 
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-3);
-  flex-shrink: 0;
-}
-
-/* ============================================================
-   BOTONES
-   ============================================================ */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-2);
-  padding: var(--spacing-2) var(--spacing-4);
-  border: none;
-  border-radius: var(--radius-md);
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  text-decoration: none;
-}
-
-.btn-primary {
-  background-color: var(--color-primary);
-  color: var(--color-text-inverse);
-}
-
-.btn-primary:hover {
-  background-color: var(--color-primary-dark);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-1px);
-}
-
-.btn-secondary {
-  background-color: var(--color-surface-alt);
-  color: var(--color-text);
-  border: 1px solid var(--color-border);
-}
-
-.btn-secondary:hover {
-  background-color: var(--color-border);
-}
-
-.btn-icon {
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background-color: var(--color-surface);
-  cursor: pointer;
-  font-size: var(--font-size-base);
-  transition: all var(--transition-fast);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn-icon:hover {
-  background-color: var(--color-surface-alt);
-}
-
-/* ============================================================
-   MAIN LAYOUT
-   ============================================================ */
+/* Main */
 .app-main {
   grid-area: main;
-  max-width: var(--content-max-width);
-  width: 100%;
+  padding: var(--space-xl);
+  max-width: 1440px;
   margin: 0 auto;
-  padding: var(--spacing-6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-8);
+  width: 100%;
 }
 
-/* ============================================================
-   SECCIÓN DE BÚSQUEDA Y FILTROS
-   ============================================================ */
-.search-section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-4);
-}
-
-.search-bar {
-  display: flex;
-  gap: var(--spacing-2);
-}
-
-.search-input {
-  flex: 1;
-  padding: var(--spacing-3) var(--spacing-4);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  font-size: var(--font-size-base);
-  background-color: var(--color-surface);
-  color: var(--color-text);
-  transition: border-color var(--transition-fast);
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px var(--color-primary-light);
-}
-
-.btn-search {
-  padding: var(--spacing-3) var(--spacing-4);
-  background-color: var(--color-primary);
-  color: white;
-  border: none;
-  border-radius: var(--radius-lg);
-  cursor: pointer;
-  font-size: var(--font-size-base);
-  transition: background-color var(--transition-fast);
-}
-
-.btn-search:hover {
-  background-color: var(--color-primary-dark);
-}
-
-.filter-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-2);
-}
-
-.filter-chip {
-  padding: var(--spacing-1) var(--spacing-3);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-full);
-  background-color: var(--color-surface);
-  color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.filter-chip:hover,
-.filter-chip.active {
-  background-color: var(--color-primary);
-  color: white;
-  border-color: var(--color-primary);
-}
-
-/* ============================================================
-   CATÁLOGO — CSS GRID
-   ============================================================ */
-.catalog-section .section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--spacing-4);
-}
-
-.catalog-section h2 {
-  font-size: var(--font-size-2xl);
-  font-weight: 700;
-}
-
-.product-count {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
-}
-
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--spacing-6);
-}
-
-/* ============================================================
-   TARJETA DE PRODUCTO
-   ============================================================ */
-.product-card {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  padding: var(--spacing-6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-3);
-  box-shadow: var(--shadow-sm);
-  transition: all var(--transition-base);
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.product-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
-  opacity: 0;
-  transition: opacity var(--transition-base);
-}
-
-.product-card:hover {
-  box-shadow: var(--shadow-hover);
-  transform: translateY(-4px);
-  border-color: var(--color-primary);
-}
-
-.product-card:hover::before {
-  opacity: 1;
-}
-
-.product-card-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: var(--spacing-1) var(--spacing-2);
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-xs);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background-color: var(--color-primary-light);
-  color: var(--color-primary);
-  width: fit-content;
-}
-
-.product-card-name {
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  color: var(--color-text);
-}
-
-.product-card-description {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
-  line-height: 1.5;
-  flex: 1;
-}
-
-.product-card-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: var(--spacing-3);
-  border-top: 1px solid var(--color-border);
-}
-
-.product-card-price {
-  font-size: var(--font-size-xl);
-  font-weight: 700;
-  color: var(--color-primary);
-}
-
-.product-card-stock {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
-}
-
-.product-card-stock.low-stock {
-  color: var(--color-warning);
-  font-weight: 600;
-}
-
-/* ============================================================
-   FORMULARIO
-   ============================================================ */
-.form-section {
-  max-width: 640px;
-}
-
-.form-section h2 {
-  font-size: var(--font-size-2xl);
-  font-weight: 700;
-  margin-bottom: var(--spacing-6);
-}
-
-.product-form {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  padding: var(--spacing-8);
-  box-shadow: var(--shadow-md);
-}
-
-.form-fieldset {
-  border: none;
-  padding: 0;
-  margin: 0 0 var(--spacing-6) 0;
-}
-
-.form-fieldset legend {
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  margin-bottom: var(--spacing-6);
-  color: var(--color-text);
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-1);
-  margin-bottom: var(--spacing-4);
-}
-
-.form-group label {
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  color: var(--color-text);
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-  padding: var(--spacing-3);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  font-size: var(--font-size-base);
-  background-color: var(--color-surface);
-  color: var(--color-text);
-  transition: border-color var(--transition-fast);
-  font-family: var(--font-family);
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px var(--color-primary-light);
-}
-
-.form-group input.invalid,
-.form-group select.invalid {
-  border-color: var(--color-danger);
-  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
-}
-
-.field-error {
-  font-size: var(--font-size-xs);
-  color: var(--color-danger);
-  min-height: 1rem;
-}
-
-.form-actions {
-  display: flex;
-  gap: var(--spacing-3);
-  justify-content: flex-end;
-}
-
-/* ============================================================
-   ESTADÍSTICAS
-   ============================================================ */
-.stats-section h2 {
-  font-size: var(--font-size-2xl);
-  font-weight: 700;
-  margin-bottom: var(--spacing-6);
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--spacing-4);
-  margin-bottom: var(--spacing-8);
-}
-
-.stat-card {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  padding: var(--spacing-6);
-  text-align: center;
-  box-shadow: var(--shadow-sm);
-}
-
-.stat-card-value {
-  font-size: var(--font-size-3xl);
-  font-weight: 700;
-  color: var(--color-primary);
-}
-
-.stat-card-label {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
-  margin-top: var(--spacing-1);
-}
-
-.stats-chart {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  padding: var(--spacing-6);
-  box-shadow: var(--shadow-sm);
-}
-
-.stats-chart figcaption {
-  text-align: center;
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
-  margin-top: var(--spacing-3);
-}
-
-/* ============================================================
-   PANEL LATERAL (ASIDE)
-   ============================================================ */
-.product-detail-panel {
-  position: fixed;
-  top: var(--header-height);
-  right: 0;
-  width: var(--sidebar-width);
-  height: calc(100vh - var(--header-height));
-  background-color: var(--color-surface);
-  border-left: 1px solid var(--color-border);
-  box-shadow: var(--shadow-lg);
-  z-index: 50;
-  display: flex;
-  flex-direction: column;
-  transform: translateX(100%);
-  transition: transform var(--transition-slow);
-}
-
-.product-detail-panel:not([hidden]) {
-  transform: translateX(0);
-  display: flex;
-}
-
-.panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--spacing-4) var(--spacing-6);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.panel-header h3 {
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-}
-
-.panel-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: var(--spacing-6);
-}
-
-/* ============================================================
-   FOOTER
-   ============================================================ */
+/* Footer */
 .app-footer {
   grid-area: footer;
   background-color: var(--color-surface);
   border-top: 1px solid var(--color-border);
-  padding: var(--spacing-4) var(--spacing-6);
-}
-
-.footer-content {
-  max-width: var(--content-max-width);
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--spacing-3);
-}
-
-.footer-copy {
-  font-size: var(--font-size-sm);
+  padding: var(--space-md) var(--space-xl);
+  text-align: center;
   color: var(--color-text-muted);
-}
-
-.footer-link {
   font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
-  text-decoration: none;
-  margin-left: var(--spacing-4);
-  transition: color var(--transition-fast);
 }
 
-.footer-link:hover {
-  color: var(--color-primary);
-}
-
-/* ============================================================
-   TOAST NOTIFICATIONS
-   ============================================================ */
-.toast-container {
+/* Aside de notificaciones */
+#notification-area {
   position: fixed;
-  bottom: var(--spacing-6);
-  right: var(--spacing-6);
+  bottom: var(--space-xl);
+  right: var(--space-xl);
   z-index: 200;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-3);
+  gap: var(--space-sm);
+  max-width: 380px;
 }
 
-.toast {
-  padding: var(--spacing-3) var(--spacing-4);
-  border-radius: var(--radius-lg);
-  color: white;
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  box-shadow: var(--shadow-lg);
-  min-width: 280px;
-  animation: slideInRight var(--transition-base) ease forwards;
-}
-
-.toast.success { background-color: var(--color-success); }
-.toast.error   { background-color: var(--color-danger); }
-.toast.warning { background-color: var(--color-warning); }
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes fadeOut {
-  from { opacity: 1; }
-  to   { opacity: 0; transform: translateY(-8px); }
-}
-
-/* ============================================================
-   INDICADOR DE CARRITO
-   ============================================================ */
-.cart-indicator {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-1);
-  padding: var(--spacing-1) var(--spacing-3);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-sm);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.cart-indicator:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-}
-
-.cart-count {
-  font-weight: 700;
-  min-width: 1.25rem;
-  text-align: center;
-}
-
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
+/* Responsive */
 @media (max-width: 768px) {
   .app-header {
-    padding: 0 var(--spacing-4);
-    gap: var(--spacing-3);
+    flex-wrap: wrap;
+    padding: var(--space-md);
   }
-
-  .header-nav {
-    display: none;
+  .app-main {
+    padding: var(--space-md);
   }
-
-  .products-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .product-detail-panel {
-    width: 100%;
-  }
-
-  .form-actions {
-    flex-direction: column;
+  .header-nav ul {
+    gap: var(--space-md);
   }
 }
 ```
 
-**Resultado Esperado:** La aplicación muestra la interfaz visual completa con header, sección de búsqueda, catálogo y footer con estilos aplicados.
+4. Crear el archivo de entrada `src/main.js` (vacío por ahora):
 
-**Verificación:** Ejecuta `npm run dev` y abre `http://localhost:3000`. La página debe mostrar el header con navegación, la barra de búsqueda y filtros. Redimensiona la ventana para verificar el comportamiento responsivo.
+```javascript
+// src/main.js – Punto de entrada de la aplicación
+// Las importaciones se añadirán en fases posteriores
+console.log('TaskDash iniciando...');
+```
+
+**Resultado esperado:** Al ejecutar `npm run dev` y abrir el navegador, se debe ver el header con "TaskDash", la navegación y el footer con estilos aplicados.
 
 ---
 
-### Paso 4 — Datos y Lógica JavaScript ES6+
+### Fase 2: Web Components Nativos (40 min)
 
-**Objetivo:** Crear el módulo de datos de productos y el controlador principal de la aplicación usando JavaScript ES6+ moderno.
+**Objetivo:** Crear un componente web nativo usando la API del navegador, implementando Shadow DOM, HTML Templates y el ciclo de vida completo.
+
+#### Paso 2.1 – Crear los Datos de Prueba
 
 **Instrucciones:**
 
-1. Crea `src/data/productos.js` con los datos iniciales del catálogo:
+1. Crear el directorio y archivo de datos mock:
+
+```bash
+# Windows (PowerShell)
+New-Item -ItemType Directory -Path src/data
+New-Item -ItemType Directory -Path src/components/native
+New-Item -ItemType Directory -Path src/components/lit
+New-Item -ItemType Directory -Path src/tests
+
+# macOS / Linux
+mkdir -p src/data src/components/native src/components/lit src/tests
+```
+
+2. Crear `src/data/mock-data.js`:
 
 ```javascript
-// src/data/productos.js
+// src/data/mock-data.js – Datos de prueba para el dashboard
 
-/**
- * Dataset inicial de productos del catálogo.
- * Cada producto usa atributos data-* en el HTML para enlazar con el DOM.
- */
-export const productosIniciales = [
+export const PROJECTS = [
   {
-    id: 1,
-    nombre: 'Laptop Pro 15',
-    categoria: 'electronica',
-    precio: 1299.99,
-    descripcion: 'Laptop empresarial con procesador Intel Core i7, 16GB RAM y SSD 512GB.',
-    stock: 15,
-    destacado: true,
+    id: 'proj-001',
+    name: 'Portal de Clientes',
+    description: 'Rediseño completo del portal web para clientes corporativos',
+    status: 'active',
+    progress: 65,
+    priority: 'high',
+    dueDate: '2024-03-31',
+    team: ['Ana García', 'Carlos López', 'María Rodríguez'],
+    taskCount: { total: 24, completed: 15, pending: 6, blocked: 3 },
   },
   {
-    id: 2,
-    nombre: 'Suite Office 365',
-    categoria: 'software',
-    precio: 149.99,
-    descripcion: 'Licencia anual de Microsoft Office 365 para empresas con 5 dispositivos.',
-    stock: 100,
-    destacado: false,
+    id: 'proj-002',
+    name: 'API de Pagos',
+    description: 'Integración con pasarela de pagos internacionales',
+    status: 'planning',
+    progress: 20,
+    priority: 'critical',
+    dueDate: '2024-04-15',
+    team: ['Pedro Martínez', 'Laura Sánchez'],
+    taskCount: { total: 18, completed: 4, pending: 14, blocked: 0 },
   },
   {
-    id: 3,
-    nombre: 'Monitor 4K UltraWide',
-    categoria: 'perifericos',
-    precio: 599.99,
-    descripcion: 'Monitor 34 pulgadas UltraWide 4K con panel IPS y 144Hz de refresco.',
-    stock: 8,
-    destacado: true,
+    id: 'proj-003',
+    name: 'App Móvil v2',
+    description: 'Nueva versión de la aplicación móvil con funciones offline',
+    status: 'completed',
+    progress: 100,
+    priority: 'medium',
+    dueDate: '2024-01-15',
+    team: ['Ana García', 'Roberto Kim'],
+    taskCount: { total: 32, completed: 32, pending: 0, blocked: 0 },
   },
   {
-    id: 4,
-    nombre: 'Teclado Mecánico RGB',
-    categoria: 'perifericos',
-    precio: 129.99,
-    descripcion: 'Teclado mecánico con switches Cherry MX Red e iluminación RGB personalizable.',
-    stock: 25,
-    destacado: false,
-  },
-  {
-    id: 5,
-    nombre: 'Servicio Cloud Backup',
-    categoria: 'servicios',
-    precio: 29.99,
-    descripcion: 'Respaldo automático en la nube con 2TB de almacenamiento y encriptación AES-256.',
-    stock: 999,
-    destacado: false,
-  },
-  {
-    id: 6,
-    nombre: 'Servidor NAS 8TB',
-    categoria: 'electronica',
-    precio: 849.99,
-    descripcion: 'Almacenamiento en red con 8TB RAID 5, acceso remoto y gestión centralizada.',
-    stock: 3,
-    destacado: true,
+    id: 'proj-004',
+    name: 'Dashboard Analytics',
+    description: 'Panel de métricas y reportes en tiempo real',
+    status: 'active',
+    progress: 45,
+    priority: 'medium',
+    dueDate: '2024-05-01',
+    team: ['Carlos López', 'Sofía Torres', 'Juan Pérez'],
+    taskCount: { total: 20, completed: 9, pending: 10, blocked: 1 },
   },
 ];
 
-/**
- * Genera un ID único para nuevos productos.
- * @param {Array} productos - Lista actual de productos
- * @returns {number} - Nuevo ID único
- */
-export function generarId(productos) {
-  return productos.length > 0 ? Math.max(...productos.map((p) => p.id)) + 1 : 1;
-}
+export const TASKS = [
+  { id: 'task-001', projectId: 'proj-001', title: 'Diseño de wireframes', status: 'completed', priority: 'high', assignee: 'Ana García', dueDate: '2024-02-10' },
+  { id: 'task-002', projectId: 'proj-001', title: 'Implementar autenticación SSO', status: 'in-progress', priority: 'critical', assignee: 'Carlos López', dueDate: '2024-03-15' },
+  { id: 'task-003', projectId: 'proj-001', title: 'Pruebas de integración', status: 'pending', priority: 'high', assignee: 'María Rodríguez', dueDate: '2024-03-25' },
+  { id: 'task-004', projectId: 'proj-001', title: 'Documentación API', status: 'blocked', priority: 'medium', assignee: 'Carlos López', dueDate: '2024-03-28' },
+  { id: 'task-005', projectId: 'proj-002', title: 'Análisis de requisitos de seguridad', status: 'completed', priority: 'critical', assignee: 'Pedro Martínez', dueDate: '2024-02-20' },
+  { id: 'task-006', projectId: 'proj-002', title: 'Configurar sandbox de pagos', status: 'in-progress', priority: 'high', assignee: 'Laura Sánchez', dueDate: '2024-03-30' },
+  { id: 'task-007', projectId: 'proj-004', title: 'Diseño de esquema de base de datos', status: 'completed', priority: 'high', assignee: 'Sofía Torres', dueDate: '2024-02-28' },
+  { id: 'task-008', projectId: 'proj-004', title: 'Componente de gráficos', status: 'in-progress', priority: 'medium', assignee: 'Juan Pérez', dueDate: '2024-04-10' },
+];
 
-/**
- * Formatea un precio como moneda USD.
- * @param {number} precio
- * @returns {string}
- */
-export function formatearPrecio(precio) {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(precio);
-}
+export const NOTIFICATIONS = [
+  { id: 'notif-001', type: 'warning', message: 'La tarea "Documentación API" está bloqueada', timestamp: new Date(Date.now() - 300000), read: false },
+  { id: 'notif-002', type: 'success', message: 'Proyecto "App Móvil v2" completado exitosamente', timestamp: new Date(Date.now() - 3600000), read: false },
+  { id: 'notif-003', type: 'info', message: 'Reunión de sprint programada para mañana 9:00 AM', timestamp: new Date(Date.now() - 7200000), read: true },
+];
 
-/**
- * Obtiene la etiqueta de categoría para mostrar.
- * @param {string} categoria
- * @returns {string}
- */
-export function etiquetaCategoria(categoria) {
-  const etiquetas = {
-    electronica: 'Electrónica',
-    software: 'Software',
-    perifericos: 'Periféricos',
-    servicios: 'Servicios',
-  };
-  return etiquetas[categoria] ?? categoria;
-}
-```
-
-2. Crea `src/utils/dom.js` con utilidades de manipulación del DOM:
-
-```javascript
-// src/utils/dom.js
-
-/**
- * Muestra una notificación toast en pantalla.
- * @param {string} mensaje - Texto del mensaje
- * @param {'success'|'error'|'warning'} tipo - Tipo de notificación
- * @param {number} duracion - Duración en milisegundos
- */
-export function mostrarToast(mensaje, tipo = 'success', duracion = 3000) {
-  const contenedor = document.getElementById('toast-container');
-  if (!contenedor) return;
-
-  const toast = document.createElement('div');
-  toast.className = `toast ${tipo}`;
-  toast.textContent = mensaje;
-  toast.setAttribute('role', 'alert');
-
-  contenedor.appendChild(toast);
-
-  setTimeout(() => {
-    toast.style.animation = `fadeOut ${250}ms ease forwards`;
-    toast.addEventListener('animationend', () => toast.remove());
-  }, duracion);
-}
-
-/**
- * Actualiza el contador del carrito en el header.
- * @param {number} cantidad
- */
-export function actualizarContadorCarrito(cantidad) {
-  const contador = document.getElementById('cart-count');
-  if (contador) {
-    contador.textContent = cantidad;
-    contador.dataset.count = cantidad;
-  }
-}
-
-/**
- * Navega entre secciones de la SPA ocultando/mostrando secciones.
- * @param {string} seccionId - ID de la sección a mostrar
- */
-export function navegarA(seccionId) {
-  const secciones = ['catalogo', 'agregar', 'estadisticas'];
-
-  secciones.forEach((id) => {
-    const seccion = document.getElementById(id);
-    if (seccion) {
-      if (id === seccionId) {
-        seccion.removeAttribute('hidden');
-      } else {
-        seccion.setAttribute('hidden', '');
-      }
-    }
-  });
-
-  // Actualizar estado activo en nav
-  document.querySelectorAll('.nav-link').forEach((link) => {
-    const esActivo = link.dataset.section === seccionId;
-    link.classList.toggle('active', esActivo);
-  });
-}
-```
-
-3. Crea `src/main.js` — el punto de entrada y controlador principal:
-
-```javascript
-// src/main.js
-import { productosIniciales, generarId, formatearPrecio, etiquetaCategoria } from './data/productos.js';
-import { mostrarToast, actualizarContadorCarrito, navegarA } from './utils/dom.js';
-
-// ============================================================
-// ESTADO DE LA APLICACIÓN
-// ============================================================
-const estado = {
-  productos: [...productosIniciales],
-  carrito: [],
-  filtroActual: 'todas',
-  busquedaActual: '',
-  productoSeleccionado: null,
+export const METRICS = {
+  totalProjects: 4,
+  activeProjects: 2,
+  totalTasks: 94,
+  completedTasks: 61,
+  overdueTasks: 3,
+  teamMembers: 7,
 };
-
-// ============================================================
-// RENDERIZADO DE PRODUCTOS
-// ============================================================
-
-/**
- * Filtra los productos según búsqueda y categoría activa.
- * @returns {Array} Productos filtrados
- */
-function obtenerProductosFiltrados() {
-  return estado.productos.filter((producto) => {
-    const coincideBusqueda =
-      estado.busquedaActual === '' ||
-      producto.nombre.toLowerCase().includes(estado.busquedaActual.toLowerCase()) ||
-      producto.categoria.toLowerCase().includes(estado.busquedaActual.toLowerCase());
-
-    const coincideCategoria =
-      estado.filtroActual === 'todas' || producto.categoria === estado.filtroActual;
-
-    return coincideBusqueda && coincideCategoria;
-  });
-}
-
-/**
- * Renderiza las tarjetas de productos en el grid.
- * Usa atributos data-* para enlazar datos con el DOM.
- */
-function renderizarProductos() {
-  const grid = document.getElementById('products-grid');
-  const contador = document.getElementById('product-count');
-  if (!grid) return;
-
-  const productosFiltrados = obtenerProductosFiltrados();
-
-  // Actualizar contador
-  if (contador) {
-    contador.textContent = `${productosFiltrados.length} producto${productosFiltrados.length !== 1 ? 's' : ''} encontrado${productosFiltrados.length !== 1 ? 's' : ''}`;
-  }
-
-  if (productosFiltrados.length === 0) {
-    grid.innerHTML = `
-      <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--color-text-muted);">
-        <p style="font-size: 2rem; margin-bottom: 1rem;">🔍</p>
-        <p>No se encontraron productos con los filtros actuales.</p>
-      </div>
-    `;
-    return;
-  }
-
-  // Renderizar tarjetas usando template literals
-  grid.innerHTML = productosFiltrados
-    .map(
-      (producto) => `
-      <article
-        class="product-card"
-        role="listitem"
-        data-producto-id="${producto.id}"
-        data-producto-nombre="${producto.nombre}"
-        data-producto-precio="${producto.precio}"
-        tabindex="0"
-        aria-label="Producto: ${producto.nombre}, precio ${formatearPrecio(producto.precio)}"
-      >
-        <span class="product-card-badge">${etiquetaCategoria(producto.categoria)}</span>
-        <h3 class="product-card-name">${producto.nombre}</h3>
-        <p class="product-card-description">${producto.descripcion}</p>
-        <div class="product-card-footer">
-          <span class="product-card-price">${formatearPrecio(producto.precio)}</span>
-          <span class="product-card-stock ${producto.stock <= 5 ? 'low-stock' : ''}">
-            ${producto.stock <= 5 ? '⚠️ ' : ''}Stock: ${producto.stock}
-          </span>
-        </div>
-        <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem;">
-          <button
-            class="btn btn-primary"
-            style="flex: 1; font-size: 0.75rem; padding: 0.375rem 0.5rem;"
-            data-accion="agregar-carrito"
-            data-producto-id="${producto.id}"
-          >
-            🛒 Agregar
-          </button>
-          <button
-            class="btn btn-secondary"
-            style="font-size: 0.75rem; padding: 0.375rem 0.75rem;"
-            data-accion="ver-detalle"
-            data-producto-id="${producto.id}"
-          >
-            Ver
-          </button>
-        </div>
-      </article>
-    `
-    )
-    .join('');
-}
-
-// ============================================================
-// PANEL DE DETALLE
-// ============================================================
-
-function mostrarDetalle(productoId) {
-  const producto = estado.productos.find((p) => p.id === Number(productoId));
-  if (!producto) return;
-
-  estado.productoSeleccionado = producto;
-
-  const panel = document.getElementById('detail-panel');
-  const contenido = document.getElementById('panel-content');
-
-  if (!panel || !contenido) return;
-
-  contenido.innerHTML = `
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <span class="product-card-badge">${etiquetaCategoria(producto.categoria)}</span>
-      <h4 style="font-size: 1.25rem; font-weight: 700;">${producto.nombre}</h4>
-      <p style="color: var(--color-text-muted); line-height: 1.6;">${producto.descripcion}</p>
-      <div style="display: flex; justify-content: space-between; padding: 1rem; background: var(--color-surface-alt); border-radius: 0.5rem;">
-        <div>
-          <div style="font-size: 0.75rem; color: var(--color-text-muted);">PRECIO</div>
-          <div style="font-size: 1.5rem; font-weight: 700; color: var(--color-primary);">${formatearPrecio(producto.precio)}</div>
-        </div>
-        <div>
-          <div style="font-size: 0.75rem; color: var(--color-text-muted);">STOCK</div>
-          <div style="font-size: 1.5rem; font-weight: 700;">${producto.stock}</div>
-        </div>
-      </div>
-      <button
-        class="btn btn-primary"
-        data-accion="agregar-carrito"
-        data-producto-id="${producto.id}"
-      >
-        🛒 Agregar al carrito
-      </button>
-    </div>
-  `;
-
-  panel.removeAttribute('hidden');
-}
-
-// ============================================================
-// ESTADÍSTICAS
-// ============================================================
-
-function renderizarEstadisticas() {
-  const statsGrid = document.getElementById('stats-grid');
-  if (!statsGrid) return;
-
-  const totalProductos = estado.productos.length;
-  const precioPromedio =
-    estado.productos.reduce((acc, p) => acc + p.precio, 0) / totalProductos || 0;
-  const stockTotal = estado.productos.reduce((acc, p) => acc + p.stock, 0);
-  const categorias = [...new Set(estado.productos.map((p) => p.categoria))].length;
-
-  const stats = [
-    { valor: totalProductos, etiqueta: 'Total Productos', icono: '📦' },
-    { valor: formatearPrecio(precioPromedio), etiqueta: 'Precio Promedio', icono: '💰' },
-    { valor: stockTotal, etiqueta: 'Unidades en Stock', icono: '🏭' },
-    { valor: categorias, etiqueta: 'Categorías', icono: '🏷️' },
-  ];
-
-  statsGrid.innerHTML = stats
-    .map(
-      (s) => `
-      <div class="stat-card">
-        <div style="font-size: 2rem; margin-bottom: 0.5rem;">${s.icono}</div>
-        <div class="stat-card-value">${s.valor}</div>
-        <div class="stat-card-label">${s.etiqueta}</div>
-      </div>
-    `
-    )
-    .join('');
-
-  // Dibujar gráfico de barras en Canvas
-  dibujarGraficoCanvas();
-}
-
-function dibujarGraficoCanvas() {
-  const canvas = document.getElementById('chart-categorias');
-  if (!canvas) return;
-
-  const ctx = canvas.getContext('2d');
-  const categorias = {};
-
-  estado.productos.forEach((p) => {
-    categorias[p.categoria] = (categorias[p.categoria] || 0) + 1;
-  });
-
-  const etiquetas = Object.keys(categorias);
-  const valores = Object.values(categorias);
-  const colores = ['#2563eb', '#7c3aed', '#16a34a', '#d97706'];
-
-  const ancho = canvas.width;
-  const alto = canvas.height;
-  const margen = 60;
-  const anchoBarras = (ancho - margen * 2) / etiquetas.length;
-  const maxValor = Math.max(...valores);
-
-  ctx.clearRect(0, 0, ancho, alto);
-  ctx.fillStyle = getComputedStyle(document.documentElement)
-    .getPropertyValue('--color-surface')
-    .trim() || '#fff';
-  ctx.fillRect(0, 0, ancho, alto);
-
-  etiquetas.forEach((etiqueta, i) => {
-    const altoBarra = ((valores[i] / maxValor) * (alto - margen * 2));
-    const x = margen + i * anchoBarras + anchoBarras * 0.1;
-    const y = alto - margen - altoBarra;
-    const anchoReal = anchoBarras * 0.8;
-
-    ctx.fillStyle = colores[i % colores.length];
-    ctx.beginPath();
-    ctx.roundRect(x, y, anchoReal, altoBarra, 4);
-    ctx.fill();
-
-    ctx.fillStyle = '#64748b';
-    ctx.font = '12px system-ui';
-    ctx.textAlign = 'center';
-    ctx.fillText(etiquetaCategoria(etiqueta), x + anchoReal / 2, alto - margen + 20);
-
-    ctx.fillStyle = '#1e293b';
-    ctx.font = 'bold 14px system-ui';
-    ctx.fillText(valores[i], x + anchoReal / 2, y - 8);
-  });
-}
-
-// ============================================================
-// MANEJO DE EVENTOS
-// ============================================================
-
-function inicializarEventos() {
-  // Navegación SPA
-  document.querySelectorAll('.nav-link').forEach((link) => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      const seccion = link.dataset.section;
-      navegarA(seccion);
-      if (seccion === 'estadisticas') renderizarEstadisticas();
-    });
-  });
-
-  // Búsqueda en tiempo real
-  const inputBusqueda = document.getElementById('input-busqueda');
-  if (inputBusqueda) {
-    inputBusqueda.addEventListener('input', (e) => {
-      estado.busquedaActual = e.target.value;
-      renderizarProductos();
-    });
-  }
-
-  // Filtros por categoría
-  document.querySelectorAll('.filter-chip').forEach((chip) => {
-    chip.addEventListener('click', () => {
-      document.querySelectorAll('.filter-chip').forEach((c) => {
-        c.classList.remove('active');
-        c.setAttribute('aria-pressed', 'false');
-      });
-      chip.classList.add('active');
-      chip.setAttribute('aria-pressed', 'true');
-      estado.filtroActual = chip.dataset.categoria;
-      renderizarProductos();
-    });
-  });
-
-  // Delegación de eventos en el grid de productos
-  const grid = document.getElementById('products-grid');
-  if (grid) {
-    grid.addEventListener('click', (e) => {
-      const boton = e.target.closest('[data-accion]');
-      if (!boton) {
-        // Click en tarjeta
-        const tarjeta = e.target.closest('.product-card');
-        if (tarjeta) mostrarDetalle(tarjeta.dataset.productoId);
-        return;
-      }
-
-      const { accion, productoId } = boton.dataset;
-
-      if (accion === 'agregar-carrito') {
-        agregarAlCarrito(Number(productoId));
-      } else if (accion === 'ver-detalle') {
-        mostrarDetalle(productoId);
-      }
-    });
-  }
-
-  // Cerrar panel de detalle
-  const btnCerrar = document.getElementById('btn-close-panel');
-  if (btnCerrar) {
-    btnCerrar.addEventListener('click', () => {
-      const panel = document.getElementById('detail-panel');
-      if (panel) panel.setAttribute('hidden', '');
-    });
-  }
-
-  // Toggle de tema
-  const btnTema = document.getElementById('btn-toggle-theme');
-  if (btnTema) {
-    btnTema.addEventListener('click', () => {
-      const temaActual = document.documentElement.dataset.theme;
-      if (temaActual === 'dark') {
-        delete document.documentElement.dataset.theme;
-        btnTema.textContent = '🌙';
-      } else {
-        document.documentElement.dataset.theme = 'dark';
-        btnTema.textContent = '☀️';
-      }
-    });
-  }
-
-  // Formulario de nuevo producto
-  const formulario = document.getElementById('form-producto');
-  if (formulario) {
-    formulario.addEventListener('submit', (e) => {
-      e.preventDefault();
-      manejarEnvioFormulario(formulario);
-    });
-  }
-}
-
-// ============================================================
-// CARRITO
-// ============================================================
-
-function agregarAlCarrito(productoId) {
-  const producto = estado.productos.find((p) => p.id === productoId);
-  if (!producto) return;
-
-  const itemExistente = estado.carrito.find((item) => item.id === productoId);
-  if (itemExistente) {
-    itemExistente.cantidad += 1;
-  } else {
-    estado.carrito.push({ ...producto, cantidad: 1 });
-  }
-
-  const totalItems = estado.carrito.reduce((acc, item) => acc + item.cantidad, 0);
-  actualizarContadorCarrito(totalItems);
-  mostrarToast(`✅ "${producto.nombre}" agregado al carrito`, 'success');
-}
-
-// ============================================================
-// FORMULARIO
-// ============================================================
-
-function manejarEnvioFormulario(formulario) {
-  const datos = new FormData(formulario);
-  const errores = validarFormulario(datos);
-
-  limpiarErrores();
-
-  if (Object.keys(errores).length > 0) {
-    mostrarErrores(errores);
-    return;
-  }
-
-  const nuevoProducto = {
-    id: generarId(estado.productos),
-    nombre: datos.get('nombre').trim(),
-    categoria: datos.get('categoria'),
-    precio: parseFloat(datos.get('precio')),
-    descripcion: datos.get('descripcion').trim(),
-    stock: parseInt(datos.get('stock')) || 0,
-    destacado: false,
-  };
-
-  estado.productos.push(nuevoProducto);
-  formulario.reset();
-  mostrarToast(`✅ Producto "${nuevoProducto.nombre}" agregado exitosamente`, 'success');
-  navegarA('catalogo');
-  renderizarProductos();
-}
-
-function validarFormulario(datos) {
-  const errores = {};
-  const nombre = datos.get('nombre')?.trim();
-  const categoria = datos.get('categoria');
-  const precio = datos.get('precio');
-
-  if (!nombre || nombre.length < 3) {
-    errores.nombre = 'El nombre debe tener al menos 3 caracteres.';
-  }
-  if (!categoria) {
-    errores.categoria = 'Selecciona una categoría.';
-  }
-  if (!precio || parseFloat(precio) <= 0) {
-    errores.precio = 'El precio debe ser mayor a 0.';
-  }
-
-  return errores;
-}
-
-function mostrarErrores(errores) {
-  Object.entries(errores).forEach(([campo, mensaje]) => {
-    const errorEl = document.getElementById(`error-${campo}`);
-    const inputEl = document.querySelector(`[data-field="${campo}"]`);
-    if (errorEl) errorEl.textContent = mensaje;
-    if (inputEl) inputEl.classList.add('invalid');
-  });
-}
-
-function limpiarErrores() {
-  document.querySelectorAll('.field-error').forEach((el) => (el.textContent = ''));
-  document.querySelectorAll('.invalid').forEach((el) => el.classList.remove('invalid'));
-}
-
-// ============================================================
-// INICIALIZACIÓN
-// ============================================================
-
-function inicializar() {
-  renderizarProductos();
-  inicializarEventos();
-  console.log('✅ CatálogoTech inicializado correctamente');
-  console.log(`📦 ${estado.productos.length} productos cargados`);
-}
-
-// Ejecutar cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', inicializar);
 ```
-
-**Resultado Esperado:** La aplicación muestra el catálogo de 6 productos con funcionalidad de búsqueda, filtros, carrito y formulario operativos.
-
-**Verificación:** En el navegador, verifica que: (1) los 6 productos se muestran en el grid, (2) el filtro "Electrónica" muestra solo 2 productos, (3) agregar un producto al carrito actualiza el contador del header, (4) el formulario valida campos vacíos.
 
 ---
 
-### Paso 5 — Web Component Nativo: `<product-card>`
-
-**Objetivo:** Refactorizar la tarjeta de producto hacia un Web Component nativo con Shadow DOM y ciclo de vida completo.
+#### Paso 2.2 – Crear el Web Component Nativo `status-badge`
 
 **Instrucciones:**
 
-1. Crea `src/components/product-card.js`:
+1. Crear `src/components/native/status-badge.js`:
 
 ```javascript
-// src/components/product-card.js
+// src/components/native/status-badge.js
+// Web Component nativo usando la API del navegador
+// Demuestra: customElements, Shadow DOM, HTML Template, ciclo de vida completo
 
-/**
- * Web Component nativo para tarjeta de producto.
- * Demuestra el ciclo de vida completo de los Custom Elements.
- */
-class ProductCard extends HTMLElement {
-  // Define qué atributos observar para attributeChangedCallback
+const template = document.createElement('template');
+template.innerHTML = `
+  <style>
+    :host {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: all 150ms ease;
+    }
+
+    .badge--active      { background: #dcfce7; color: #16a34a; }
+    .badge--planning    { background: #dbeafe; color: #1d4ed8; }
+    .badge--completed   { background: #f3f4f6; color: #6b7280; }
+    .badge--blocked     { background: #fee2e2; color: #dc2626; }
+    .badge--in-progress { background: #fef3c7; color: #d97706; }
+    .badge--pending     { background: #ede9fe; color: #7c3aed; }
+    .badge--critical    { background: #fee2e2; color: #dc2626; }
+    .badge--high        { background: #fef3c7; color: #d97706; }
+    .badge--medium      { background: #dbeafe; color: #1d4ed8; }
+    .badge--low         { background: #f3f4f6; color: #6b7280; }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+  </style>
+  <span class="badge" part="badge" role="status">
+    <span class="dot" aria-hidden="true"></span>
+    <span class="label"></span>
+  </span>
+`;
+
+const STATUS_LABELS = {
+  active: 'Activo',
+  planning: 'Planificación',
+  completed: 'Completado',
+  blocked: 'Bloqueado',
+  'in-progress': 'En Progreso',
+  pending: 'Pendiente',
+  critical: 'Crítico',
+  high: 'Alto',
+  medium: 'Medio',
+  low: 'Bajo',
+};
+
+class StatusBadge extends HTMLElement {
+  // Atributos observados – cuando cambian, se llama attributeChangedCallback
   static get observedAttributes() {
-    return ['product-id', 'nombre', 'categoria', 'precio', 'descripcion', 'stock'];
+    return ['status', 'label'];
   }
 
   constructor() {
     super();
-    // Crear Shadow DOM en modo 'open' para permitir acceso externo
-    this._shadowRoot = this.attachShadow({ mode: 'open' });
-    this._carrito = 0;
+    // Adjuntar Shadow DOM en modo abierto para encapsulación
+    this._shadow = this.attachShadow({ mode: 'open' });
+    this._shadow.appendChild(template.content.cloneNode(true));
   }
 
-  // ── CICLO DE VIDA ──────────────────────────────────────────
-
-  /**
-   * Se ejecuta cuando el componente se inserta en el DOM.
-   * Equivalente a componentDidMount en React.
-   */
+  // Ciclo de vida: el componente se añade al DOM
   connectedCallback() {
-    console.log(`[ProductCard] Conectado al DOM: ${this.getAttribute('nombre')}`);
+    console.log('[StatusBadge] Conectado al DOM');
     this._render();
-    this._attachEventListeners();
   }
 
-  /**
-   * Se ejecuta cuando el componente se elimina del DOM.
-   * Ideal para limpiar event listeners y timers.
-   */
+  // Ciclo de vida: el componente se elimina del DOM
   disconnectedCallback() {
-    console.log(`[ProductCard] Desconectado del DOM: ${this.getAttribute('nombre')}`);
-    // Limpiar event listeners internos (los del Shadow DOM se limpian automáticamente)
+    console.log('[StatusBadge] Desconectado del DOM');
   }
 
-  /**
-   * Se ejecuta cuando un atributo observado cambia.
-   * @param {string} nombre - Nombre del atributo
-   * @param {string|null} valorAnterior
-   * @param {string|null} valorNuevo
-   */
-  attributeChangedCallback(nombre, valorAnterior, valorNuevo) {
-    if (valorAnterior !== valorNuevo && this._shadowRoot.innerHTML !== '') {
-      console.log(`[ProductCard] Atributo "${nombre}" cambió: ${valorAnterior} → ${valorNuevo}`);
+  // Ciclo de vida: un atributo observado cambió
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue !== newValue) {
+      console.log(`[StatusBadge] Atributo '${name}' cambió: ${oldValue} → ${newValue}`);
       this._render();
-      this._attachEventListeners();
     }
   }
 
-  // ── PROPIEDADES COMPUTADAS ─────────────────────────────────
-
-  get productoId() { return this.getAttribute('product-id'); }
-  get nombre()     { return this.getAttribute('nombre') ?? 'Sin nombre'; }
-  get categoria()  { return this.getAttribute('categoria') ?? ''; }
-  get precio()     { return parseFloat(this.getAttribute('precio')) || 0; }
-  get descripcion(){ return this.getAttribute('descripcion') ?? ''; }
-  get stock()      { return parseInt(this.getAttribute('stock')) || 0; }
-
-  get precioFormateado() {
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(this.precio);
+  // Ciclo de vida: el componente se mueve a otro documento
+  adoptedCallback() {
+    console.log('[StatusBadge] Adoptado por nuevo documento');
   }
 
-  get etiquetaCategoria() {
-    const etiquetas = {
-      electronica: 'Electrónica',
-      software: 'Software',
-      perifericos: 'Periféricos',
-      servicios: 'Servicios',
-    };
-    return etiquetas[this.categoria] ?? this.categoria;
-  }
+  // Getters/Setters para acceso programático
+  get status() { return this.getAttribute('status') || 'pending'; }
+  set status(val) { this.setAttribute('status', val); }
 
-  get esStockBajo() { return this.stock > 0 && this.stock <= 5; }
+  get label() { return this.getAttribute('label'); }
+  set label(val) { this.setAttribute('label', val); }
 
-  // ── RENDERIZADO ────────────────────────────────────────────
-
+  // Método privado de renderizado
   _render() {
-    this._shadowRoot.innerHTML = `
-      <style>
-        :host {
-          display: block;
-        }
+    const badge = this._shadow.querySelector('.badge');
+    const labelEl = this._shadow.querySelector('.label');
+    const status = this.status;
 
-        :host(:hover) .card {
-          box-shadow: 0 20px 25px rgba(0, 0, 0, 0.12);
-          transform: translateY(-4px);
-          border-color: #2563eb;
-        }
+    // Limpiar clases anteriores
+    badge.className = 'badge';
+    badge.classList.add(`badge--${status}`);
 
-        .card {
-          background-color: #ffffff;
-          border: 1px solid #e2e8f0;
-          border-radius: 1rem;
-          padding: 1.5rem;
-          display: flex;
-          flex-direction: column;
-          gap: 0.75rem;
-          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-          transition: all 250ms ease;
-          cursor: pointer;
-          position: relative;
-          overflow: hidden;
-        }
+    // Actualizar texto
+    labelEl.textContent = this.label || STATUS_LABELS[status] || status;
 
-        .card::before {
-          content: '';
-          position: absolute;
-          top: 0; left: 0; right: 0;
-          height: 4px;
-          background: linear-gradient(90deg, #2563eb, #7c3aed);
-          opacity: 0;
-          transition: opacity 250ms ease;
-        }
+    // Accesibilidad: actualizar aria-label
+    badge.setAttribute('aria-label', `Estado: ${labelEl.textContent}`);
+  }
+}
 
-        :host(:hover) .card::before { opacity: 1; }
+// Registrar el custom element
+customElements.define('status-badge', StatusBadge);
 
-        .badge {
-          display: inline-flex;
-          align-items: center;
-          padding: 0.25rem 0.5rem;
-          border-radius: 9999px;
-          font-size: 0.75rem;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-          background-color: #dbeafe;
-          color: #2563eb;
-          width: fit-content;
-        }
+export { StatusBadge };
+```
 
-        .nombre {
-          font-size: 1.125rem;
-          font-weight: 600;
-          color: #1e293b;
-          margin: 0;
-        }
+2. Actualizar `src/main.js` para importar el componente nativo:
 
-        .descripcion {
-          font-size: 0.875rem;
-          color: #64748b;
-          line-height: 1.5;
-          flex: 1;
-        }
+```javascript
+// src/main.js
+import './components/native/status-badge.js';
+console.log('TaskDash: componentes nativos cargados');
+```
 
-        .footer {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding-top: 0.75rem;
-          border-top: 1px solid #e2e8f0;
-        }
+3. Añadir una prueba visual temporal en `index.html` (dentro del `<main>`, antes de `<app-dashboard>`):
 
-        .precio {
-          font-size: 1.25rem;
-          font-weight: 700;
-          color: #2563eb;
-        }
+```html
+<!-- Prueba temporal de Web Component nativo – remover en Fase 7 -->
+<section id="native-test" style="padding: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+  <status-badge status="active"></status-badge>
+  <status-badge status="planning"></status-badge>
+  <status-badge status="completed"></status-badge>
+  <status-badge status="blocked"></status-badge>
+  <status-badge status="in-progress"></status-badge>
+  <status-badge status="critical" label="Urgente"></status-badge>
+</section>
+```
 
-        .stock {
-          font-size: 0.75rem;
-          color: #64748b;
-        }
+**Resultado esperado:** Al recargar el navegador, deben verse 6 badges de colores diferentes con los estados correspondientes. Abrir la consola del navegador (F12) para ver los mensajes del ciclo de vida.
 
-        .stock.bajo { color: #d97706; font-weight: 600; }
+**Verificación:** En la consola del navegador debe aparecer `[StatusBadge] Conectado al DOM` 6 veces.
 
-        .acciones {
-          display: flex;
-          gap: 0.5rem;
-          margin-top: 0.75rem;
-        }
+---
 
-        .btn {
-          flex: 1;
-          padding: 0.375rem 0.5rem;
-          border: none;
-          border-radius: 0.375rem;
-          font-size: 0.75rem;
-          font-weight: 500;
-          cursor: pointer;
-          transition: all 150ms ease;
-        }
+### Fase 3: Introducción a Lit (35 min)
 
-        .btn-primary {
-          background-color: #2563eb;
-          color: white;
-        }
+**Objetivo:** Configurar LitElement, crear el primer componente Lit y comparar con la implementación nativa.
 
-        .btn-primary:hover { background-color: #1d4ed8; }
+#### Paso 3.1 – Crear el Componente `theme-toggle` con Lit
 
-        .btn-secondary {
-          background-color: #f1f5f9;
-          color: #1e293b;
-          border: 1px solid #e2e8f0;
-          flex: 0 0 auto;
-          padding: 0.375rem 0.75rem;
-        }
+**Instrucciones:**
 
-        .btn-secondary:hover { background-color: #e2e8f0; }
-      </style>
+1. Crear `src/components/lit/theme-toggle.js`:
+
+```javascript
+// src/components/lit/theme-toggle.js
+// Primer componente Lit – comparar con StatusBadge nativo
+import { LitElement, html, css } from 'lit';
+
+class ThemeToggle extends LitElement {
+  // Estilos encapsulados con css`` tagged template literal
+  static styles = css`
+    :host {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.8rem;
+      border: 1px solid var(--color-border, #e2e8f0);
+      border-radius: 9999px;
+      background: var(--color-surface, #fff);
+      color: var(--color-text-primary, #0f172a);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 150ms ease;
+    }
+
+    button:hover {
+      background: var(--color-surface-raised, #f1f5f9);
+      transform: scale(1.02);
+    }
+
+    button:focus-visible {
+      outline: 2px solid var(--color-primary, #2563eb);
+      outline-offset: 2px;
+    }
+
+    .icon { font-size: 1rem; }
+  `;
+
+  // Propiedades reactivas con @property
+  static properties = {
+    theme: { type: String, reflect: true },
+  };
+
+  constructor() {
+    super();
+    // Inicializar con el tema guardado o el del sistema
+    const saved = localStorage.getItem('taskdash-theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    this.theme = saved || (prefersDark ? 'dark' : 'light');
+  }
+
+  // connectedCallback equivalente – se llama cuando Lit monta el componente
+  connectedCallback() {
+    super.connectedCallback(); // ¡Siempre llamar a super!
+    this._applyTheme();
+  }
+
+  _applyTheme() {
+    document.documentElement.setAttribute('data-theme', this.theme);
+    localStorage.setItem('taskdash-theme', this.theme);
+  }
+
+  _toggleTheme() {
+    this.theme = this.theme === 'light' ? 'dark' : 'light';
+    this._applyTheme();
+    // Emitir evento para comunicar el cambio
+    this.dispatchEvent(new CustomEvent('theme-changed', {
+      detail: { theme: this.theme },
+      bubbles: true,
+      composed: true, // Atraviesa el Shadow DOM
+    }));
+  }
+
+  // Template con html`` tagged template literal
+  render() {
+    const isDark = this.theme === 'dark';
+    return html`
+      <button
+        @click=${this._toggleTheme}
+        aria-label="${isDark ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'}"
+        aria-pressed="${isDark}"
+        title="${isDark ? 'Activar tema claro' : 'Activar tema oscuro'}"
+      >
+        <span class="icon" aria-hidden="true">${isDark ? '☀️' : '🌙'}</span>
+        <span>${isDark ? 'Claro' : 'Oscuro'}</span>
+      </button>
+    `;
+  }
+}
+
+customElements.define('theme-toggle', ThemeToggle);
+export { ThemeToggle };
+```
+
+2. Actualizar `src/main.js`:
+
+```javascript
+// src/main.js
+import './components/native/status-badge.js';
+import './components/lit/theme-toggle.js';
+
+// Montar theme-toggle en el header
+const container = document.getElementById('theme-toggle-container');
+if (container) {
+  const toggle = document.createElement('theme-toggle');
+  container.appendChild(toggle);
+}
+
+console.log('TaskDash: todos los componentes cargados');
+```
+
+**Resultado esperado:** En el header debe aparecer el botón de cambio de tema. Al hacer clic, el fondo de la página cambia entre claro y oscuro gracias a las variables CSS definidas en Fase 1.
+
+---
+
+### Fase 4: Propiedades Reactivas y Templates (40 min)
+
+**Objetivo:** Implementar los componentes principales del dashboard con propiedades reactivas y directivas Lit avanzadas.
+
+#### Paso 4.1 – Crear el Componente `project-card`
+
+**Instrucciones:**
+
+1. Crear `src/components/lit/project-card.js`:
+
+```javascript
+// src/components/lit/project-card.js
+import { LitElement, html, css } from 'lit';
+import { classMap } from 'lit/directives/class-map.js';
+import { when } from 'lit/directives/when.js';
+import '../native/status-badge.js';
+
+class ProjectCard extends LitElement {
+  static styles = css`
+    :host { display: block; }
+
+    .card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg, 0.75rem);
+      padding: var(--space-lg, 1.5rem);
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow var(--transition-base, 250ms ease),
+                  transform var(--transition-base, 250ms ease);
+      cursor: pointer;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .card--critical { border-left: 4px solid #dc2626; }
+    .card--high     { border-left: 4px solid #d97706; }
+    .card--medium   { border-left: 4px solid #2563eb; }
+    .card--low      { border-left: 4px solid #6b7280; }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--space-md, 1rem);
+      gap: var(--space-sm, 0.5rem);
+    }
+
+    .card-title {
+      font-size: var(--font-size-lg, 1.125rem);
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin: 0;
+    }
+
+    .card-description {
+      font-size: var(--font-size-sm, 0.875rem);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--space-md, 1rem);
+      line-height: 1.5;
+    }
+
+    .progress-container { margin-bottom: var(--space-md, 1rem); }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: var(--font-size-sm, 0.875rem);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--space-xs, 0.25rem);
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: var(--color-surface-raised, #f1f5f9);
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 9999px;
+      background: var(--color-primary, #2563eb);
+      transition: width var(--transition-slow, 400ms ease);
+    }
+
+    .progress-fill--completed { background: #16a34a; }
+    .progress-fill--blocked   { background: #dc2626; }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: var(--font-size-sm, 0.875rem);
+      color: var(--color-text-muted);
+      border-top: 1px solid var(--color-border);
+      padding-top: var(--space-sm, 0.5rem);
+      margin-top: var(--space-sm, 0.5rem);
+    }
+
+    .team-avatars { display: flex; }
+
+    .avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--color-primary, #2563eb);
+      color: white;
+      font-size: 0.625rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--color-surface);
+      margin-left: -4px;
+    }
+
+    .avatar:first-child { margin-left: 0; }
+
+    .due-date {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .overdue { color: #dc2626; font-weight: 600; }
+  `;
+
+  static properties = {
+    project: { type: Object },
+    selected: { type: Boolean, reflect: true },
+  };
+
+  constructor() {
+    super();
+    this.project = null;
+    this.selected = false;
+  }
+
+  _handleClick() {
+    this.dispatchEvent(new CustomEvent('project-selected', {
+      detail: { project: this.project },
+      bubbles: true,
+      composed: true,
+    }));
+  }
+
+  _isOverdue(dateStr) {
+    return new Date(dateStr) < new Date() && this.project?.status !== 'completed';
+  }
+
+  _getInitials(name) {
+    return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+  }
+
+  render() {
+    if (!this.project) return html`<div class="card">Cargando...</div>`;
+
+    const { name, description, status, progress, priority, dueDate, team, taskCount } = this.project;
+    const overdue = this._isOverdue(dueDate);
+
+    const cardClasses = classMap({
+      card: true,
+      [`card--${priority}`]: true,
+    });
+
+    const fillClasses = classMap({
+      'progress-fill': true,
+      'progress-fill--completed': status === 'completed',
+      'progress-fill--blocked': taskCount.blocked > 0,
+    });
+
+    return html`
+      <article
+        class=${cardClasses}
+        @click=${this._handleClick}
+        role="button"
+        tabindex="0"
+        aria-label="Proyecto: ${name}, ${progress}% completado"
+        @keydown=${(e) => e.key === 'Enter' && this._handleClick()}
+      >
+        <header class="card-header">
+          <h3 class="card-title">${name}</h3>
+          <status-badge status=${status}></status-badge>
+        </header>
+
+        <p class="card-description">${description}</p>
+
+        <div class="progress-container">
+          <div class="progress-label">
+            <span>Progreso</span>
+            <span>${progress}%</span>
+          </div>
+          <div class="progress-bar" role="progressbar"
+               aria-valuenow=${progress} aria-valuemin="0" aria-valuemax="100">
+            <div class=${fillClasses} style="width: ${progress}%"></div>
+          </div>
+        </div>
+
+        <footer class="card-footer">
+          <div class="team-avatars" aria-label="Equipo: ${team.join(', ')}">
+            ${team.slice(0, 4).map(member => html`
+              <div class="avatar" title="${member}">${this._getInitials(member)}</div>
+            `)}
+            ${when(team.length > 4, () => html`
+              <div class="avatar">+${team.length - 4}</div>
+            `)}
+          </div>
+          <div class="due-date ${overdue ? 'overdue' : ''}"
+               aria-label="${overdue ? 'Vencido' : 'Vence'}: ${dueDate}">
+            <span aria-hidden="true">${overdue ? '⚠️' : '📅'}</span>
+            <time datetime=${dueDate}>${dueDate}</time>
+          </div>
+        </footer>
+      </article>
+    `;
+  }
+}
+
+customElements.define('project-card', ProjectCard);
+export { ProjectCard };
+```
+
+---
+
+#### Paso 4.2 – Crear el Componente `task-list`
+
+**Instrucciones:**
+
+1. Crear `src/components/lit/task-list.js`:
+
+```javascript
+// src/components/lit/task-list.js
+import { LitElement, html, css } from 'lit';
+import { repeat } from 'lit/directives/repeat.js';
+import { classMap } from 'lit/directives/class-map.js';
+import { when } from 'lit/directives/when.js';
+import '../native/status-badge.js';
+
+class TaskList extends LitElement {
+  static styles = css`
+    :host { display: block; }
+
+    .task-list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-md, 1rem);
+    }
+
+    h2 {
+      font-size: var(--font-size-xl, 1.25rem);
+      font-weight: 600;
+      color: var(--color-text-primary);
+    }
+
+    .filter-group { display: flex; gap: var(--space-xs, 0.25rem); }
+
+    .filter-btn {
+      padding: 0.3rem 0.7rem;
+      border: 1px solid var(--color-border);
+      border-radius: 9999px;
+      background: transparent;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 150ms ease;
+      color: var(--color-text-secondary);
+    }
+
+    .filter-btn--active,
+    .filter-btn:hover {
+      background: var(--color-primary, #2563eb);
+      color: white;
+      border-color: var(--color-primary, #2563eb);
+    }
+
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md, 1rem);
+      padding: var(--space-md, 1rem);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md, 0.5rem);
+      margin-bottom: var(--space-sm, 0.5rem);
+      background: var(--color-surface);
+      transition: all 150ms ease;
+      animation: slideIn 200ms ease;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-10px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .task-item:hover { box-shadow: var(--shadow-sm); }
+    .task-item--completed { opacity: 0.6; }
+
+    .task-title {
+      flex: 1;
+      font-weight: 500;
+      color: var(--color-text-primary);
+    }
+
+    .task-title--completed { text-decoration: line-through; }
+
+    .task-assignee {
+      font-size: var(--font-size-sm, 0.875rem);
+      color: var(--color-text-muted);
+    }
+
+    .task-due {
+      font-size: var(--font-size-sm, 0.875rem);
+      color: var(--color-text-muted);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: var(--space-2xl, 3rem);
+      color: var(--color-text-muted);
+    }
+
+    .complete-btn {
+      padding: 0.2rem 0.5rem;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm, 0.25rem);
+      background: transparent;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: all 150ms ease;
+    }
+
+    .complete-btn:hover {
+      background: #dcfce7;
+      border-color: #16a34a;
+      color: #16a34a;
+    }
+  `;
+
+  static properties = {
+    tasks: { type: Array },
+    filter: { type: String, state: true },
+    projectId: { type: String },
+  };
+
+  constructor() {
+    super();
+    this.tasks = [];
+    this.filter = 'all';
+    this.projectId = null;
+  }
+
+  get filteredTasks() {
+    const projectTasks = this.projectId
+      ? this.tasks.filter(t => t.projectId === this.projectId)
+      : this.tasks;
+
+    if (this.filter === 'all') return projectTasks;
+    return projectTasks.filter(t => t.status === this.filter);
+  }
+
+  _setFilter(filter) { this.filter = filter; }
+
+  _completeTask(task) {
+    this.dispatchEvent(new CustomEvent('task-completed', {
+      detail: { taskId: task.id, task },
+      bubbles: true,
+      composed: true,
+    }));
+  }
+
+  render() {
+    const filters = ['all', 'pending', 'in-progress', 'completed', 'blocked'];
+    const filtered = this.filteredTasks;
+
+    return html`
+      <section aria-labelledby="task-list-title">
+        <div class="task-list-header">
+          <h2 id="task-list-title">
+            Tareas
+            <span aria-live="polite">(${filtered.length})</span>
+          </h2>
+          <div class="filter-group" role="group" aria-label="Filtrar tareas por estado">
+            ${filters.map(f => html`
+              <button
+                class="filter-btn ${this.filter === f ? 'filter-btn--active' : ''}"
+                @click=${() => this._setFilter(f)}
+                aria-pressed=${this.filter === f}
+              >
+                ${f === 'all' ? 'Todas' : f}
+              </button>
+            `)}
+          </div>
+        </div>
+
+        ${when(
+          filtered.length === 0,
+          () => html`
+            <div class="empty-state" role="status">
+              <p>No hay tareas para mostrar</p>
+            </div>
+          `,
+          () => html`
+            <ul role="list" style="list-style: none; padding: 0;">
+              ${repeat(
+                filtered,
+                (task) => task.id,
+                (task) => html`
+                  <li>
+                    <article
+                      class=${classMap({
+                        'task-item': true,
+                        'task-item--completed': task.status === 'completed',
+                      })}
+                    >
+                      <status-badge status=${task.status}></status-badge>
+                      <span class=${classMap({
+                        'task-title': true,
+                        'task-title--completed': task.status === 'completed',
+                      })}>
+                        ${task.title}
+                      </span>
+                      <span class="task-assignee">👤 ${task.assignee}</span>
+                      <time class="task-due" datetime=${task.dueDate}>
+                        📅 ${task.dueDate}
+                      </time>
+                      ${when(
+                        task.status !== 'completed',
+                        () => html`
+                          <button
+                            class="complete-btn"
+                            @click=${() => this._completeTask(task)}
+                            aria-label="Marcar '${task.title}' como completada"
+                          >
+                            ✔ Completar
+                          </button>
+                        `
+                      )}
+                    </article>
+                  </li>
+                `
+              )}
+            </ul>
+          `
+        )}
+      </section>
+    `;
+  }
+}
+
+customElements.define('task-list', TaskList);
+export { TaskList };
+```
+
+---
+
+### Fase 5: Comunicación entre Componentes (35 min)
+
+**Objetivo:** Implementar el servicio de estado, el panel de notificaciones y el componente orquestador `app-dashboard`.
+
+#### Paso 5.1 – Crear el Servicio de Estado
+
+**Instrucciones:**
+
+1. Crear el directorio `src/services/` y el archivo `state-service.js`:
+
+```javascript
+// src/services/state-service.js
+// Servicio de estado simple (patrón Observable) para comunicación entre componentes hermanos
+
+class StateService extends EventTarget {
+  constructor() {
+    super();
+    this._state = {
+      selectedProjectId: null,
+      tasks: [],
+      projects: [],
+      notifications: [],
+      theme: 'light',
+    };
+  }
+
+  // Getter del estado actual (inmutable)
+  get state() {
+    return Object.freeze({ ...this._state });
+  }
+
+  // Actualizar estado y notificar suscriptores
+  setState(updates) {
+    const prevState = { ...this._state };
+    this._state = { ...this._state, ...updates };
+
+    this.dispatchEvent(new CustomEvent('state-changed', {
+      detail: {
+        prev: prevState,
+        next: this._state,
+        changes: Object.keys(updates),
+      },
+    }));
+  }
+
+  // Suscribirse a cambios de estado
+  subscribe(callback) {
+    this.addEventListener('state-changed', callback);
+    return () => this.removeEventListener('state-changed', callback);
+  }
+
+  // Acciones específicas del dominio
+  selectProject(projectId) {
+    this.setState({ selectedProjectId: projectId });
+  }
+
+  completeTask(taskId) {
+    const tasks = this._state.tasks.map(t =>
+      t.id === taskId ? { ...t, status: 'completed' } : t
+    );
+    this.setState({ tasks });
+    this.addNotification('success', `Tarea completada exitosamente`);
+  }
+
+  addNotification(type, message) {
+    const notification = {
+      id: `notif-${Date.now()}`,
+      type,
+      message,
+      timestamp: new Date(),
+      read: false,
+    };
+    this.setState({
+      notifications: [notification, ...this._state.notifications].slice(0, 10),
+    });
+  }
+
+  markNotificationRead(notifId) {
+    const notifications = this._state.notifications.map(n =>
+      n.id === notifId ? { ...n, read: true } : n
+    );
+    this.setState({ notifications });
+  }
+}
+
+// Singleton – una sola instancia compartida por toda la app
+export const stateService = new StateService();
+```
+
+---
+
+#### Paso 5.2 – Crear el Componente `notification-panel`
+
+**Instrucciones:**
+
+1. Crear `src/components/lit/notification-panel.js`:
+
+```javascript
+// src/components/lit/notification-panel.js
+import { LitElement, html, css } from 'lit';
+import { repeat } from 'lit/directives/repeat.js';
+import { classMap } from 'lit/directives/class-map.js';
+import { stateService } from '../../services/state-service.js';
+
+class NotificationPanel extends LitElement {
+  static styles = css`
+    :host { display: block; }
+
+    .notification {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md, 0.5rem);
+      box-shadow: var(--shadow-md);
+      min-width: 300px;
+      max-width: 380px;
+      animation: slideInRight 250ms ease;
+      transition: opacity var(--transition-base, 250ms ease);
+    }
+
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .notification--unread  { border-left: 3px solid var(--color-primary, #2563eb); }
+    .notification--success { border-left-color: #16a34a; }
+    .notification--warning { border-left-color: #d97706; }
+    .notification--error   { border-left-color: #dc2626; }
+    .notification--info    { border-left-color: #0891b2; }
+
+    .notif-icon    { font-size: 1.2rem; flex-shrink: 0; }
+    .notif-content { flex: 1; }
+
+    .notif-message {
+      font-size: 0.875rem;
+      color: var(--color-text-primary);
+      line-height: 1.4;
+    }
+
+    .notif-time {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      margin-top: 0.25rem;
+    }
+
+    .dismiss-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--color-text-muted);
+      padding: 0.2rem;
+      border-radius: var(--radius-sm, 0.25rem);
+      line-height: 1;
+      transition: color 150ms ease;
+    }
+
+    .dismiss-btn:hover { color: var(--color-text-primary); }
+  `;
+
+  static properties = {
+    _notifications: { type: Array, state: true },
+  };
+
+  constructor() {
+    super();
+    this._notifications = [];
+    this._unsubscribe = null;
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this._unsubscribe = stateService.subscribe((event) => {
+      if (event.detail.changes.includes('notifications')) {
+        this._notifications = stateService.state.notifications.filter(n => !n.read);
+      }
+    });
+    this._notifications = stateService.state.notifications.filter(n => !n.read);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    if (this._unsubscribe) this._unsubscribe();
+  }
+
+  _dismiss(notifId) {
+    stateService.markNotificationRead(notifId);
+  }
+
+  _getIcon(type) {
+    const icons = { success: '✅', warning: '⚠️', error: '❌', info: 'ℹ️' };
+    return icons[type] || 'ℹ️';
+  }
+
+  _formatTime(timestamp) {
+    const diff = Date.now() - new Date(timestamp).getTime();
+    if (diff < 60000) return 'Ahora mismo';
+    if (diff < 3600000) return `Hace ${Math.floor(diff / 60000)} min`;
+    return `Hace ${Math.floor(diff / 3600000)} h`;
+  }
+
+  render() {
+    return html`
+      <div role="log" aria-label="Notificaciones">
+        ${repeat(
+          this._notifications,
+          (n) => n.id,
+          (n) => html`
+            <div
+              class=${classMap({
+                notification: true,
+                'notification--unread': !n.read,
+                [`notification--${n.type}`]: true,
+              })}
+              role="alert"
+            >
+              <span class="notif-icon" aria-hidden="true">${this._getIcon(n.type)}</span>
+              <div class="notif-content">
+                <p class="notif-message">${n.message}</p>
+                <time class="notif-time" datetime=${n.timestamp.toISOString()}>
+                  ${this._formatTime(n.timestamp)}
+                </time>
+              </div>
+              <button
+                class="dismiss-btn"
+                @click=${() => this._dismiss(n.id)}
+                aria-label="Cerrar notificación"
+              >✕</button>
+            </div>
+          `
+        )}
+      </div>
+    `;
+  }
+}
+
+customElements.define('notification-panel', NotificationPanel);
+export { NotificationPanel };
+```
+
+---
+
+#### Paso 5.3 – Crear el Componente Orquestador `app-dashboard`
+
+**Instrucciones:**
+
+1. Crear `src/components/lit/app-dashboard.js`:
+
+```javascript
+// src/components/lit/app-dashboard.js
+// Componente raíz que orquesta toda la aplicación
+import { LitElement, html, css } from 'lit';
+import { repeat } from 'lit/directives/repeat.js';
+import { when } from 'lit/directives/when.js';
+import { PROJECTS, TASKS, NOTIFICATIONS, METRICS } from '../../data/mock-data.js';
+import { stateService } from '../../services/state-service.js';
+import './project-card.js';
+import './task-list.js';
+
+class AppDashboard extends LitElement {
+  static styles = css`
+    :host { display: block; }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: var(--space-md, 1rem);
+      margin-bottom: var(--space-xl, 2rem);
+    }
+
+    .metric-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg, 0.75rem);
+      padding: var(--space-lg, 1.5rem);
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .metric-value {
+      font-size: var(--font-size-3xl, 1.875rem);
+      font-weight: 700;
+      color: var(--color-primary, #2563eb);
+      display: block;
+    }
+
+    .metric-label {
+      font-size: var(--font-size-sm, 0.875rem);
+      color: var(--color-text-secondary);
+      margin-top: var(--space-xs, 0.25rem);
+    }
+
+    .section-title {
+      font-size: var(--font-size-xl, 1.25rem);
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin-bottom: var(--space-md, 1rem);
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm, 0.5rem);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: var(--space-md, 1rem);
+      margin-bottom: var(--space-xl, 2rem);
+    }
+
+    .dashboard-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-xl, 2rem);
+    }
+
+    @media (min-width: 1024px) {
+      .dashboard-layout { grid-template-columns: 1fr 380px; }
+    }
+
+    .filter-input {
+      width: 100%;
+      max-width: 300px;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md, 0.5rem);
+      background: var(--color-surface);
+      color: var(--color-text-primary);
+      font-size: var(--font-size-sm, 0.875rem);
+      margin-bottom: var(--space-md, 1rem);
+    }
+  `;
+
+  static properties = {
+    _selectedProjectId: { type: String, state: true },
+    _projectFilter: { type: String, state: true },
+    _tasks: { type: Array, state: true },
+  };
+
+  constructor() {
+    super();
+    this._selectedProjectId = null;
+    this._projectFilter = '';
+    this._tasks = [...TASKS];
+    this._unsubscribe = null;
+
+    stateService.setState({
+      projects: PROJECTS,
+      tasks: TASKS,
+      notifications: NOTIFICATIONS,
+    });
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this._unsubscribe = stateService.subscribe((event) => {
+      const { changes, next } = event.detail;
+      if (changes.includes('selectedProjectId')) {
+        this._selectedProjectId = next.selectedProjectId;
+      }
+      if (changes.includes('tasks')) {
+        this._tasks = next.tasks;
+      }
+    });
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    if (this._unsubscribe) this._unsubscribe();
+  }
+
+  _handleProjectSelected(event) {
+    stateService.selectProject(event.detail.project.id);
+  }
+
+  _handleTaskCompleted(event) {
+    stateService.completeTask(event.detail.taskId);
+  }
+
+  get filteredProjects() {
+    if (!this._projectFilter) return PROJECTS;
+    const q = this._projectFilter.toLowerCase();
+    return PROJECTS.filter(p =>
+      p.name.toLowerCase().includes(q) ||
+      p.description.toLowerCase().includes(q)
+    );
+  }
+
+  render() {
+    const selectedProject = this._selectedProjectId
+      ? PROJECTS.find(p => p.id === this._selectedProjectId)
+      : null;
+
+    return html`
+      <!-- Sección de métricas -->
+      <section aria-labelledby="metrics-title">
+        <h2 id="metrics-title" class="section-title">
+          <span aria-hidden="true">📊</span> Resumen Ejecutivo
+        </h2>
+        <div class="metrics-grid">
+          ${Object.entries({
+            'Proyectos Totales': METRICS.totalProjects,
+            'Proyectos Activos': METRICS.activeProjects,
+            'Tareas Totales': METRICS.totalTasks,
+            'Tareas Completadas': METRICS.completedTasks,
+            'Tareas Vencidas': METRICS.overdueTasks,
+            'Miembros del Equipo': METRICS.teamMembers,
+          }).map(([label, value]) => html`
+            <div class="metric-card">
+              <span class="metric-value">${value}</span>
+              <p class="metric-label">${label}</p>
+            </div>
+          `)}
+        </div>
+      </section>
+
+      <div class="dashboard-layout">
+        <div>
+          <!-- Sección de proyectos -->
+          <section aria-labelledby="projects-title">
+            <h2 id="projects-title" class="section-title">
+              <span aria-hidden="true">📁</span> Proyectos
+            </h2>
+            <input
+              type="search"
+              class="filter-input"
+              placeholder="Buscar proyectos..."
+              .value=${this._projectFilter}
+              @input=${(e) => { this._projectFilter = e.target.value; }}
+              aria-label="Filtrar proyectos"
+            />
+            <div class="projects-grid">
+              ${repeat(
+                this.filteredProjects,
+                (p) => p.id,
+                (p) => html`
+                  <project-card
+                    .project=${p}
+                    ?selected=${p.id === this._selectedProjectId}
+                    @project-selected=${this._handleProjectSelected}
+                  ></project-card>
+                `
+              )}
+            </div>
+          </section>
+
+          <!-- Sección de tareas -->
+          <section aria-labelledby="tasks-title">
+            ${when(
+              selectedProject,
+              () => html`
+                <h2 id="tasks-title" class="section-title">
+                  <span aria-hidden="true">✅</span>
+                  Tareas de: ${selectedProject.name}
+                </h2>
+              `,
+              () => html`
+                <h2 id="tasks-title" class="section-title">
+                  <span aria-hidden="true">✅</span> Todas las Tareas
+                </h2>
+              `
+            )}
+            <task-list
+              .tasks=${this._tasks}
+              .projectId=${this._selectedProjectId}
+              @task-completed=${this._handleTaskCompleted}
+            ></task-list>
+          </section>
+        </div>
+      </div>
+    `;
+  }
+}
+
+customElements.define('app-dashboard', AppDashboard);
+export { AppDashboard };
+```
+
+2. Actualizar `src/main.js` con todas las importaciones:
+
+```javascript
+// src/main.js – Punto de entrada final
+import './components/native/status-badge.js';
+import './components/lit/theme-toggle.js';
+import './components/lit/notification-panel.js';
+import './components/lit/app-dashboard.js';
+
+// Montar theme-toggle en el header
+const container = document.getElementById('theme-toggle-container');
+if (container) {
+  const toggle = document.createElement('theme-toggle');
+  container.appendChild(toggle);
+}
+
+console.log('TaskDash: aplicación iniciada correctamente');
+```
+
+3. Eliminar la sección de prueba nativa del `index.html` (el `<section id="native-test">`).
+
+**Resultado esperado:** El dashboard completo debe mostrarse con métricas, tarjetas de proyectos filtrables y lista de tareas. Al hacer clic en una tarjeta de proyecto, la lista de tareas se filtra automáticamente.
+
+---
+
+### Fase 6: Pruebas Unitarias con Vitest (30 min)
+
+**Objetivo:** Escribir y ejecutar pruebas unitarias para 3 componentes Lit validando renderizado, reactividad y emisión de eventos.
+
+#### Paso 6.1 – Pruebas para `project-card`
+
+**Instrucciones:**
+
+1. Crear `src/tests/project-card.test.js`:
+
+```javascript
+// src/tests/project-card.test.js
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+
+import '../components/native/status-badge.js';
+import '../components/lit/project-card.js';
+
+const MOCK_PROJECT = {
+  id: 'test-proj-001',
+  name: 'Proyecto de Prueba',
+  description: 'Descripción del proyecto de prueba',
+  status: 'active',
+  progress: 75,
+  priority: 'high',
+  dueDate: '2025-12-31',
+  team: ['Ana García', 'Carlos López', 'María Rodríguez'],
+  taskCount: { total: 10, completed: 7, pending: 2, blocked: 1 },
+};
+
+describe('ProjectCard Component', () => {
+  let element;
+
+  beforeEach(async () => {
+    element = document.createElement('project-card');
+    document.body.appendChild(element);
+    await element.updateComplete;
+  });
+
+  afterEach(() => {
+    if (element && element.parentNode) {
+      element.parentNode.removeChild(element);
+    }
+  });
+
+  describe('Renderizado inicial', () => {
+    it('debe renderizarse en el DOM sin errores', () => {
+      expect(element).toBeDefined();
+      expect(element.shadowRoot).toBeTruthy();
+    });
+
+    it('debe mostrar "Cargando..." cuando no hay proyecto', async () => {
+      const shadowText = element.shadowRoot.textContent;
+      expect(shadowText).toContain('Cargando');
+    });
+  });
+
+  describe('Propiedades reactivas', () => {
+    it('debe mostrar el nombre del proyecto cuando se asigna .project', async () => {
+      element.project = MOCK_PROJECT;
+      await element.updateComplete;
+
+      const title = element.shadowRoot.querySelector('.card-title');
+      expect(title).toBeTruthy();
+      expect(title.textContent).toBe('Proyecto de Prueba');
+    });
+
+    it('debe mostrar el progreso correcto', async () => {
+      element.project = MOCK_PROJECT;
+      await element.updateComplete;
+
+      const progressFill = element.shadowRoot.querySelector('.progress-fill');
+      expect(progressFill).toBeTruthy();
+      expect(progressFill.style.width).toBe('75%');
+    });
+
+    it('debe aplicar la clase de prioridad correcta', async () => {
+      element.project = MOCK_PROJECT;
+      await element.updateComplete;
+
+      const card = element.shadowRoot.querySelector('.card');
+      expect(card.classList.contains('card--high')).toBe(true);
+    });
+
+    it('debe actualizar el renderizado cuando cambia el proyecto', async () => {
+      element.project = MOCK_PROJECT;
+      await element.updateComplete;
+
+      element.project = { ...MOCK_PROJECT, name: 'Proyecto Actualizado', progress: 90 };
+      await element.updateComplete;
+
+      const title = element.shadowRoot.querySelector('.card-title');
+      expect(title.textContent).toBe('Proyecto Actualizado');
+
+      const progressFill = element.shadowRoot.querySelector('.progress-fill');
+      expect(progressFill.style.width).toBe('90%');
+    });
+  });
+
+  describe('Emisión de eventos', () => {
+    it('debe emitir "project-selected" al hacer clic', async () => {
+      element.project = MOCK_PROJECT;
+      await element.updateComplete;
+
+      const eventPromise = new Promise(resolve => {
+        element.addEventListener('project-selected', resolve);
+      });
+
+      const card = element.shadowRoot.querySelector('.card');
+      card.click();
+
+      const event = await eventPromise;
+      expect(event.type).toBe('project-selected');
+      expect(event.detail.project.id).toBe('test-proj-001');
+      expect(event.detail.project.name).toBe('Proyecto de Prueba');
+    });
+  });
+});
+```
+
+---
+
+#### Paso 6.2 – Pruebas para `task-list`
+
+**Instrucciones:**
+
+1. Crear `src/tests/task-list.test.js`:
+
+```javascript
+// src/tests/task-list.test.js
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import '../components/native/status-badge.js';
+import '../components/lit/task-list.js';
+
+const MOCK_TASKS = [
+  { id: 't1', projectId: 'p1', title: 'Tarea Pendiente',    status: 'pending',     priority: 'high',   assignee: 'Ana',    dueDate: '2024-12-31' },
+  { id: 't2', projectId: 'p1', title: 'Tarea En Progreso',  status: 'in-progress', priority: 'medium', assignee: 'Carlos', dueDate: '2024-12-31' },
+  { id: 't3', projectId: 'p1', title: 'Tarea Completada',   status: 'completed',   priority: 'low',    assignee: 'María',  dueDate: '2024-12-31' },
+  { id: 't4', projectId: 'p2', title: 'Tarea Otro Proyecto',status: 'pending',     priority: 'high',   assignee: 'Pedro',  dueDate: '2024-12-31' },
+];
+
+describe('TaskList Component', () => {
+  let element;
+
+  beforeEach(async () => {
+    element = document.createElement('task-list');
+    document.body.appendChild(element);
+    await element.updateComplete;
+  });
+
+  afterEach(() => {
+    if (element?.parentNode) element.parentNode.removeChild(element);
+  });
+
+  describe('Renderizado inicial', () => {
+    it('debe renderizarse correctamente', () => {
+      expect(element.shadowRoot).toBeTruthy();
+    });
+
+    it('debe mostrar estado vacío cuando no hay tareas', async () => {
+      const text = element.shadowRoot.textContent;
+      expect(text).toContain('No hay tareas');
+    });
+  });
+
+  describe('Filtrado de tareas', () => {
+    it('debe mostrar todas las tareas con filtro "all"', async () => {
+      element.tasks = MOCK_TASKS;
+      await element.updateComplete;
+
+      const items = element.shadowRoot.querySelectorAll('.task-item');
+      expect(items.length).toBe(4);
+    });
+
+    it('debe filtrar tareas por projectId', async () => {
+      element.tasks = MOCK_TASKS;
+      element.projectId = 'p1';
+      await element.updateComplete;
+
+      const items = element.shadowRoot.querySelectorAll('.task-item');
+      expect(items.length).toBe(3);
+    });
+
+    it('debe actualizar la lista al cambiar el filtro de estado', async () => {
+      element.tasks = MOCK_TASKS;
+      await element.updateComplete;
+
+      const filterBtn = [...element.shadowRoot.querySelectorAll('.filter-btn')]
+        .find(btn => btn.textContent.trim() === 'completed');
+      filterBtn.click();
+      await element.updateComplete;
+
+      const items = element.shadowRoot.querySelectorAll('.task-item');
+      expect(items.length).toBe(1);
+    });
+  });
+
+  describe('Emisión de eventos', () => {
+    it('debe emitir "task-completed" al hacer clic en Completar', async () => {
+      element.tasks = MOCK_TASKS;
+      await element.updateComplete;
+
+      const eventPromise = new Promise(resolve => {
+        element.addEventListener('task-completed', resolve);
+      });
+
+      const completeBtn = element.shadowRoot.querySelector('.complete-btn');
+      completeBtn.click();
+
+      const event = await eventPromise;
+      expect(event.type).toBe('task-completed');
+      expect(event.detail.taskId).toBeDefined();
+    });
+  });
+});
+```
+
+---
+
+#### Paso 6.3 – Pruebas para `notification-panel`
+
+**Instrucciones:**
+
+1. Crear `src/tests/notification-panel.test.js`:
+
+```javascript
+// src/tests/notification-panel.test.js
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import '../components/lit/notification-panel.js';
+import { stateService } from '../services/state-service.js';
+
+describe('NotificationPanel Component', () => {
+  let element;
+
+  beforeEach(async () => {
+    // Limpiar estado antes de cada prueba
+    stateService.setState({ notifications: [] });
+    element = document.createElement('notification-panel');
+    document.body.appendChild(element);
+    await element.updateComplete;
+  });
+
+  afterEach(() => {
+    if (element?.parentNode) element.parentNode.removeChild(element);
+  });
+
+  describe('Renderizado inicial', () => {
+    it('debe renderizarse sin errores', () => {
+      expect(element.shadowRoot).toBeTruthy();
+    });
+
+    it('debe mostrar panel vacío sin notificaciones', async () => {
+      const notifications = element.shadowRoot.querySelectorAll('.notification');
+      expect(notifications.length).toBe(0);
+    });
+  });
+
+  describe('Reactividad con el servicio de estado', () => {
+    it('debe mostrar nuevas notificaciones al agregarlas al servicio', async () => {
+      stateService.addNotification('info', 'Mensaje de prueba');
+      await element.updateComplete;
+
+      const notifications = element.shadowRoot.querySelectorAll('.notification');
+      expect(notifications.length).toBe(1);
+    });
+
+    it('debe mostrar el mensaje correcto en la notificación', async () => {
+      stateService.addNotification('success', 'Operación exitosa');
+      await element.updateComplete;
+
+      const message = element.shadowRoot.querySelector('.notif-message');
+      expect(message.textContent).toBe('Operación exitosa');
+    });
+
+    it('debe aplicar la clase de tipo correcta', async () => {
+      stateService.addNotification('warning', 'Advertencia importante');
+      await element.updateComplete;
+
+      const notif = element.shadowRoot.querySelector('.notification');
+      expect(notif.classList.contains('notification--warning')).toBe(true);
+    });
+  });
+
+  describe('Interacción – descartar notificaciones', () => {
+    it('debe ocultar la notificación al hacer clic en dismiss', async () => {
+      stateService.addNotification('info', 'Notificación a descartar');
+      await element.updateComplete;
+
+      const dismissBtn = element.shadowRoot.querySelector('.dismiss-btn');
+      dismissBtn.click();
+      await element.updateComplete;
+
+      const notifications = element.shadowRoot.querySelectorAll('.notification');
+      expect(notifications.length).toBe(0);
+    });
+  });
+});
+```
+
+2. Ejecutar todas las pruebas:
+
+```bash
+npm test
+```
+
+**Resultado esperado:**
+
+```
+✓ src/tests/project-card.test.js (5 tests)
+✓ src/tests/task-list.test.js (5 tests)
+✓ src/tests/notification-panel.test.js (5 tests)
+
+Test Files  3 passed (3)
+Tests       15 passed (15)
+```
+
+---
+
+### Fase 7: Integración Final y Refinamiento (40 min)
+
+**Objetivo:** Limpiar el código, verificar la integración completa de todos los componentes y confirmar el funcionamiento end-to-end del dashboard.
+
+#### Paso 7.1 – Limpieza y Verificación Final
+
+**Instrucciones:**
+
+1. Confirmar que `index.html` **no** contiene la sección `#native-test` de prueba de la Fase 2.
+
+2. Verificar que `src/main.js` importa todos los componentes en el orden correcto:
+
+```javascript
+// src/main.js – Versión final
+import './components/native/status-badge.js';
+import './components/lit/theme-toggle.js';
+import './components/lit/notification-panel.js';
+import './components/lit/app-dashboard.js';
+
+const container = document.getElementById('theme-toggle-container');
+if (container) {
+  const toggle = document.createElement('theme-toggle');
+  container.appendChild(toggle);
+}
+
+console.log('TaskDash: aplicación lista ✓');
+```
+
+3. Ejecutar el servidor de desarrollo y verificar manualmente cada funcionalidad:
+
+```bash
+npm run dev
+```
+
+**Lista de verificación funcional:**
+
+- [ ] El header muestra "TaskDash" con navegación y botón de tema.
+- [ ] El botón de tema alterna entre modo claro y oscuro y persiste al recargar.
+- [ ] La sección "Resumen Ejecutivo" muestra las 6 métricas correctas.
+- [ ] Las 4 tarjetas de proyecto se muestran con colores de prioridad correctos.
+- [ ] El buscador de proyectos filtra en tiempo real.
+- [ ] Al hacer clic en una tarjeta, la lista de tareas se filtra por ese proyecto.
+- [ ] Los filtros de la lista de tareas (Todas, pending, in-progress, etc.) funcionan.
+- [ ] El botón "Completar" actualiza el estado de la tarea y genera una notificación.
+- [ ] La notificación aparece en la esquina inferior derecha y se puede descartar.
+- [ ] El footer es visible al fondo de la página.
+
+#### Paso 7.2 – Ejecutar Suite Completa de Pruebas
+
+```bash
+npm test
+```
+
+**Resultado esperado:** 15 pruebas pasando en 3 archivos.
+
+#### Paso 7.3 – Build de Producción
+
+```bash
+npm run build
+```
+
+**Resultado esperado:**
+
+```
+vite v5.x.x building for production...
+✓ built in Xs
+dist/index.html          x.xx kB
+dist/assets/index-XXX.js  xxx kB
+```
+
+---
+
+## 7. Resumen
+
+### Lo que Lograste
+
+- **Configuraste** un entorno de desarrollo frontend moderno con Node.js, Vite y Vitest, incluyendo soporte para módulos ES, hot-reload y un pipeline de pruebas automatizadas con `happy-dom`.
+- **Creaste** un Web Component nativo (`status-badge`) implementando el ciclo de vida completo del navegador: `connectedCallback`, `disconnectedCallback`, `attributeChangedCallback` y `adoptedCallback`, con Shadow DOM y HTML Templates para encapsulación real.
+- **Migraste** la lógica de componentes a Lit, comparando la verbosidad del API nativa con la declaratividad de `LitElement`, `` html`\`` `` y `` css`\`` ``, y aplicando directivas avanzadas (`repeat`, `when`, `classMap`) para renderizado eficiente.
+- **Implementaste** propiedades reactivas con `static properties` y estado interno con `state: true`, comprobando cómo Lit actualiza el DOM de forma eficiente sin reemplazar el árbol completo.
+- **Estableciste** comunicación bidireccional entre componentes: de padre a hijo mediante propiedades (`.project`, `.tasks`), y de hijo a padre mediante `CustomEvent` con `bubbles: true` y `composed: true` para atravesar el Shadow DOM.
+- **Diseñaste** un servicio de estado centralizado basado en el patrón Observable usando `EventTarget`, permitiendo comunicación entre componentes sin relación jerárquica directa (hermanos).
+- **Escribiste** 15 pruebas unitarias con Vitest y `happy-dom`, validando renderizado inicial, reactividad ante cambios de propiedades, filtrado de datos y emisión correcta de eventos.
+- **Aplicaste** principios de HTML5 semántico y accesibilidad (ARIA roles, `aria-label`, `aria-live`, `role="progressbar"`) en toda la arquitectura de componentes.
+
+### Conceptos Clave Aprendidos
+
+- **Web Components y Shadow DOM:** Los Custom Elements son la base nativa de los componentes en el navegador. El Shadow DOM crea un árbol DOM aislado que encapsula estilos y estructura, evitando colisiones con el CSS global. Los atributos observados con `observedAttributes` y `attributeChangedCallback` permiten reaccionar a cambios externos.
+
+- **LitElement como capa de abstracción:** Lit no es un framework, sino una librería ligera (~5 KB) sobre la API nativa. Elimina el boilerplate del ciclo de vida manual y añade reactividad declarativa: cuando una `@property` o `@state` cambia, Lit programa una actualización asíncrona del DOM usando `requestAnimationFrame`, evitando renders innecesarios.
+
+- **Tagged Template Literals:** `html\`\`` y `css\`\`` son funciones JavaScript ordinarias que reciben arrays de strings y valores interpolados. Lit los usa para construir un árbol de partes actualizables, lo que le permite hacer diff eficiente en lugar de reemplazar todo el innerHTML.
+
+- **Directivas avanzadas de Lit:** `repeat()` usa claves para reutilizar nodos DOM existentes (como React keys), `when()` es una expresión condicional tipada, y `classMap()` sincroniza objetos de condiciones booleanas con clases CSS sin manipulación manual del `classList`.
+
+- **CustomEvent y comunicación entre componentes:** El patrón estándar para comunicación hijo→padre es emitir un `CustomEvent` con `bubbles: true` (sube por el árbol DOM) y `composed: true` (atraviesa los límites del Shadow DOM). El padre escucha con `@event-name` en el template de Lit.
+
+- **Patrón Observable con EventTarget:** `EventTarget` es la clase base de todos los elementos del DOM. Extenderla para crear un servicio de estado permite implementar el patrón pub/sub sin dependencias externas. El método `subscribe()` retorna una función de limpieza para evitar memory leaks en `disconnectedCallback`.
+
+- **Pruebas con happy-dom y Vitest:** `happy-dom` simula el entorno del navegador en Node.js con mejor rendimiento que jsdom. `element.updateComplete` es la Promise de Lit que resuelve cuando el DOM está sincronizado con el estado, y es fundamental esperarla en pruebas antes de hacer assertions sobre el Shadow DOM.
+
+- **CSS Variables como Design Tokens:** Las variables CSS definidas en `:root` actúan como tokens de diseño globales. Los componentes con Shadow DOM pueden consumirlas porque las Custom Properties heredan a través de los límites del Shadow DOM, lo que permite theming consistente sin romper la encapsulación.
+
+### Próximos Pasos
+
+- En el **Capítulo 3** conectarás este dashboard con un backend Spring Boot: implementarás un `ApiService` que reemplace el `mock-data.js` con llamadas reales a endpoints REST, y aprenderás a manejar estados de carga y error en los componentes Lit.
+- En el **Laboratorio 3** integrarás el frontend con el backend mediante fetch y CORS, y desplegarás ambos servicios en contenedores Docker tal como se introduce en el Capítulo 6.
+- Practica los conceptos de este laboratorio extendiendo el dashboard: agrega un componente `project-form` con Lit para crear nuevos proyectos, utilizando `@state` para manejar el estado del formulario y emitiendo un `project-created` `CustomEvent` al guardar.
+- Explora el sistema de reactividad avanzado de Lit estudiando `willUpdate()`, `updated()` y los `PropertyDeclaration` con `hasChanged` para optimizar renders en listas grandes.
+
+### Recursos Adicionales
+
+- **Documentación oficial de Lit:** Guía completa de LitElement, directivas, decoradores y testing – [https://lit.dev/docs/](https://lit.dev/docs/)
+- **MDN – Web Components:** Referencia completa de Custom Elements, Shadow DOM y HTML Templates – [https://developer.mozilla.org/es/docs/Web/API/Web_components](https://developer.mozilla.org/es/docs/Web/API/Web_components)
+- **Vitest – Documentación oficial:** Configuración avanzada, mocking, cobertura y UI mode – [https://vitest.dev/guide/](https://vitest.dev/guide/)
+- **Vite – Guía del usuario:** Features, plugins, optimización de build y variables de entorno – [https://vitejs.dev/guide/](https://vitejs.dev/guide/)
+- **CSS Custom Properties (MDN):** Uso de variables CSS para theming y design tokens – [https://developer.mozilla.org/es/docs/Web/CSS/Using_CSS_custom_properties](https://developer.mozilla.org/es/docs/Web/CSS/Using_CSS_custom_properties)
+- **Web.dev – Accesibilidad con ARIA:** Guía práctica de roles y propiedades ARIA para componentes interactivos – [https://web.dev/learn/accessibility](https://web.dev/learn/accessibility)
+- **Open Web Components:** Guías de mejores prácticas para testing y desarrollo de Web Components – [https://open-wc.org/guides/](https://open-wc.org/guides/)
+
