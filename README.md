@@ -12,7 +12,7 @@ El enfoque del curso es práctico y progresivo, permitiendo que los participante
 
 ## Lista de laboratorios
 
-### Capítulo 1
+### Capítulo 1. Fundamentos de Programación
 
 En este laboratorio aplicarás las características fundamentales del JavaScript moderno (ES6+) para resolver problemas prácticos del mundo empresarial, implementarás una jerarquía de clases orientada a objetos que modela un sistema de empleados, explorarás conceptos equivalentes en Java 17 comparando ambos lenguajes, y configurarás un repositorio Git local conectado a GitHub que servirá como base para todos los laboratorios del curso.
 
@@ -24,7 +24,7 @@ Este laboratorio es el punto de partida del curso y establece las competencias t
 <br/>
 <br/>
 
-### Capítulo 2
+### Capítulo 2. Desarrollo Frontend con Webcomponents
 
 En este laboratorio construirás una **aplicación web de página única (SPA)** que funciona como catálogo interactivo de productos empresariales. Comenzarás desde cero con HTML5 semántico y CSS3 avanzado, añadirás interactividad con JavaScript ES6+, refactorizarás la interfaz hacia Web Components nativos y finalmente migrarás los componentes a **Lit 3.x** con propiedades reactivas y Shadow DOM. Al finalizar, tendrás un proyecto frontend modular, probado con Vitest y listo para integrarse con el backend del Laboratorio 7.
 
@@ -35,7 +35,7 @@ En este laboratorio construirás una **aplicación web de página única (SPA)**
 <br/>
 <br/>
 
-### Capítulo 3
+### Capítulo 3. Desarrollo Middleware & Backend
 
 En este laboratorio construirás el backend empresarial del proyecto integrador del curso: un sistema de gestión de inventario de productos. Partiendo desde cero con Spring Initializr, crearás un proyecto Spring Boot 3.2 correctamente estructurado con Maven, implementarás una API REST completa con arquitectura en capas (Controller → Service → Repository → Model), aplicarás los patrones de diseño Facade y DTO para desacoplar la lógica de negocio de la capa de presentación, y escribirás pruebas unitarias con JUnit 5 y Mockito que validen el comportamiento de tus componentes.
 
@@ -48,7 +48,7 @@ Este laboratorio representa el núcleo técnico del curso: todo lo que construya
 <br/>
 <br/>
 
-### Capítulo 4
+### Capítulo 4. Procesamiento Batch con Spring Batch
 
 En este laboratorio implementarás el módulo de procesamiento por lotes del proyecto integrador empresarial utilizando Spring Boot 3.2 y Spring Batch 5. Construirás un sistema completo de procesamiento batch que incluye un Job principal con tres Steps secuenciales (validación, procesamiento chunk-oriented y generación de reporte), un segundo Job con flujo condicional, políticas de tolerancia a fallos (skip y retry), persistencia del estado en PostgreSQL y endpoints REST para operar los jobs desde Postman.
 
@@ -60,7 +60,7 @@ Este laboratorio refleja patrones reales de arquitectura empresarial donde los s
 <br/>
 <br/>
 
-### Capítulo 5
+### Capítulo 5. Bases de Datos
 
 En este laboratorio implementarás la capa de persistencia completa del proyecto integrador empresarial, trabajando simultáneamente con dos paradigmas de almacenamiento: el modelo relacional en PostgreSQL y el modelo documental en MongoDB. Diseñarás un esquema relacional normalizado con mínimo 5 tablas relacionadas, ejecutarás consultas SQL de complejidad creciente incluyendo JOINs, subconsultas y window functions, e implementarás transacciones explícitas con control ACID. En la parte NoSQL, modelarás colecciones MongoDB para datos no estructurados, ejecutarás operaciones CRUD con operadores avanzados y construirás pipelines de agregación. Al finalizar, integrarás ambas bases de datos en el proyecto Spring Boot demostrando la coexistencia de Spring Data JPA y Spring Data MongoDB en una misma aplicación.
 
@@ -72,7 +72,7 @@ Este laboratorio refleja un escenario real de arquitectura empresarial donde los
 <br/>
 <br/>
 
-### Capítulo 6
+### Capítulo 6. DevOps & Contenedores
 
 En este laboratorio contenerizarás el proyecto integrador completo —frontend y backend— utilizando Docker con builds multi-etapa optimizados, y orquestarás todos los servicios mediante Docker Compose. Además, configurarás un repositorio GitHub profesional con una estructura de ramas bien definida, mensajes de commit atómicos y documentación completa en el README.
 
@@ -84,7 +84,7 @@ Este laboratorio representa el punto de integración final del curso: toma todo 
 <br/>
 <br/>
 
-### Capítulo 7
+### Capítulo 7. Integración y preparación para examen
 
 En este laboratorio integrador, el participante une todos los componentes desarrollados a lo largo del curso en una aplicación full stack cohesiva y lista para producción. Se conectará el frontend construido con Lit al backend RESTful (Node.js/Express), se configurará CORS, se verificará la persistencia de datos en base de datos, y se contenerizará toda la solución mediante Docker y Docker Compose. El laboratorio concluye con la validación end-to-end del sistema completo y un repaso de los conceptos clave del módulo.
 
@@ -92,7 +92,6 @@ En este laboratorio integrador, el participante une todos los componentes desarr
 - [Laboratorio 7. Proyecto integrador](Capitulo07/README.md#laboratorio-7-proyecto-integrador)
 - Duración estimada: 80 min
 
----
 
 
 
