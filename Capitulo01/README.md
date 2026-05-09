@@ -1,13 +1,4 @@
-# JavaScript Moderno, POO, Java y Git
-
-<br/>
-<br/>
-
-## Descripción General
-
-En este laboratorio aplicarás las características fundamentales del JavaScript moderno (ES6+) para resolver problemas prácticos del mundo empresarial, implementarás una jerarquía de clases orientada a objetos que modela un sistema de empleados, explorarás conceptos equivalentes en Java 17 comparando ambos lenguajes, y configurarás un repositorio Git local conectado a GitHub que servirá como base para todos los laboratorios del curso.
-
-Este laboratorio es el punto de partida del curso y establece las competencias técnicas esenciales que se utilizarán de forma acumulativa en los laboratorios posteriores. Al finalizar, tendrás un proyecto organizado con módulos ES, clases, operaciones asíncronas y control de versiones profesional.
+# Laboratorio 1. Proyecto Integrador — JavaScript Moderno, POO, Java y Git
 
 <br/>
 <br/>
@@ -118,7 +109,7 @@ Si alguna herramienta no responde correctamente, detente y resuelve la instalaci
 
 ## Instrucciones  
 
-### Paso 1: Crear la Estructura del Proyecto
+### Paso 1. Crear la Estructura del Proyecto
 
 1. Abre una terminal (PowerShell en Windows, Terminal en macOS/Linux) y crea el directorio raíz del proyecto:
 
@@ -245,7 +236,7 @@ lab-01/
 
 <br/><br/>
 
-### Paso 2: Aplicar `let`, `const`, Arrow Functions y Template Literals
+### Paso 2. Aplicar `let`, `const`, Arrow Functions y Template Literals
 
 1. Crea el archivo principal de esta sección:
 
@@ -434,7 +425,7 @@ Si dos funciones realizan exactamente la misma operación, ¿por qué JavaScript
 
 <br/><br/>
 
-### Paso 3: Implementar Desestructuración, Spread y Rest
+### Paso 3. Implementar Desestructuración, Spread y Rest
 
 1. Crea el archivo para esta sección:
 
@@ -639,7 +630,7 @@ Formato de empleado:
 
 <br/><br/>
 
-### Paso 4: Implementar Promesas y `async/await`
+### Paso 4. Implementar Promesas y `async/await`
 
 1. Crea el archivo para manejo asíncrono:
 
@@ -879,7 +870,7 @@ Todas las demostraciones completadas
 <br/>
 <br/>
 
-### Paso 5: Organizar Código con Módulos ES
+### Paso 5. Organizar Código con Módulos ES
 
 1. Crea el módulo de utilidades compartidas:
 
@@ -1218,7 +1209,7 @@ ESTADÍSTICAS GENERALES:
 <br/>
 <br/>
 
-### Paso 6: Implementar POO con Clases JavaScript
+### Paso 6. Implementar POO con Clases JavaScript
 
 
 1. Crea los archivos de la jerarquía de clases:
@@ -1656,7 +1647,6 @@ HERENCIA - instanceof:
 ```
 
 <br/>
-<br/>
 
 **Verificación:**
 
@@ -1667,7 +1657,7 @@ HERENCIA - instanceof:
 <br/>
 <br/>
 
-### Paso 7: Comparación JavaScript vs Java
+### Paso 7. Comparación JavaScript vs Java
 
 1. Crea el directorio y archivo Java:
 
@@ -2021,7 +2011,7 @@ HERENCIA - instanceof:
 <br/>
 
 
-### Paso 8: Configurar Git y Realizar el Primer Push a GitHub
+### Paso 8. Configurar Git y Realizar el Primer Push a GitHub
 
 
 1. Primero, configura tu identidad en Git si aún no lo has hecho:
@@ -2267,7 +2257,7 @@ origin  https://github.com/TU_USUARIO/curso-fullstack-lab01.git (push)
 <br/>
 <br/>
 
-### Paso 9: Crear el README del Proyecto
+### Paso 9. Crear el README del Proyecto
 
 1. Crea el archivo README en la raíz del proyecto:
 
@@ -2777,16 +2767,6 @@ git status
 - **Encapsulamiento JS**: Los campos `#privados` son verdaderamente privados (no accesibles fuera de la clase), a diferencia de las convenciones `_privado` anteriores
 - **Conventional Commits**: Formato `tipo(scope): descripción` para commits legibles y compatibles con herramientas de changelog automático
 
-
-<br/>
-<br/>
-
-### Próximos Pasos
-
-- En la **Lección 1.2** profundizarás en POO avanzada con JavaScript: mixins, composición vs herencia, y patrones de diseño aplicados a clases
-- En el **Lab 02** aplicarás pruebas unitarias con JUnit y Mockito en el backend Java, usando los conceptos de POO aprendidos hoy
-- Practica los conceptos de este laboratorio modificando el `ServicioEmpleados` para agregar un método `buscarPorSalario(min, max)` usando `filter` y desestructuración
-- Explora la documentación de MDN sobre [Clases de JavaScript](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Classes) para profundizar en características avanzadas como campos estáticos privados y métodos de clase
 
 
 <br/>

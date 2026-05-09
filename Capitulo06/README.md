@@ -1,28 +1,20 @@
 # Laboratorio 6. Proyecto Integrador — Contenerización y Gestión con Docker y GitHub
 
-## Metadatos
-
-| Propiedad | Valor |
-|-----------|-------|
-| **Duración** | 80 minutos |
-| **Complejidad** | Intermedio |
-| **Nivel Bloom** | Crear |
-
-## Descripción General
-
-En este laboratorio contenerizarás el proyecto integrador completo —frontend y backend— utilizando Docker con builds multi-etapa optimizados, y orquestarás todos los servicios mediante Docker Compose. Además, configurarás un repositorio GitHub profesional con una estructura de ramas bien definida, mensajes de commit atómicos y documentación completa en el README.
-
-Este laboratorio representa el punto de integración final del curso: toma todo lo construido en los laboratorios anteriores (API REST con Spring Boot, frontend con Lit/Web Components, persistencia en PostgreSQL y MongoDB) y lo empaqueta en un stack listo para despliegue en cualquier entorno, eliminando el clásico problema de "funciona en mi máquina" que Docker fue diseñado para resolver.
+<br/>
+<br/>
 
 ## Objetivos
 
 Al completar este laboratorio, serás capaz de:
 
-- [ ] Crear un Dockerfile multi-etapa optimizado para el backend Spring Boot, logrando una imagen final menor a 200 MB
-- [ ] Crear un Dockerfile para el frontend que use Node.js para el build y nginx:alpine para servir los estáticos
-- [ ] Definir un archivo `compose.yml` con 5 servicios, redes personalizadas, volúmenes persistentes, variables de entorno y health checks
-- [ ] Ejecutar y gestionar el stack completo usando comandos esenciales de Docker y Docker Compose
-- [ ] Inicializar un repositorio Git con estructura de ramas profesional y publicarlo en GitHub con mínimo 10 commits atómicos documentados
+- Crear un Dockerfile multi-etapa optimizado para el backend Spring Boot, logrando una imagen final menor a 200 MB
+- Crear un Dockerfile para el frontend que use Node.js para el build y nginx:alpine para servir los estáticos
+- Definir un archivo `compose.yml` con 5 servicios, redes personalizadas, volúmenes persistentes, variables de entorno y health checks
+- Ejecutar y gestionar el stack completo usando comandos esenciales de Docker y Docker Compose
+- Inicializar un repositorio Git con estructura de ramas profesional y publicarlo en GitHub con mínimo 10 commits atómicos documentados
+
+<br/>
+<br/>
 
 ## Prerrequisitos
 
@@ -34,6 +26,9 @@ Al completar este laboratorio, serás capaz de:
 - Conocimiento básico de Git: `init`, `add`, `commit`, `push`, `branch`
 - Comprensión de variables de entorno y archivos de configuración en Spring Boot (`application.properties`)
 
+<br/>
+<br/>
+
 ### Acceso Requerido
 
 - Cuenta de GitHub creada, verificada y con SSH key configurada
@@ -42,16 +37,10 @@ Al completar este laboratorio, serás capaz de:
 - Acceso a internet para descargar imágenes base desde Docker Hub
 - Puertos 80, 8080, 5432, 27017 y 5050 disponibles en la máquina local
 
+<br/>
+<br/>
+
 ## Entorno de Laboratorio
-
-### Hardware Requirements
-
-| Componente | Especificación |
-|------------|----------------|
-| RAM | Mínimo 16 GB (Docker necesitará ~4-6 GB para los 5 servicios) |
-| Almacenamiento | Mínimo 10 GB libres para imágenes Docker y artefactos de build |
-| CPU | 4 núcleos recomendados para builds paralelos |
-| Red | Conexión estable para descargar imágenes base (~1.5 GB total) |
 
 ### Software Requirements
 
@@ -62,6 +51,8 @@ Al completar este laboratorio, serás capaz de:
 | JDK | 17 LTS | Verificación local del proyecto backend |
 | Node.js | 20.x LTS | Verificación local del proyecto frontend |
 | VS Code o IntelliJ | Cualquier versión reciente | Edición de Dockerfiles y YAML |
+
+<br/>
 
 ### Configuración Inicial
 
@@ -84,15 +75,17 @@ lsof -i :80 -i :8080 -i :5432 -i :27017 -i :5050
 netstat -ano | findstr "80 8080 5432 27017 5050"
 ```
 
+<br/>
+
 Si `hello-world` se ejecuta correctamente, Docker está listo. Si algún puerto está ocupado, detén el servicio que lo usa antes de continuar.
+
+<br/>
+<br/>
+
 
 ## Instrucciones 
 
-### Paso 1: Preparar la Estructura del Proyecto Integrador
-
-**Objetivo:** Organizar el proyecto en una estructura de directorios clara que facilite la contenerización y la gestión con Git.
-
-**Instrucciones:**
+### Paso 1. Preparar la Estructura del Proyecto Integrador
 
 1. Abre una terminal y navega al directorio donde tienes tu proyecto integrador. Si vienes de los labs anteriores, la estructura debería ser similar a la siguiente. Crea los directorios que falten:
 
@@ -106,6 +99,8 @@ Si `hello-world` se ejecuta correctamente, Docker está listo. Si algún puerto 
    # Si no existe, crear la estructura base
    mkdir -p backend frontend docker
    ```
+
+<br/>
 
 2. Confirma que la estructura del proyecto tiene al menos estos elementos clave:
 
@@ -132,6 +127,8 @@ Si `hello-world` se ejecuta correctamente, Docker está listo. Si algún puerto 
    ls -la dist/
    ```
 
+<br/>
+
 3. Regresa al directorio raíz del proyecto:
 
    ```bash
@@ -139,6 +136,8 @@ Si `hello-world` se ejecuta correctamente, Docker está listo. Si algún puerto 
    pwd
    # Debes ver algo como: /home/usuario/proyectos/proyecto-integrador
    ```
+
+<br/>
 
 **Salida Esperada:**
 
@@ -153,19 +152,18 @@ dist/
   assets/
 ```
 
+<br/>
+
 **Verificación:**
 
 - El archivo `.jar` del backend existe en `backend/target/`
 - El directorio `dist/` del frontend contiene `index.html` y los assets compilados
 - Estás posicionado en el directorio raíz del proyecto
 
----
+<br/>
+<br/>
 
-### Paso 2: Crear el Dockerfile Multi-Etapa para el Backend
-
-**Objetivo:** Construir un Dockerfile optimizado para el backend Spring Boot usando un build multi-etapa: una etapa para compilar con Maven y otra etapa liviana solo para ejecutar el JAR.
-
-**Instrucciones:**
+### Paso 2. Crear el Dockerfile Multi-Etapa para el Backend
 
 1. Crea el archivo `Dockerfile` dentro del directorio `backend/`:
 
@@ -173,6 +171,8 @@ dist/
    # Desde el directorio raíz del proyecto
    touch backend/Dockerfile
    ```
+
+<br/>
 
 2. Abre `backend/Dockerfile` en tu editor y escribe el siguiente contenido:
 
@@ -238,6 +238,8 @@ dist/
    ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
    ```
 
+<br/>
+
 3. Construye la imagen del backend para verificar que el Dockerfile es correcto:
 
    ```bash
@@ -247,6 +249,8 @@ dist/
    # Verificar el tamaño de la imagen generada
    docker images proyecto-integrador/backend:1.0.0
    ```
+
+<br/>
 
 **Salida Esperada:**
 
@@ -262,19 +266,18 @@ REPOSITORY                         TAG       SIZE
 proyecto-integrador/backend        1.0.0     ~180MB   ← Debe ser < 200MB
 ```
 
+<br/>
+
 **Verificación:**
 
 - El build termina con `FINISHED` sin errores
 - El tamaño de la imagen es menor a 200 MB (objetivo del laboratorio)
 - La imagen aparece en `docker images`
 
----
+<br/>
+<br/>
 
-### Paso 3: Crear el Dockerfile para el Frontend
-
-**Objetivo:** Construir un Dockerfile multi-etapa para el frontend: Node.js para compilar los assets con Vite y nginx:alpine para servirlos de manera eficiente.
-
-**Instrucciones:**
+### Paso 3. Crear el Dockerfile para el Frontend
 
 1. Crea el archivo `Dockerfile` dentro del directorio `frontend/`:
 
@@ -282,12 +285,16 @@ proyecto-integrador/backend        1.0.0     ~180MB   ← Debe ser < 200MB
    touch frontend/Dockerfile
    ```
 
+<br/>
+
 2. Crea también un archivo de configuración para nginx que manejará el enrutamiento del SPA (Single Page Application):
 
    ```bash
    mkdir -p frontend/nginx
    touch frontend/nginx/default.conf
    ```
+
+<br/>
 
 3. Escribe la configuración de nginx en `frontend/nginx/default.conf`:
 
@@ -322,6 +329,8 @@ proyecto-integrador/backend        1.0.0     ~180MB   ← Debe ser < 200MB
        }
    }
    ```
+
+<br/>
 
 4. Escribe el Dockerfile en `frontend/Dockerfile`:
 
@@ -373,6 +382,8 @@ proyecto-integrador/backend        1.0.0     ~180MB   ← Debe ser < 200MB
    # CMD ["nginx", "-g", "daemon off;"]  ← ya está definido en la imagen base
    ```
 
+<br/>
+
 5. Construye la imagen del frontend para verificar:
 
    ```bash
@@ -382,6 +393,8 @@ proyecto-integrador/backend        1.0.0     ~180MB   ← Debe ser < 200MB
    # Verificar tamaño
    docker images proyecto-integrador/frontend:1.0.0
    ```
+
+<br/>
 
 **Salida Esperada:**
 
@@ -395,19 +408,18 @@ REPOSITORY                          TAG       SIZE
 proyecto-integrador/frontend        1.0.0     ~25MB   ← Muy pequeña gracias a Alpine
 ```
 
+<br/>
+
 **Verificación:**
 
 - Ambas imágenes (backend y frontend) están presentes en `docker images`
 - El frontend es significativamente más pequeño que el backend
 - No hay errores de compilación en ninguna de las dos etapas
 
----
+<br/>
+<br/>
 
-### Paso 4: Crear el Archivo .env con Variables de Entorno
-
-**Objetivo:** Centralizar todas las configuraciones sensibles y variables de entorno en un archivo `.env` que Docker Compose utilizará, siguiendo la buena práctica de no hardcodear credenciales en los archivos de configuración.
-
-**Instrucciones:**
+### Paso 4. Crear el Archivo .env con Variables de Entorno
 
 1. Crea el archivo `.env` en el directorio raíz del proyecto:
 
@@ -415,6 +427,8 @@ proyecto-integrador/frontend        1.0.0     ~25MB   ← Muy pequeña gracias a
    # Desde el directorio raíz del proyecto
    touch .env
    ```
+
+<br/>
 
 2. Escribe el siguiente contenido en `.env`:
 
@@ -455,11 +469,15 @@ proyecto-integrador/frontend        1.0.0     ~25MB   ← Muy pequeña gracias a
    PGADMIN_PORT=5050
    ```
 
+<br/>
+
 3. Crea también el archivo `.env.example` (versión sin credenciales reales para el repositorio):
 
    ```bash
    touch .env.example
    ```
+
+<br/>
 
 4. Escribe el contenido de `.env.example`:
 
@@ -499,6 +517,8 @@ proyecto-integrador/frontend        1.0.0     ~25MB   ← Muy pequeña gracias a
    PGADMIN_PORT=5050
    ```
 
+<br/>
+
 **Salida Esperada:**
 
 ```bash
@@ -507,25 +527,28 @@ ls -la .env .env.example
 # -rw-r--r--  1 usuario  staff  742 Jan 15 10:30 .env.example
 ```
 
+<br/>
+
 **Verificación:**
 
 - Ambos archivos existen en el directorio raíz
 - `.env` contiene valores reales (no se commiteará)
 - `.env.example` contiene solo placeholders (sí se commiteará)
 
----
+<br/>
+<br/>
 
-### Paso 5: Crear el Perfil de Configuración Docker para Spring Boot
 
-**Objetivo:** Agregar un perfil de configuración específico para el entorno Docker en el backend Spring Boot, que use los nombres de los servicios de Docker Compose como hostnames en lugar de `localhost`.
+### Paso 5. Crear el Perfil de Configuración Docker para Spring Boot
 
-**Instrucciones:**
 
 1. Crea el archivo de configuración para el perfil Docker en el backend:
 
    ```bash
    touch backend/src/main/resources/application-docker.properties
    ```
+
+<br/>
 
 2. Escribe la configuración en `application-docker.properties`:
 
@@ -561,6 +584,8 @@ ls -la .env .env.example
    management.endpoint.health.show-details=always
    ```
 
+<br/>
+
 **Salida Esperada:**
 
 ```bash
@@ -569,24 +594,25 @@ ls backend/src/main/resources/
 # application-docker.properties   ← El nuevo archivo
 ```
 
+<br/>
+
 **Verificación:**
 
 - El archivo `application-docker.properties` existe en el directorio `resources`
 - Los hostnames `postgres` y `mongodb` coincidirán con los nombres de servicios que definiremos en `compose.yml`
 
----
+<br/>
+<br/>
 
-### Paso 6: Crear el Archivo Docker Compose
-
-**Objetivo:** Definir todos los servicios del stack completo en un archivo `compose.yml`, incluyendo redes personalizadas, volúmenes persistentes, health checks y dependencias entre servicios.
-
-**Instrucciones:**
+### Paso 6. Crear el Archivo Docker Compose
 
 1. Crea el archivo `compose.yml` en el directorio raíz del proyecto:
 
    ```bash
    touch compose.yml
    ```
+
+<br/>
 
 2. Escribe el siguiente contenido completo en `compose.yml`:
 
@@ -751,12 +777,16 @@ ls backend/src/main/resources/
        driver: bridge
    ```
 
+<br/>
+
 3. Crea el script de inicialización de PostgreSQL:
 
    ```bash
    mkdir -p docker
    touch docker/init-postgres.sql
    ```
+
+<br/>
 
 4. Escribe el contenido de `docker/init-postgres.sql`:
 
@@ -775,6 +805,8 @@ ls backend/src/main/resources/
    END $$;
    ```
 
+<br/>
+
 **Salida Esperada:**
 
 ```bash
@@ -783,19 +815,18 @@ ls -la compose.yml docker/init-postgres.sql
 # -rw-r--r--  docker/init-postgres.sql
 ```
 
+<br/>
+
 **Verificación:**
 
 - El archivo `compose.yml` existe en el directorio raíz
 - El script SQL de inicialización existe en `docker/`
 - La sintaxis YAML es correcta (puedes verificar con `docker compose config`)
 
----
+<br/>
+<br/>
 
-### Paso 7: Construir y Ejecutar el Stack Completo
-
-**Objetivo:** Construir todas las imágenes y levantar el stack completo con Docker Compose, verificando que todos los servicios arrancan correctamente y los health checks pasan.
-
-**Instrucciones:**
+### Paso 7. Construir y Ejecutar el Stack Completo
 
 1. Valida la sintaxis del archivo `compose.yml` antes de ejecutar:
 
@@ -804,6 +835,7 @@ ls -la compose.yml docker/init-postgres.sql
    docker compose config
    # Debe mostrar la configuración completa sin errores
    ```
+<br/>
 
 2. Construye todas las imágenes del proyecto:
 
@@ -816,6 +848,8 @@ ls -la compose.yml docker/init-postgres.sql
    docker images | grep proyecto-integrador
    ```
 
+<br/>
+
 3. Levanta todos los servicios en modo detached (segundo plano):
 
    ```bash
@@ -825,6 +859,8 @@ ls -la compose.yml docker/init-postgres.sql
    # Observar el progreso del arranque (Ctrl+C para salir del seguimiento)
    docker compose logs -f
    ```
+
+<br/>
 
 4. Verifica el estado de todos los servicios:
 
@@ -836,6 +872,8 @@ ls -la compose.yml docker/init-postgres.sql
    docker compose logs backend --tail=50
    docker compose logs postgres --tail=20
    ```
+
+<br/>
 
 5. Prueba que los servicios responden correctamente:
 
@@ -849,6 +887,8 @@ ls -la compose.yml docker/init-postgres.sql
    # Probar pgAdmin (debe retornar código 200)
    curl -I http://localhost:5050
    ```
+
+<br/>
 
 6. Explora los comandos esenciales de gestión:
 
@@ -866,6 +906,8 @@ ls -la compose.yml docker/init-postgres.sql
    docker network ls | grep pi-
    ```
 
+<br/>
+
 **Salida Esperada:**
 
 ```
@@ -880,6 +922,8 @@ pi-postgres       postgres:16-alpine                 Up 3 minutes (healthy)   0.
 {"status":"UP","components":{"db":{"status":"UP"},"mongo":{"status":"UP"}}}
 ```
 
+<br/>
+
 **Verificación:**
 
 - Todos los servicios muestran estado `Up` y `(healthy)`
@@ -887,13 +931,10 @@ pi-postgres       postgres:16-alpine                 Up 3 minutes (healthy)   0.
 - El frontend carga en `http://localhost:80`
 - pgAdmin está disponible en `http://localhost:5050`
 
----
+<br/>
+<br/>
 
-### Paso 8: Configurar el Repositorio Git y Publicar en GitHub
-
-**Objetivo:** Inicializar el repositorio Git con estructura de ramas profesional, configurar `.gitignore`, escribir el README y publicar en GitHub con mínimo 10 commits atómicos bien documentados.
-
-**Instrucciones:**
+### Paso 8. Configurar el Repositorio Git y Publicar en GitHub
 
 1. Inicializa el repositorio Git (si no existe ya):
 
@@ -903,6 +944,8 @@ pi-postgres       postgres:16-alpine                 Up 3 minutes (healthy)   0.
    git config user.name "Tu Nombre"
    git config user.email "tu.email@empresa.com"
    ```
+
+<br/>
 
 2. Crea el archivo `.gitignore` completo:
 
@@ -966,6 +1009,8 @@ pi-postgres       postgres:16-alpine                 Up 3 minutes (healthy)   0.
    Desktop.ini
    ```
 
+<br/>
+
 3. Crea el README.md principal del proyecto:
 
    ```bash
@@ -975,17 +1020,17 @@ pi-postgres       postgres:16-alpine                 Up 3 minutes (healthy)   0.
    Escribe el siguiente contenido en `README.md`:
 
    ````markdown
-   # 🏢 Proyecto Integrador — Sistema de Gestión de Inventario
+   # Proyecto Integrador — Sistema de Gestión de Inventario
 
    Stack empresarial full stack con Spring Boot, Lit/Web Components, PostgreSQL, MongoDB y Docker.
 
-   ## 🏗️ Arquitectura
+   ## Arquitectura
 
    ```
    ┌─────────────────────────────────────────────────────────┐
    │                    DOCKER NETWORK                        │
    │                                                          │
-   │  ┌──────────┐    ┌──────────┐    ┌──────────────────┐  │
+   │  ┌──────────┐     ┌──────────┐    ┌──────────────────┐  │
    │  │ Frontend │───▶│ Backend  │───▶│   PostgreSQL 16  │  │
    │  │  :80     │    │  :8080   │    │      :5432       │  │
    │  │ nginx    │    │Spring    │    └──────────────────┘  │
@@ -999,13 +1044,13 @@ pi-postgres       postgres:16-alpine                 Up 3 minutes (healthy)   0.
    └─────────────────────────────────────────────────────────┘
    ```
 
-   ## 📋 Prerrequisitos
+   ## Prerrequisitos
 
    - Docker Desktop 4.25+
    - Git 2.43+
    - Puertos disponibles: 80, 8080, 5432, 27017, 5050
 
-   ## 🚀 Instrucciones de Ejecución
+   ## Instrucciones de Ejecución
 
    ```bash
    # 1. Clonar el repositorio
@@ -1023,7 +1068,7 @@ pi-postgres       postgres:16-alpine                 Up 3 minutes (healthy)   0.
    docker compose ps
    ```
 
-   ## 🌐 URLs de Acceso
+   ## URLs de Acceso
 
    | Servicio | URL | Credenciales |
    |----------|-----|--------------|
@@ -1032,7 +1077,7 @@ pi-postgres       postgres:16-alpine                 Up 3 minutes (healthy)   0.
    | API Health | http://localhost:8080/actuator/health | N/A |
    | pgAdmin | http://localhost:5050 | Ver .env |
 
-   ## 🛑 Detener el Stack
+   ## Detener el Stack
 
    ```bash
    # Detener sin eliminar datos
@@ -1045,7 +1090,7 @@ pi-postgres       postgres:16-alpine                 Up 3 minutes (healthy)   0.
    docker compose down -v
    ```
 
-   ## 🌿 Estructura de Ramas
+   ## Estructura de Ramas
 
    | Rama | Propósito |
    |------|-----------|
@@ -1053,7 +1098,7 @@ pi-postgres       postgres:16-alpine                 Up 3 minutes (healthy)   0.
    | `develop` | Integración de features |
    | `feature/*` | Desarrollo de nuevas funcionalidades |
 
-   ## 🛠️ Stack Tecnológico
+   ## Stack Tecnológico
 
    - **Frontend**: Lit 3.x, Web Components, HTML5, CSS3
    - **Backend**: Spring Boot 3.2, Java 17, Spring Data JPA, Spring Data MongoDB
@@ -1061,7 +1106,7 @@ pi-postgres       postgres:16-alpine                 Up 3 minutes (healthy)   0.
    - **Infraestructura**: Docker, Docker Compose, nginx
    - **Testing**: JUnit 5, Mockito, @web/test-runner
 
-   ## 📁 Estructura del Proyecto
+   ## Estructura del Proyecto
 
    ```
    proyecto-integrador/
@@ -1082,6 +1127,8 @@ pi-postgres       postgres:16-alpine                 Up 3 minutes (healthy)   0.
    ```
    ````
 
+<br/>
+
 4. Realiza el primer commit y configura la rama `main`:
 
    ```bash
@@ -1094,6 +1141,8 @@ pi-postgres       postgres:16-alpine                 Up 3 minutes (healthy)   0.
    # Renombrar la rama principal a 'main' (convención moderna)
    git branch -M main
    ```
+
+<br/>
 
 5. Realiza commits atómicos para cada componente del proyecto:
 
@@ -1125,6 +1174,8 @@ pi-postgres       postgres:16-alpine                 Up 3 minutes (healthy)   0.
    # Verificar el historial de commits hasta ahora
    git log --oneline
    ```
+
+<br/>
 
 6. Crea la rama `develop` y una rama `feature` de ejemplo:
 
@@ -1189,6 +1240,8 @@ pi-postgres       postgres:16-alpine                 Up 3 minutes (healthy)   0.
    git log --oneline --graph --all
    ```
 
+<br/>
+
 7. Crea el repositorio en GitHub y publica el código:
 
    ```bash
@@ -1207,6 +1260,8 @@ pi-postgres       postgres:16-alpine                 Up 3 minutes (healthy)   0.
    git remote -v
    ```
 
+<br/>
+
 **Salida Esperada:**
 
 ```bash
@@ -1223,8 +1278,10 @@ git log --oneline
 # c8d9e0f chore: inicializar repositorio con .gitignore y README
 
 git log --oneline | wc -l
-# 10   ← Mínimo 10 commits requeridos ✓
+# 10   ← Mínimo 10 commits requeridos 
 ```
+
+<br/>
 
 **Verificación:**
 
@@ -1234,7 +1291,8 @@ git log --oneline | wc -l
 - El tag `v1.0.0` está publicado en GitHub
 - El `.env` NO aparece en el repositorio remoto
 
----
+
+<br/><br/>
 
 ## Validación y Pruebas
 
@@ -1251,6 +1309,9 @@ git log --oneline | wc -l
 - [ ] El archivo `.env` NO está en el repositorio GitHub
 - [ ] El README.md en GitHub muestra la arquitectura y las instrucciones de ejecución
 
+
+<br/><br/>
+
 ### Procedimiento de Pruebas
 
 1. **Verificar imágenes y tamaños:**
@@ -1259,11 +1320,15 @@ git log --oneline | wc -l
    ```
    **Resultado Esperado:** Backend < 200 MB, Frontend < 50 MB
 
+<br/>
+
 2. **Verificar estado del stack:**
    ```bash
    docker compose ps
    ```
    **Resultado Esperado:** Los 5 servicios en estado `Up (healthy)`
+
+<br/>
 
 3. **Probar el health check del backend:**
    ```bash
@@ -1280,17 +1345,23 @@ git log --oneline | wc -l
    }
    ```
 
+<br/>
+
 4. **Verificar conectividad con PostgreSQL:**
    ```bash
    docker compose exec postgres psql -U app_user -d inventario_db -c "SELECT version();"
    ```
    **Resultado Esperado:** Versión de PostgreSQL 16.x
 
+<br/>
+
 5. **Verificar conectividad con MongoDB:**
    ```bash
    docker compose exec mongodb mongosh -u mongo_admin -p Mongo_S3cur3_P@ss2024 --authenticationDatabase admin --eval "db.adminCommand('ping')"
    ```
    **Resultado Esperado:** `{ ok: 1 }`
+
+<br/>
 
 6. **Verificar persistencia de datos (reiniciar y verificar):**
    ```bash
@@ -1303,6 +1374,8 @@ git log --oneline | wc -l
    ```
    **Resultado Esperado:** Los volúmenes `pi-postgres-data` y `pi-mongodb-data` persisten
 
+<br/>
+
 7. **Verificar el repositorio Git:**
    ```bash
    git log --oneline | wc -l
@@ -1311,16 +1384,23 @@ git log --oneline | wc -l
    ```
    **Resultado Esperado:** ≥ 10 commits, ramas `main` y `develop`, tag `v1.0.0`
 
+<br/>
+<br/>
+
 ## Solución de Problemas
 
-### Issue 1: El Backend No Puede Conectarse a PostgreSQL
+### Problema 1: El Backend No Puede Conectarse a PostgreSQL
 
 **Síntomas:**
 - `docker compose ps` muestra el backend en estado `Up (unhealthy)` o reiniciando
 - Los logs muestran `Connection refused` o `could not connect to server`
 
+<br/>
+
 **Causa:**
-El backend intenta conectarse a PostgreSQL antes de que el health check de la base de datos pase. Puede ocurrir si PostgreSQL tarda más de lo esperado en iniciar, o si las credenciales en el `.env` no coinciden con las que PostgreSQL usó al crear la base de datos.
+- El backend intenta conectarse a PostgreSQL antes de que el health check de la base de datos pase. Puede ocurrir si PostgreSQL tarda más de lo esperado en iniciar, o si las credenciales en el `.env` no coinciden con las que PostgreSQL usó al crear la base de datos.
+
+<br/>
 
 **Solución:**
 ```bash
@@ -1340,16 +1420,21 @@ docker compose up -d
 docker compose exec backend env | grep POSTGRES
 ```
 
----
+<br/>
+<br/>
 
-### Issue 2: Puerto Ya en Uso (Address Already in Use)
+### Problema 2: Puerto Ya en Uso (Address Already in Use)
 
 **Síntomas:**
 - Error al ejecutar `docker compose up`: `Bind for 0.0.0.0:8080 failed: port is already allocated`
 - Uno o más servicios no arrancan
 
+<br/>
+
 **Causa:**
-Un proceso local (Spring Boot corriendo fuera de Docker, PostgreSQL instalado localmente, etc.) está usando el mismo puerto que el contenedor intenta exponer.
+- Un proceso local (Spring Boot corriendo fuera de Docker, PostgreSQL instalado localmente, etc.) está usando el mismo puerto que el contenedor intenta exponer.
+
+<br/>
 
 **Solución:**
 ```bash
@@ -1370,18 +1455,24 @@ Stop-Process -Id <PID>
 docker compose up -d
 ```
 
----
+<br/>
+<br/>
 
-### Issue 3: Build del Backend Falla — JAR No Encontrado
+### Problema 3: Build del Backend Falla — JAR No Encontrado
 
 **Síntomas:**
 - Error en el `docker build` del backend: `failed to solve: failed to read dockerfile`
 - O error: `COPY failed: file not found in build context or excluded by .dockerignore: target/*.jar`
 
+<br/>
+
 **Causa:**
-El Dockerfile usa `COPY --from=builder /app/target/*.jar` pero el glob `*.jar` no encuentra el archivo, o Maven falló silenciosamente durante el build.
+- El Dockerfile usa `COPY --from=builder /app/target/*.jar` pero el glob `*.jar` no encuentra el archivo, o Maven falló silenciosamente durante el build.
+
+<br/>
 
 **Solución:**
+
 ```bash
 # Verificar que Maven compila correctamente dentro del contenedor
 docker build --target builder -t backend-debug ./backend
@@ -1397,18 +1488,24 @@ grep -A3 "<build>" backend/pom.xml
 # COPY --from=builder /app/target/mi-proyecto-especifico.jar app.jar
 ```
 
----
+<br/>
+<br/>
 
-### Issue 4: Health Check de MongoDB Falla
+### Problema 4: Health Check de MongoDB Falla
 
 **Síntomas:**
 - MongoDB muestra `Up (unhealthy)` en `docker compose ps`
 - Los logs muestran que MongoDB está corriendo pero el health check falla
 
+<br/>
+
 **Causa:**
-En versiones recientes de MongoDB 7.x, el comando `mongosh` reemplazó a `mongo`. Si la imagen no incluye `mongosh`, el health check falla.
+- En versiones recientes de MongoDB 7.x, el comando `mongosh` reemplazó a `mongo`. Si la imagen no incluye `mongosh`, el health check falla.
+
+<br/>
 
 **Solución:**
+
 ```bash
 # Verificar qué herramientas están disponibles en el contenedor
 docker compose exec mongodb which mongosh
@@ -1429,18 +1526,24 @@ docker compose exec mongodb which mongo
 docker compose up -d --force-recreate mongodb
 ```
 
----
+<br/>
+<br/>
 
-### Issue 5: El Frontend Muestra Pantalla en Blanco
+### Problema 5: El Frontend Muestra Pantalla en Blanco
 
 **Síntomas:**
 - `http://localhost:80` carga pero muestra una página en blanco
 - La consola del navegador muestra errores 404 para los assets JS/CSS
 
+<br/>
+
 **Causa:**
-El directorio `dist/` del frontend no se generó correctamente durante el build de Docker, o la ruta de los assets en `vite.config.js` no coincide con la configuración de nginx.
+- El directorio `dist/` del frontend no se generó correctamente durante el build de Docker, o la ruta de los assets en `vite.config.js` no coincide con la configuración de nginx.
+
+<br/>
 
 **Solución:**
+
 ```bash
 # Verificar que el build de Vite generó archivos correctamente
 docker build --target builder -t frontend-debug ./frontend
@@ -1461,6 +1564,9 @@ docker compose exec frontend cat /etc/nginx/conf.d/default.conf
 docker compose build --no-cache frontend
 docker compose up -d frontend
 ```
+
+<br/>
+<br/>
 
 ## Limpieza
 
@@ -1494,40 +1600,60 @@ docker volume ls | grep pi-
 docker network ls | grep pi-
 ```
 
-> ⚠️ **Advertencia:** El comando `docker compose down -v` eliminará permanentemente todos los datos almacenados en los volúmenes de PostgreSQL y MongoDB. Solo úsalo si quieres un entorno completamente limpio. Para simplemente detener los servicios sin perder datos, usa `docker compose stop`.
+<br/>
+<br/>
 
-> ⚠️ **Nota sobre Git:** No elimines el repositorio local ni el remoto en GitHub. El código publicado en GitHub es el entregable principal de este laboratorio y será necesario para el Lab 7 (simulador de examen y revisión final).
+> **Advertencia:** El comando `docker compose down -v` eliminará permanentemente todos los datos almacenados en los volúmenes de PostgreSQL y MongoDB. Solo úsalo si quieres un entorno completamente limpio. Para simplemente detener los servicios sin perder datos, usa `docker compose stop`.
+
+> **Nota sobre Git:** No elimines el repositorio local ni el remoto en GitHub. El código publicado en GitHub es el entregable principal de este laboratorio y será necesario para el Lab 7 (simulador de examen y revisión final).
+
+<br/>
+<br/>
 
 ## Resumen
 
 ### Lo que Lograste
 
 - **Dockerfiles multi-etapa** para backend (Spring Boot) y frontend (Lit/nginx), optimizando el tamaño de las imágenes finales al separar las herramientas de build del runtime
+
 - **Stack completo orquestado** con Docker Compose: 5 servicios (frontend, backend, PostgreSQL, MongoDB, pgAdmin) con redes segmentadas, volúmenes persistentes y health checks
+
 - **Configuración segura** de variables de entorno con archivo `.env` (excluido de Git) y `.env.example` como plantilla pública
+
 - **Repositorio GitHub profesional** con estructura de ramas (`main`, `develop`, `feature/*`), `.gitignore` completo, README documentado y mínimo 10 commits atómicos con mensajes descriptivos
+
 - **Flujo de trabajo Git** completo: init, branch, commit, merge, tag y push a repositorio remoto
+
+<br/>
+<br/>
 
 ### Conceptos Clave Aprendidos
 
 - Los **builds multi-etapa** de Docker permiten usar imágenes pesadas (Maven, Node.js) solo para compilar y producir una imagen final mínima con solo el runtime necesario
+
 - Los **health checks** en Docker Compose garantizan que los servicios dependientes (como el backend) no arranquen hasta que sus dependencias (bases de datos) estén realmente listas para aceptar conexiones
+
 - Las **redes personalizadas** en Docker Compose proporcionan segmentación y resolución de nombres por servicio (el backend puede conectarse a `postgres:5432` en lugar de `localhost:5432`)
+
 - Los **volúmenes nombrados** garantizan que los datos persisten entre reinicios de contenedores
+
 - Los **commits atómicos** con mensajes descriptivos (usando convención `tipo(scope): descripción`) facilitan el entendimiento del historial y la revisión de código en equipos
 
-### Próximos Pasos
-
-- Explorar la publicación de imágenes en **Docker Hub** (`docker push`) para distribuir el stack a otros miembros del equipo
-- Investigar **Docker Compose profiles** para gestionar diferentes configuraciones (desarrollo vs. producción) en el mismo `compose.yml`
-- Profundizar en **GitHub Actions** para automatizar el build y push de imágenes Docker en cada commit a `main` (CI/CD pipeline)
-- Revisar las mejores prácticas de seguridad en Docker: usuarios no-root (ya implementado), escaneo de vulnerabilidades con `docker scout` y gestión de secretos con Docker Secrets
+<br/>
+<br/>
 
 ## Recursos Adicionales
 
 - **Documentación oficial de Docker Compose** — Referencia completa de la sintaxis de `compose.yml`, incluyendo todos los campos disponibles: [https://docs.docker.com/compose/compose-file/](https://docs.docker.com/compose/compose-file/)
-- **Mejores prácticas para escribir Dockerfiles** — Guía oficial con técnicas de optimización de capas, builds multi-etapa y seguridad: [https://docs.docker.com/develop/develop-images/dockerfile_best-practices/](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
+
+- **Mejores prácticas para escribir Dockerfiles** — Guía oficial con técnicas de optimización de capas, builds 
+multi-etapa y seguridad: [https://docs.docker.com/develop/develop-images/dockerfile_best-practices/](https://docs.docker.
+com/develop/develop-images/dockerfile_best-practices/)
+
 - **Convención de Commits (Conventional Commits)** — Especificación estándar para mensajes de commit atómicos y descriptivos usada en este laboratorio: [https://www.conventionalcommits.org/es/v1.0.0/](https://www.conventionalcommits.org/es/v1.0.0/)
+
 - **Play with Docker** — Entorno interactivo en el navegador para practicar Docker sin instalación local, útil para experimentar con los comandos aprendidos: [https://labs.play-with-docker.com](https://labs.play-with-docker.com)
+
 - **GitHub Docs: SSH Keys** — Guía para configurar autenticación SSH con GitHub, necesaria para el `git push` seguro: [https://docs.github.com/es/authentication/connecting-to-github-with-ssh](https://docs.github.com/es/authentication/connecting-to-github-with-ssh)
+
 - **Docker Scout** — Herramienta de análisis de vulnerabilidades en imágenes Docker, siguiente paso en seguridad de contenedores: [https://docs.docker.com/scout/](https://docs.docker.com/scout/)

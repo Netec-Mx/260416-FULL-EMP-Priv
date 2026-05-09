@@ -1,22 +1,5 @@
 # Laboratorio 3. Proyecto Integrador — Backend Empresarial con Spring Boot y Maven
 
-<br/><br/>
-
-
-
-| **Duración** | 170 minutos |
-
-
-<br/>
-<br/>
-
-## Descripción General
-
-En este laboratorio construirás el backend empresarial del proyecto integrador del curso: un sistema de gestión de inventario de productos. Partiendo desde cero con Spring Initializr, crearás un proyecto Spring Boot 3.2 correctamente estructurado con Maven, implementarás una API REST completa con arquitectura en capas (Controller → Service → Repository → Model), aplicarás los patrones de diseño Facade y DTO para desacoplar la lógica de negocio de la capa de presentación, y escribirás pruebas unitarias con JUnit 5 y Mockito que validen el comportamiento de tus componentes.
-
-Este laboratorio representa el núcleo técnico del curso: todo lo que construyas aquí será la base sobre la que los laboratorios posteriores agregarán persistencia real con PostgreSQL y MongoDB, procesamiento por lotes con Spring Batch, y el frontend con Web Components y Lit. Es fundamental que lo completes con rigor, especialmente las pruebas unitarias, que son un entregable obligatorio.
-
-
 <br/>
 <br/>
 
@@ -101,7 +84,7 @@ Si Maven no está instalado globalmente, no te preocupes: el proyecto generado c
 
 ## Instrucciones 
 
-### Paso 1: Generar el Proyecto con Spring Initializr y Configurar el Repositorio Git
+### Paso 1. Generar el Proyecto con Spring Initializr y Configurar el Repositorio Git
 
 1. Abre tu navegador y navega a [https://start.spring.io](https://start.spring.io)
 
@@ -213,7 +196,7 @@ Al ejecutar `mvn validate` en la terminal del proyecto, Maven debe validar el `p
 <br/>
 <br/>
 
-### Paso 2: Revisar y Enriquecer el pom.xml
+### Paso 2. Revisar y Enriquecer el pom.xml
 
 1. Abre el archivo `pom.xml` en IntelliJ IDEA. Examina su estructura y localiza los siguientes elementos:
    - El bloque `<parent>` que hereda de `spring-boot-starter-parent`
@@ -384,7 +367,7 @@ Al ejecutar `mvn validate` en la terminal del proyecto, Maven debe validar el `p
 <br/>
 <br/>
 
-### Paso 3: Crear la Estructura de Paquetes y el Modelo de Dominio
+### Paso 3. Crear la Estructura de Paquetes y el Modelo de Dominio
 
 1. Crea la siguiente estructura de paquetes dentro de `src/main/java/com/empresa/inventario/`. En IntelliJ, haz clic derecho sobre el paquete base → **New → Package**:
 
@@ -596,7 +579,7 @@ Al compilar con `./mvnw compile`, no debe haber errores. La clase `Producto` deb
 <br/>
 <br/>
 
-### Paso 4: Implementar el Repositorio y la Capa de Servicio
+### Paso 4. Implementar el Repositorio y la Capa de Servicio
 
 1. Crea la interfaz `ProductoRepository` en el paquete `repository`:
 
@@ -902,7 +885,7 @@ Al ejecutar `./mvnw compile`, el proyecto debe compilar sin errores.
 <br/>
 <br/>
 
-### Paso 5: Implementar DTOs y el Patrón Facade
+### Paso 5. Implementar DTOs y el Patrón Facade
 
 1. Crea el DTO de request `CrearProductoRequest` en `dto/request/`:
 
@@ -1252,7 +1235,7 @@ Al ejecutar `./mvnw compile`, el proyecto debe compilar sin errores.
 <br/>
 <br/>
 
-### Paso 6: Implementar el Controlador REST y el Manejador Global de Errores
+### Paso 6. Implementar el Controlador REST y el Manejador Global de Errores
 
 1. Crea el manejador global de errores `GlobalExceptionHandler` en el paquete `exception/`:
 
@@ -1736,7 +1719,7 @@ Datos de prueba cargados: 5 productos
 <br/>
 
 
-### Paso 7: Escribir Pruebas Unitarias para la Capa de Servicio con JUnit 5 y Mockito
+### Paso 7. Escribir Pruebas Unitarias para la Capa de Servicio con JUnit 5 y Mockito
 
 1. Crea la clase de prueba `ProductoServiceImplTest` en `src/test/java/com/empresa/inventario/service/`:
 
@@ -2096,7 +2079,7 @@ Datos de prueba cargados: 5 productos
 <br/>
 
 
-### Paso 8: Escribir Pruebas de Controlador con MockMvc
+### Paso 8. Escribir Pruebas de Controlador con MockMvc
 
 1. Crea la clase de prueba `ProductoControllerTest` en `src/test/java/com/empresa/inventario/controller/`:
 
@@ -2415,7 +2398,7 @@ Datos de prueba cargados: 5 productos
 <br/>
 <br/>
 
-### Paso 9: Pruebas Manuales con Postman y Empaquetado Final
+### Paso 9. Pruebas Manuales con Postman y Empaquetado Final
 
 1. Inicia la aplicación:
 

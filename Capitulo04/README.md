@@ -1,38 +1,20 @@
 # Laboratorio 4. Proyecto Integrador — Procesamiento por Lotes con Spring Batch
 
-## Metadatos
-
-| Propiedad | Valor |
-|-----------|-------|
-| **Duración** | 180 minutos |
-| **Complejidad** | Difícil |
-| **Nivel Bloom** | Crear |
-| **Tecnologías Principales** | Java 17, Spring Boot 3.2.x, Spring Batch 5.x, PostgreSQL 16.x |
-| **Módulo** | Capítulo 4 — Spring Batch |
-
----
-
-## Descripción General
-
-En este laboratorio implementarás el módulo de procesamiento por lotes del proyecto integrador empresarial utilizando Spring Boot 3.2 y Spring Batch 5. Construirás un sistema completo de procesamiento batch que incluye un Job principal con tres Steps secuenciales (validación, procesamiento chunk-oriented y generación de reporte), un segundo Job con flujo condicional, políticas de tolerancia a fallos (skip y retry), persistencia del estado en PostgreSQL y endpoints REST para operar los jobs desde Postman.
-
-Este laboratorio refleja patrones reales de arquitectura empresarial donde los sistemas necesitan procesar grandes volúmenes de datos de forma confiable, recuperarse de fallos parciales y ofrecer visibilidad del estado de ejecución a través de APIs. Al completarlo, habrás construido un módulo de producción que puede integrarse directamente en cualquier aplicación Spring Boot empresarial.
-
----
+<br/><br/>
 
 ## Objetivos 
 
 Al completar este laboratorio, serás capaz de:
 
-- [ ] Diseñar e implementar un Job de Spring Batch con múltiples Steps secuenciales usando configuración Java moderna (Spring Boot 3.2 / Spring Batch 5)
-- [ ] Implementar el patrón Chunk-oriented con `FlatFileItemReader`, `ItemProcessor` personalizado y `JdbcBatchItemWriter` para transformar datos de un archivo CSV hacia PostgreSQL
-- [ ] Desarrollar `Tasklet`s para operaciones atómicas como validación de entorno y generación de reportes de resumen
-- [ ] Aplicar políticas de skip y retry con backoff exponencial para garantizar resiliencia en el procesamiento batch
-- [ ] Utilizar `ExecutionContext` a nivel de Job para compartir métricas entre Steps y soportar reinicio desde el punto de falla
-- [ ] Exponer endpoints REST con Spring MVC para lanzar Jobs, consultar estado de ejecución y listar ejecuciones históricas
-- [ ] Configurar `JobRepository` con PostgreSQL para persistir metadata de ejecución de forma durable
+- Diseñar e implementar un Job de Spring Batch con múltiples Steps secuenciales usando configuración Java moderna (Spring Boot 3.2 / Spring Batch 5)
+- Implementar el patrón Chunk-oriented con `FlatFileItemReader`, `ItemProcessor` personalizado y `JdbcBatchItemWriter` para transformar datos de un archivo CSV hacia PostgreSQL
+- Desarrollar `Tasklet`s para operaciones atómicas como validación de entorno y generación de reportes de resumen
+- Aplicar políticas de skip y retry con backoff exponencial para garantizar resiliencia en el procesamiento batch
+- Utilizar `ExecutionContext` a nivel de Job para compartir métricas entre Steps y soportar reinicio desde el punto de falla
+- Exponer endpoints REST con Spring MVC para lanzar Jobs, consultar estado de ejecución y listar ejecuciones históricas
+- Configurar `JobRepository` con PostgreSQL para persistir metadata de ejecución de forma durable
 
----
+<br/><br/>
 
 ## Prerrequisitos
 
@@ -46,6 +28,8 @@ Al completar este laboratorio, serás capaz de:
 - PostgreSQL: creación de bases de datos y ejecución de scripts SQL
 - Haber completado el Laboratorio 2 o tener acceso a la rama Git de solución para conocer el dominio de datos
 
+<br/>
+
 ### Acceso Requerido
 
 - PostgreSQL 16 corriendo localmente o vía Docker en puerto 5432
@@ -53,23 +37,15 @@ Al completar este laboratorio, serás capaz de:
 - Postman 11.x o extensión Thunder Client en VS Code
 - Acceso a internet para descarga de dependencias Maven (primera ejecución)
 
----
+<br/><br/>
 
 ## Entorno de Laboratorio
 
-### Requisitos de Hardware
-
-| Componente | Especificación |
-|------------|----------------|
-| **Procesador** | Intel Core i5 8va gen o AMD Ryzen 5 (con virtualización) |
-| **Memoria RAM** | Mínimo 16 GB DDR4 (recomendado para PostgreSQL + Spring Boot) |
-| **Almacenamiento** | Mínimo 5 GB libres para dependencias Maven y datos de prueba |
-| **Pantalla** | 1920x1080 para trabajar con IDE y terminal simultáneamente |
 
 ### Requisitos de Software
 
 | Software | Versión | Propósito |
-|----------|---------|-----------|
+|<br/><br/><br/><br/><br/><br/>-|<br/><br/><br/><br/><br/><br/>|<br/><br/><br/><br/><br/><br/>--|
 | Java JDK | 17 LTS | Compilación y ejecución del proyecto |
 | Apache Maven | 3.9.x | Gestión de dependencias y build |
 | Spring Boot | 3.2.x | Framework base de la aplicación |
@@ -78,6 +54,9 @@ Al completar este laboratorio, serás capaz de:
 | IntelliJ IDEA | 2024.1 Community o Ultimate | IDE principal |
 | Postman | 11.x | Prueba de endpoints REST |
 | Docker Desktop | 4.29+ | Alternativa para PostgreSQL (opcional) |
+
+
+<br/>
 
 ### Configuración Inicial del Entorno
 
@@ -102,6 +81,8 @@ GRANT ALL PRIVILEGES ON DATABASE empresa_batch_db TO batch_user;
 GRANT ALL ON SCHEMA public TO batch_user;
 ```
 
+<br/>
+
 #### Opción B — PostgreSQL vía Docker (recomendado si no tienes instalación local)
 
 ```bash
@@ -122,6 +103,8 @@ docker ps | grep postgres-batch
 docker exec -it postgres-batch psql -U batch_user -d empresa_batch_db -c "SELECT version();"
 ```
 
+<br/>
+
 #### Verificación del JDK
 
 ```bash
@@ -132,17 +115,16 @@ mvn -version
 # Debe mostrar: Apache Maven 3.9.x
 ```
 
----
+<br/><br/>
 
 ## Instrucciones 
 
-### Paso 1: Crear el Proyecto Spring Boot con Spring Batch
-
-**Objetivo:** Generar la estructura base del proyecto con todas las dependencias necesarias para Spring Batch 5, PostgreSQL y Spring MVC.
-
-**Instrucciones:**
+### Paso 1. Crear el Proyecto Spring Boot con Spring Batch
 
 1. Abre el navegador y navega a [https://start.spring.io](https://start.spring.io)
+
+
+<br/>
 
 2. Configura el proyecto con los siguientes valores:
    - **Project:** Maven
@@ -156,6 +138,9 @@ mvn -version
    - **Packaging:** Jar
    - **Java:** 17
 
+
+<br/>
+
 3. Agrega las siguientes dependencias:
    - Spring Batch
    - Spring Web
@@ -164,6 +149,9 @@ mvn -version
    - Lombok
    - Spring Boot Actuator
    - H2 Database (para tests)
+
+
+<br/>
 
 4. Haz clic en **GENERATE**, descarga el ZIP y extráelo en tu directorio de trabajo:
 
@@ -179,6 +167,9 @@ Expand-Archive -Path batch-processor.zip -DestinationPath .
 cd batch-processor
 ```
 
+
+<br/>
+
 5. Abre el proyecto en IntelliJ IDEA:
 
 ```bash
@@ -190,7 +181,13 @@ idea .
 idea64.exe .
 ```
 
+
+<br/>
+
 6. Espera a que Maven descargue las dependencias (primera vez puede tomar 3-5 minutos). Verifica en la barra inferior de IntelliJ que el índice se complete.
+
+
+<br/>
 
 7. Verifica el `pom.xml` generado. Debe contener estas dependencias clave:
 
@@ -299,15 +296,21 @@ idea64.exe .
 </project>
 ```
 
+
+<br/>
+
 **Salida Esperada:**
 
 ```
 BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
+[INFO] <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 [INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
+[INFO] <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 [INFO] Total time: XX.XXX s
 ```
+
+
+<br/>
 
 **Verificación:**
 
@@ -315,13 +318,10 @@ BUILD SUCCESS
 - La clase `BatchProcessorApplication.java` existe en `src/main/java/com/empresa/batch/`
 - Maven muestra BUILD SUCCESS al ejecutar `mvn validate`
 
----
+<br/><br/>
 
-### Paso 2: Configurar application.properties y Estructura de Paquetes
+### Paso 2. Configurar application.properties y Estructura de Paquetes
 
-**Objetivo:** Configurar la conexión a PostgreSQL, el comportamiento de Spring Batch y crear la estructura de paquetes del proyecto.
-
-**Instrucciones:**
 
 1. Abre el archivo `src/main/resources/application.properties` y reemplaza su contenido completo:
 
@@ -376,6 +376,9 @@ logging.level.org.springframework.batch=INFO
 logging.level.org.springframework.batch.core.step=DEBUG
 ```
 
+
+<br/>
+
 2. Crea la estructura de paquetes del proyecto. En IntelliJ, haz clic derecho sobre `com.empresa.batch` y crea los siguientes sub-paquetes:
 
 ```
@@ -406,6 +409,9 @@ $baseDir = "src\main\java\com\empresa\batch"
 }
 New-Item -ItemType Directory -Path "src\main\resources\data" -Force
 ```
+
+
+<br/>
 
 3. Crea el archivo SQL para el esquema de negocio en `src/main/resources/schema-negocio.sql`:
 
@@ -455,6 +461,9 @@ CREATE TABLE IF NOT EXISTS batch_reportes (
 );
 ```
 
+
+<br/>
+
 4. Ejecuta el script SQL en PostgreSQL:
 
 ```bash
@@ -468,6 +477,9 @@ psql -h localhost -U batch_user -d empresa_batch_db -f src/main/resources/schema
 docker exec -i postgres-batch psql -U batch_user -d empresa_batch_db < src/main/resources/schema-negocio.sql
 ```
 
+
+<br/>
+
 **Salida Esperada:**
 
 ```
@@ -476,19 +488,19 @@ CREATE TABLE
 CREATE TABLE
 ```
 
+
+<br/>
+
 **Verificación:**
 
 - El archivo `application.properties` está guardado sin errores de sintaxis
 - Los tres paquetes base existen en el explorador de IntelliJ
 - Las tablas `empleados`, `empleados_procesados` y `batch_reportes` existen en PostgreSQL
 
----
+<br/><br/>
 
-### Paso 3: Crear el Dominio de Datos y el Archivo CSV de Prueba
+### Paso 3. Crear el Dominio de Datos y el Archivo CSV de Prueba
 
-**Objetivo:** Definir las clases del dominio (entidades JPA y DTOs) y crear el archivo CSV que servirá como fuente de datos para el procesamiento batch.
-
-**Instrucciones:**
 
 1. Crea la entidad `Empleado` en `src/main/java/com/empresa/batch/domain/Empleado.java`:
 
@@ -554,6 +566,9 @@ public class Empleado {
 }
 ```
 
+
+<br/>
+
 2. Crea el DTO para lectura del CSV en `src/main/java/com/empresa/batch/domain/EmpleadoCsvDto.java`:
 
 ```java
@@ -583,6 +598,9 @@ public class EmpleadoCsvDto {
     private String activo;
 }
 ```
+
+
+<br/>
 
 3. Crea el DTO para el resultado del procesamiento en `src/main/java/com/empresa/batch/domain/EmpleadoProcesado.java`:
 
@@ -632,6 +650,9 @@ public class EmpleadoProcesado {
 }
 ```
 
+
+<br/>
+
 4. Crea el DTO de respuesta para la API REST en `src/main/java/com/empresa/batch/domain/JobStatusDto.java`:
 
 ```java
@@ -660,6 +681,9 @@ public class JobStatusDto {
 }
 ```
 
+
+<br/>
+
 5. Crea el archivo CSV de datos de prueba en `src/main/resources/data/empleados.csv`:
 
 ```csv
@@ -686,7 +710,13 @@ Raúl,Medina,raul.medina@empresa.com,Tecnología,69000.00,2017-04-22,true
 Beatriz,Castro,beatriz.castro@empresa.com,Recursos Humanos,47000.00,2022-08-30,true
 ```
 
+
+<br/>
+
 > **Nota:** Los registros con `INVALIDO` y `DATO_CORRUPTO` en el campo salario son intencionales. Servirán para probar la política de skip configurada en el Paso 6.
+
+
+<br/>
 
 **Salida Esperada:**
 
@@ -696,19 +726,18 @@ Al compilar el proyecto en IntelliJ (`Ctrl+F9` o `Cmd+F9`), debe mostrar:
 BUILD SUCCESSFUL in Xs
 ```
 
+
+<br/>
+
 **Verificación:**
 
 - Las clases `Empleado`, `EmpleadoCsvDto`, `EmpleadoProcesado` y `JobStatusDto` compilan sin errores
 - El archivo `empleados.csv` tiene exactamente 21 líneas (1 encabezado + 20 datos)
 - Verifica con: `wc -l src/main/resources/data/empleados.csv` (Linux/macOS) o `(Get-Content src\main\resources\data\empleados.csv).Count` (Windows)
 
----
+<br/><br/>
 
-### Paso 4: Implementar el ItemReader, ItemProcessor y Tasklets
-
-**Objetivo:** Crear los componentes de lectura, transformación y las tareas atómicas (Tasklets) que conformarán los Steps del Job principal.
-
-**Instrucciones:**
+### Paso 4. Implementar el ItemReader, ItemProcessor y Tasklets
 
 1. Crea el `ItemProcessor` personalizado en `src/main/java/com/empresa/batch/processor/EmpleadoItemProcessor.java`:
 
@@ -824,6 +853,9 @@ public class EmpleadoItemProcessor implements ItemProcessor<EmpleadoCsvDto, Empl
 }
 ```
 
+
+<br/>
+
 2. Crea el Tasklet de validación inicial en `src/main/java/com/empresa/batch/tasklet/ValidacionInicialTasklet.java`:
 
 ```java
@@ -905,6 +937,9 @@ public class ValidacionInicialTasklet implements Tasklet {
 }
 ```
 
+
+<br/>
+
 3. Crea el Tasklet de generación de reporte en `src/main/java/com/empresa/batch/tasklet/GeneracionReporteTasklet.java`:
 
 ```java
@@ -967,7 +1002,7 @@ public class GeneracionReporteTasklet implements Tasklet {
         String timestampInicio = jobContext.containsKey("timestampInicio") 
             ? jobContext.getString("timestampInicio") : "N/A";
 
-        log.info("--- Resumen de Ejecución ---");
+        log.info("<br/><br/> Resumen de Ejecución <br/><br/>");
         log.info("Job: {}", jobName);
         log.info("Job Execution ID: {}", jobExecutionId);
         log.info("Registros leídos:      {}", totalLeidos);
@@ -1009,6 +1044,9 @@ public class GeneracionReporteTasklet implements Tasklet {
 }
 ```
 
+
+<br/>
+
 **Salida Esperada:**
 
 El proyecto compila sin errores. En IntelliJ, la pestaña "Build" muestra:
@@ -1018,19 +1056,18 @@ BUILD SUCCESSFUL
 3 files compiled
 ```
 
+
+<br/>
+
 **Verificación:**
 
 - `EmpleadoItemProcessor` implementa correctamente `ItemProcessor<EmpleadoCsvDto, Empleado>`
 - `ValidacionInicialTasklet` e `GeneracionReporteTasklet` implementan `Tasklet`
 - Ninguna clase tiene errores de compilación (sin líneas rojas en IntelliJ)
 
----
+<br/><br/>
 
-### Paso 5: Implementar el JobExecutionListener y StepExecutionListener
-
-**Objetivo:** Crear listeners que capturen métricas de ejecución y las almacenen en el `ExecutionContext` para compartirlas entre Steps.
-
-**Instrucciones:**
+### Paso 5. Implementar el JobExecutionListener y StepExecutionListener
 
 1. Crea el listener de Job en `src/main/java/com/empresa/batch/listener/EmpleadosJobListener.java`:
 
@@ -1082,6 +1119,9 @@ public class EmpleadosJobListener implements JobExecutionListener {
 }
 ```
 
+
+<br/>
+
 2. Crea el listener de Step en `src/main/java/com/empresa/batch/listener/EmpleadosStepListener.java`:
 
 ```java
@@ -1104,12 +1144,12 @@ public class EmpleadosStepListener implements StepExecutionListener {
 
     @Override
     public void beforeStep(StepExecution stepExecution) {
-        log.info("--- Iniciando Step: {} ---", stepExecution.getStepName());
+        log.info("<br/><br/> Iniciando Step: {} <br/><br/>", stepExecution.getStepName());
     }
 
     @Override
     public ExitStatus afterStep(StepExecution stepExecution) {
-        log.info("--- Finalizando Step: {} ---", stepExecution.getStepName());
+        log.info("<br/><br/> Finalizando Step: {} <br/><br/>", stepExecution.getStepName());
         log.info("    Leídos:     {}", stepExecution.getReadCount());
         log.info("    Procesados: {}", stepExecution.getWriteCount());
         log.info("    Saltados:   {}", stepExecution.getSkipCount());
@@ -1134,9 +1174,15 @@ public class EmpleadosStepListener implements StepExecutionListener {
 }
 ```
 
+
+<br/>
+
 **Salida Esperada:**
 
 Compilación exitosa. Las dos clases listener están disponibles como beans de Spring.
+
+
+<br/>
 
 **Verificación:**
 
@@ -1144,13 +1190,9 @@ Compilación exitosa. Las dos clases listener están disponibles como beans de S
 - `EmpleadosStepListener` implementa `StepExecutionListener`
 - Ambas clases tienen la anotación `@Component` y son detectadas por Spring
 
----
+<br/><br/>
 
-### Paso 6: Configurar el Job Principal con Tres Steps y Políticas de Tolerancia a Fallos
-
-**Objetivo:** Crear la configuración central del Job principal (`procesarEmpleadosJob`) con los tres Steps secuenciales, el FlatFileItemReader, el JdbcBatchItemWriter, y las políticas de skip y retry.
-
-**Instrucciones:**
+### Paso 6. Configurar el Job Principal con Tres Steps y Políticas de Tolerancia a Fallos
 
 1. Crea la clase de configuración del Job en `src/main/java/com/empresa/batch/config/EmpleadosJobConfig.java`:
 
@@ -1339,9 +1381,15 @@ public class EmpleadosJobConfig {
 }
 ```
 
+
+<br/>
+
 **Salida Esperada:**
 
 IntelliJ muestra el proyecto compilado sin errores. En la vista "Spring" del IDE, debes ver el bean `procesarEmpleadosJob` registrado.
+
+
+<br/>
 
 **Verificación:**
 
@@ -1354,13 +1402,10 @@ mvn compile
 # Debe mostrar: BUILD SUCCESS
 ```
 
----
+<br/><br/>
 
-### Paso 7: Implementar el Segundo Job con Flujo Condicional
+### Paso 7. Implementar el Segundo Job con Flujo Condicional
 
-**Objetivo:** Crear un segundo Job que demuestre el uso de `JobExecutionDecider` para tomar decisiones de flujo condicional basadas en el resultado de un Step.
-
-**Instrucciones:**
 
 1. Crea el Decider en `src/main/java/com/empresa/batch/config/EmpleadosJobDecider.java`:
 
@@ -1416,6 +1461,9 @@ public class EmpleadosJobDecider implements JobExecutionDecider {
 }
 ```
 
+
+<br/>
+
 2. Crea los Tasklets para las rutas condicionales en `src/main/java/com/empresa/batch/tasklet/NotificacionExitoTasklet.java`:
 
 ```java
@@ -1443,7 +1491,7 @@ public class NotificacionExitoTasklet implements Tasklet {
             .getStepExecution().getJobExecution()
             .getExecutionContext().getInt("totalEscritos");
         
-        log.info("✅ NOTIFICACIÓN DE ÉXITO: Procesamiento completado sin errores.");
+        log.info("NOTIFICACIÓN DE ÉXITO: Procesamiento completado sin errores.");
         log.info("   Total de empleados procesados: {}", totalEscritos);
         log.info("   [SIMULACIÓN] Email enviado a: operaciones@empresa.com");
         
@@ -1451,6 +1499,9 @@ public class NotificacionExitoTasklet implements Tasklet {
     }
 }
 ```
+
+
+<br/>
 
 3. Crea `src/main/java/com/empresa/batch/tasklet/NotificacionErrorTasklet.java`:
 
@@ -1479,7 +1530,7 @@ public class NotificacionErrorTasklet implements Tasklet {
             .getStepExecution().getJobExecution()
             .getExecutionContext().getInt("totalSaltados");
         
-        log.warn("⚠️  NOTIFICACIÓN DE ADVERTENCIA: Procesamiento completado con errores.");
+        log.warn("  NOTIFICACIÓN DE ADVERTENCIA: Procesamiento completado con errores.");
         log.warn("   Registros saltados por datos inválidos: {}", totalSaltados);
         log.warn("   [SIMULACIÓN] Alerta enviada a: calidad-datos@empresa.com");
         log.warn("   Revisar archivo de log para detalles de registros saltados.");
@@ -1488,6 +1539,9 @@ public class NotificacionErrorTasklet implements Tasklet {
     }
 }
 ```
+
+
+<br/>
 
 4. Crea la configuración del segundo Job en `src/main/java/com/empresa/batch/config/EmpleadosCondicionalJobConfig.java`:
 
@@ -1602,6 +1656,9 @@ public class EmpleadosCondicionalJobConfig {
 }
 ```
 
+
+<br/>
+
 **Salida Esperada:**
 
 ```bash
@@ -1609,19 +1666,19 @@ mvn compile
 # [INFO] BUILD SUCCESS
 ```
 
+
+<br/>
+
 **Verificación:**
 
 - El `EmpleadosJobDecider` implementa `JobExecutionDecider`
 - Los tres Tasklets de notificación compilan correctamente
 - El flujo condicional en `procesarEmpleadosCondicionalJob` referencia correctamente los tres estados del Decider
 
----
+<br/><br/>
 
-### Paso 8: Crear los Endpoints REST para Operar los Jobs
+### Paso 8. Crear los Endpoints REST para Operar los Jobs
 
-**Objetivo:** Exponer una API REST con Spring MVC que permita lanzar Jobs, consultar su estado y listar el historial de ejecuciones.
-
-**Instrucciones:**
 
 1. Crea el servicio de Jobs en `src/main/java/com/empresa/batch/service/BatchJobService.java`:
 
@@ -1769,6 +1826,9 @@ public class BatchJobService {
 }
 ```
 
+
+<br/>
+
 2. Crea el controlador REST en `src/main/java/com/empresa/batch/controller/BatchJobController.java`:
 
 ```java
@@ -1871,6 +1931,9 @@ public class BatchJobController {
 }
 ```
 
+
+<br/>
+
 3. Configura CORS para desarrollo local. Crea `src/main/java/com/empresa/batch/config/WebConfig.java`:
 
 ```java
@@ -1883,7 +1946,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * Configuración de CORS para desarrollo local.
  * 
- * ⚠️ ADVERTENCIA: Esta configuración es SOLO para desarrollo.
+ * ADVERTENCIA: Esta configuración es SOLO para desarrollo.
  * En producción, reemplazar allowedOrigins("*") por los dominios
  * específicos de la aplicación frontend.
  */
@@ -1901,6 +1964,9 @@ public class WebConfig implements WebMvcConfigurer {
 }
 ```
 
+
+<br/>
+
 **Salida Esperada:**
 
 ```bash
@@ -1909,19 +1975,19 @@ mvn compile
 # [INFO] 8 source files compiled
 ```
 
+
+<br/>
+
 **Verificación:**
 
 - `BatchJobService` y `BatchJobController` compilan sin errores
 - El controlador tiene los 5 endpoints mapeados correctamente
 - No hay imports sin resolver en ninguna clase
 
----
+<br/><br/>
 
-### Paso 9: Ejecutar la Aplicación y Probar los Endpoints
+### Paso 9. Ejecutar la Aplicación y Probar los Endpoints
 
-**Objetivo:** Iniciar la aplicación Spring Boot, verificar que Spring Batch inicializa su schema en PostgreSQL y probar todos los endpoints REST con Postman.
-
-**Instrucciones:**
 
 1. Ejecuta la aplicación desde IntelliJ o desde la terminal:
 
@@ -1934,6 +2000,9 @@ mvn clean package -DskipTests
 java -jar target/batch-processor-0.0.1-SNAPSHOT.jar
 ```
 
+
+<br/>
+
 2. Verifica en los logs de inicio que Spring Batch inicializó correctamente su schema:
 
 ```
@@ -1942,6 +2011,9 @@ INFO  o.s.b.c.r.s.JobRepositoryFactoryBean - No database type set, using meta da
 INFO  o.s.b.c.l.support.SimpleJobLauncher - No TaskExecutor has been set, defaulting to synchronous executor.
 INFO  com.empresa.batch.BatchProcessorApplication - Started BatchProcessorApplication in X.XXX seconds
 ```
+
+
+<br/>
 
 3. Verifica en PostgreSQL que las tablas de metadata de Spring Batch fueron creadas:
 
@@ -1952,7 +2024,7 @@ psql -h localhost -U batch_user -d empresa_batch_db -c "\dt"
 Debes ver tablas como:
 ```
  Schema |             Name              | Type  |   Owner    
---------+-------------------------------+-------+------------
+<br/><br/><br/><br/>--+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>-+<br/><br/><br/><br/>-+<br/><br/><br/><br/><br/><br/><br/><br/>
  public | batch_job_execution           | table | batch_user
  public | batch_job_execution_context   | table | batch_user
  public | batch_job_execution_params    | table | batch_user
@@ -1967,7 +2039,13 @@ Debes ver tablas como:
  public | empleados_procesados          | table | batch_user
 ```
 
+
+<br/>
+
 4. Abre Postman y crea una nueva colección llamada **"Spring Batch - Proyecto Integrador"**.
+
+
+<br/>
 
 5. **Prueba 1:** Lista los Jobs registrados:
 
@@ -1986,6 +2064,9 @@ Respuesta esperada:
     "descripcion": "Jobs registrados en el JobRepository de Spring Batch"
 }
 ```
+
+
+<br/>
 
 6. **Prueba 2:** Lanza el Job principal:
 
@@ -2015,11 +2096,17 @@ Respuesta esperada (HTTP 202 Accepted):
 }
 ```
 
+
+<br/>
+
 7. **Prueba 3:** Consulta el estado de la ejecución (usa el `jobExecutionId` de la respuesta anterior):
 
 ```
 GET http://localhost:8080/api/batch/jobs/ejecuciones/1
 ```
+
+
+<br/>
 
 8. **Prueba 4:** Lista el historial del Job principal:
 
@@ -2027,12 +2114,18 @@ GET http://localhost:8080/api/batch/jobs/ejecuciones/1
 GET http://localhost:8080/api/batch/jobs/procesarEmpleadosJob/historial
 ```
 
+
+<br/>
+
 9. **Prueba 5:** Lanza el Job condicional:
 
 ```
 POST http://localhost:8080/api/batch/jobs/empleados-condicional/ejecutar
 Content-Type: application/json
 ```
+
+
+<br/>
 
 10. Verifica en PostgreSQL que los datos fueron insertados correctamente:
 
@@ -2047,6 +2140,9 @@ psql -h localhost -U batch_user -d empresa_batch_db -c \
   "SELECT job_name, total_leidos, total_escritos, total_saltados, estado FROM batch_reportes;"
 ```
 
+
+<br/>
+
 **Salida Esperada en los Logs:**
 
 ```
@@ -2055,10 +2151,10 @@ INFO  c.e.b.listener.EmpleadosJobListener - ║     INICIANDO JOB: procesarEmple
 INFO  c.e.b.tasklet.ValidacionInicialTasklet - === STEP 1: Iniciando validación del entorno batch ===
 INFO  c.e.b.tasklet.ValidacionInicialTasklet - Archivo encontrado. Tamaño: XXXX bytes
 INFO  c.e.b.tasklet.ValidacionInicialTasklet - === STEP 1: Validación completada exitosamente ===
-INFO  c.e.b.listener.EmpleadosStepListener - --- Iniciando Step: stepProcesarEmpleados ---
+INFO  c.e.b.listener.EmpleadosStepListener - <br/><br/> Iniciando Step: stepProcesarEmpleados <br/><br/>
 WARN  c.e.b.processor.EmpleadoItemProcessor - Formato de salario inválido 'INVALIDO' para empleado: Fernando Jiménez
 WARN  c.e.b.processor.EmpleadoItemProcessor - Formato de salario inválido 'DATO_CORRUPTO' para empleado: Sofía Herrera
-INFO  c.e.b.listener.EmpleadosStepListener - --- Finalizando Step: stepProcesarEmpleados ---
+INFO  c.e.b.listener.EmpleadosStepListener - <br/><br/> Finalizando Step: stepProcesarEmpleados <br/><br/>
 INFO  c.e.b.listener.EmpleadosStepListener -     Leídos:     20
 INFO  c.e.b.listener.EmpleadosStepListener -     Procesados: 18
 INFO  c.e.b.listener.EmpleadosStepListener -     Saltados:   2
@@ -2068,6 +2164,9 @@ INFO  c.e.b.tasklet.GeneracionReporteTasklet - Registros escritos:    18
 INFO  c.e.b.tasklet.GeneracionReporteTasklet - Registros saltados:    2
 ```
 
+
+<br/>
+
 **Verificación:**
 
 - La aplicación arranca sin errores en el puerto 8080
@@ -2076,13 +2175,9 @@ INFO  c.e.b.tasklet.GeneracionReporteTasklet - Registros saltados:    2
 - Se insertan 18 registros en la tabla `empleados` (20 del CSV menos 2 con datos inválidos)
 - Se registra 1 fila en `batch_reportes` con los totales correctos
 
----
+<br/><br/>
 
-### Paso 10: Escribir Pruebas Unitarias para el Processor y los Tasklets
-
-**Objetivo:** Implementar pruebas unitarias obligatorias para los componentes clave del módulo batch: el `EmpleadoItemProcessor` y el `ValidacionInicialTasklet`.
-
-**Instrucciones:**
+### Paso 10. Escribir Pruebas Unitarias para el Processor y los Tasklets
 
 1. Crea el archivo de pruebas para el Processor en `src/test/java/com/empresa/batch/processor/EmpleadoItemProcessorTest.java`:
 
@@ -2245,6 +2340,9 @@ class EmpleadoItemProcessorTest {
 }
 ```
 
+
+<br/>
+
 2. Crea las pruebas para el Tasklet de validación en `src/test/java/com/empresa/batch/tasklet/ValidacionInicialTaskletTest.java`:
 
 ```java
@@ -2345,6 +2443,9 @@ class ValidacionInicialTaskletTest {
 }
 ```
 
+
+<br/>
+
 3. Crea el archivo de configuración de pruebas en `src/test/resources/application-test.properties`:
 
 ```properties
@@ -2366,27 +2467,36 @@ logging.level.com.empresa.batch=DEBUG
 logging.level.org.springframework.batch=WARN
 ```
 
+
+<br/>
+
 4. Ejecuta las pruebas:
 
 ```bash
 mvn test
 ```
 
+
+<br/>
+
 **Salida Esperada:**
 
 ```
-[INFO] -------------------------------------------------------
+[INFO] <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>-
 [INFO]  T E S T S
-[INFO] -------------------------------------------------------
+[INFO] <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>-
 [INFO] Running com.empresa.batch.processor.EmpleadoItemProcessorTest
 [INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0
 [INFO] Running com.empresa.batch.tasklet.ValidacionInicialTaskletTest
 [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
-[INFO] -------------------------------------------------------
+[INFO] <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>-
 [INFO] Results:
 [INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0
 [INFO] BUILD SUCCESS
 ```
+
+
+<br/>
 
 **Verificación:**
 
@@ -2395,7 +2505,7 @@ mvn test
 - Las pruebas del Processor cubren los 3 departamentos con diferentes porcentajes de aumento
 - Las pruebas del Tasklet verifican tanto el caso exitoso como el caso de error
 
----
+<br/><br/>
 
 ## Validación y Pruebas
 
@@ -2413,55 +2523,103 @@ mvn test
 - [ ] Todas las 12 pruebas unitarias pasan con `mvn test`
 - [ ] Los logs muestran la secuencia correcta: Step 1 → Step 2 → Step 3
 
+
+<br/>
+<br/>
+
 ### Procedimiento de Pruebas
 
 1. **Verificar el estado de la base de datos antes de ejecutar:**
    ```bash
    psql -h localhost -U batch_user -d empresa_batch_db -c "SELECT COUNT(*) FROM empleados;"
    ```
+
+
+<br/>
+
    **Resultado Esperado:** `count = 0` (tabla vacía antes del primer Job)
+
+
+<br/>
 
 2. **Lanzar el Job principal y verificar respuesta:**
    ```bash
    curl -X POST http://localhost:8080/api/batch/jobs/empleados/ejecutar \
      -H "Content-Type: application/json"
    ```
+
+<br/>
+
    **Resultado Esperado:** HTTP 202 con `"status": "COMPLETED"` y `"totalEscritos": 18`
+
+
+<br/>
 
 3. **Verificar datos insertados en PostgreSQL:**
    ```bash
    psql -h localhost -U batch_user -d empresa_batch_db \
      -c "SELECT departamento, COUNT(*), AVG(salario) FROM empleados GROUP BY departamento ORDER BY departamento;"
    ```
+
+
+<br/>
+
    **Resultado Esperado:** 4 filas con los departamentos Finanzas, Marketing, Recursos Humanos y Tecnología
+
+
+<br/>
 
 4. **Verificar que los salarios tienen el aumento aplicado (Tecnología debe tener +8%):**
    ```bash
    psql -h localhost -U batch_user -d empresa_batch_db \
      -c "SELECT nombre, apellido, salario FROM empleados WHERE departamento = 'Tecnología' ORDER BY apellido;"
    ```
+
+
+<br/>
+
    **Resultado Esperado:** Los salarios de Tecnología deben ser 8% mayores que los valores originales del CSV
+
+
+<br/>
 
 5. **Consultar el reporte generado:**
    ```bash
    psql -h localhost -U batch_user -d empresa_batch_db \
      -c "SELECT * FROM batch_reportes ORDER BY created_at DESC LIMIT 1;"
    ```
+
+
+<br/>
+
    **Resultado Esperado:** `total_leidos=20, total_escritos=18, total_saltados=2, estado='COMPLETADO'`
 
+
+<br/>
+
 6. **Verificar historial de ejecuciones:**
+
    ```bash
    curl http://localhost:8080/api/batch/jobs/procesarEmpleadosJob/historial
    ```
+
+
+<br/>
+
    **Resultado Esperado:** Array JSON con al menos 1 ejecución en estado `COMPLETED`
 
+
 7. **Ejecutar todas las pruebas unitarias:**
+
    ```bash
    mvn test -Dspring.profiles.active=test
    ```
+
+<br/>
+
    **Resultado Esperado:** `Tests run: 12, Failures: 0, Errors: 0`
 
----
+<br/><br/>
 
 ## Solución de Problemas
 
@@ -2475,10 +2633,16 @@ mvn test
   ```
 - IntelliJ muestra `APPLICATION FAILED TO START`
 
+
+<br/>
 **Causa:**
-PostgreSQL no está corriendo en el puerto 5432, o las credenciales en `application.properties` no coinciden con las del servidor.
+- PostgreSQL no está corriendo en el puerto 5432, o las credenciales en `application.properties` no coinciden con las del servidor.
+
+
+<br/>
 
 **Solución:**
+
 ```bash
 # Verificar si PostgreSQL está corriendo (Linux/macOS)
 pg_isready -h localhost -p 5432
@@ -2498,7 +2662,7 @@ psql -h localhost -p 5432 -U batch_user -d empresa_batch_db
 net start postgresql-x64-16
 ```
 
----
+<br/><br/>
 
 ### Problema 2: Spring Batch Lanza el Job Automáticamente al Iniciar
 
@@ -2506,14 +2670,22 @@ net start postgresql-x64-16
 - Al arrancar la aplicación, el Job se ejecuta inmediatamente sin haber llamado al endpoint REST
 - Los logs muestran el Job iniciando durante el startup de Spring Boot
 
+
+<br/>
+
 **Causa:**
-La propiedad `spring.batch.job.enabled` no está configurada como `false` en `application.properties`. En Spring Boot 3.x con Spring Batch 5, el comportamiento por defecto puede variar según la versión.
+- La propiedad `spring.batch.job.enabled` no está configurada como `false` en `application.properties`. En Spring Boot 3.x con Spring Batch 5, el comportamiento por defecto puede variar según la versión.
+
+
+<br/>
 
 **Solución:**
+
 ```properties
 # Agregar o verificar en src/main/resources/application.properties:
 spring.batch.job.enabled=false
 ```
+
 
 ```bash
 # Reiniciar la aplicación después del cambio:
@@ -2521,7 +2693,7 @@ spring.batch.job.enabled=false
 mvn spring-boot:run
 ```
 
----
+<br/><br/>
 
 ### Problema 3: Error `JobInstanceAlreadyCompleteException` al Relanzar el Job
 
@@ -2529,8 +2701,14 @@ mvn spring-boot:run
 - Al llamar al endpoint `POST /api/batch/jobs/empleados/ejecutar` por segunda vez, la aplicación retorna HTTP 500
 - Los logs muestran: `JobInstanceAlreadyCompleteException: A job instance already exists and is complete for identifying parameters`
 
+
+<br/>
+
 **Causa:**
-Spring Batch identifica las instancias de Job por sus parámetros. Si se usan los mismos parámetros en dos ejecuciones, Spring Batch considera que ya fue completado y rechaza el reintento. El `BatchJobService` ya incluye un timestamp único, pero si el timestamp tiene la misma resolución de segundos, puede colisionar.
+- Spring Batch identifica las instancias de Job por sus parámetros. Si se usan los mismos parámetros en dos ejecuciones, - Spring Batch considera que ya fue completado y rechaza el reintento. El `BatchJobService` ya incluye un timestamp único, pero si el timestamp tiene la misma resolución de segundos, puede colisionar.
+
+
+<br/>
 
 **Solución:**
 El `BatchJobService` ya usa `LocalDateTime.now()` que incluye nanosegundos. Si el problema persiste, agrega un UUID adicional:
@@ -2544,7 +2722,7 @@ JobParameters params = new JobParametersBuilder()
     .toJobParameters();
 ```
 
----
+<br/><br/>
 
 ### Problema 4: El Skip No Funciona y el Job Falla con `IllegalArgumentException`
 
@@ -2553,8 +2731,14 @@ JobParameters params = new JobParametersBuilder()
 - Los logs muestran: `Caused by: java.lang.IllegalArgumentException: Formato de salario inválido`
 - El estado del Job es `FAILED` en lugar de `COMPLETED`
 
+
+<br/>
+
 **Causa:**
-La política de skip no está configurada correctamente en el Step, o la excepción que se lanza en el Processor no coincide con la excepción registrada en `.skip()`.
+- La política de skip no está configurada correctamente en el Step, o la excepción que se lanza en el Processor no coincide con la excepción registrada en `.skip()`.
+
+
+<br/>
 
 **Solución:**
 Verifica que el Step tiene la configuración correcta de `faultTolerant()` antes de `.skip()`:
@@ -2575,13 +2759,17 @@ return new StepBuilder("stepProcesarEmpleados", jobRepository)
     .build();
 ```
 
+
+<br/>
+
 También verifica que el Processor lanza `IllegalArgumentException` (no una subclase diferente):
+
 ```bash
 # Buscar en los logs la línea exacta de la excepción:
 grep "IllegalArgumentException" target/logs/application.log
 ```
 
----
+<br/><br/>
 
 ### Problema 5: Las Pruebas Unitarias Fallan con `NoSuchBeanDefinitionException`
 
@@ -2592,8 +2780,14 @@ grep "IllegalArgumentException" target/logs/application.log
   No qualifying bean of type 'javax.sql.DataSource' available
   ```
 
+
+<br/>
+
 **Causa:**
-Las pruebas del `ValidacionInicialTasklet` intentan cargar el contexto completo de Spring pero no tienen configurada la base de datos H2 para pruebas. El perfil de test no se está activando correctamente.
+- Las pruebas del `ValidacionInicialTasklet` intentan cargar el contexto completo de Spring pero no tienen configurada la base de datos H2 para pruebas. El perfil de test no se está activando correctamente.
+
+
+<br/>
 
 **Solución:**
 ```bash
@@ -2606,6 +2800,9 @@ mvn test -Dspring.profiles.active=test
 # Alternativa: agregar la anotación @ActiveProfiles en la clase de test:
 ```
 
+
+<br/>
+
 ```java
 // Agregar en ValidacionInicialTaskletTest.java si no está presente:
 @ExtendWith(MockitoExtension.class)  // Solo Mockito, sin contexto Spring completo
@@ -2615,7 +2812,7 @@ class ValidacionInicialTaskletTest {
 }
 ```
 
----
+<br/><br/>
 
 ## Limpieza
 
@@ -2654,41 +2851,54 @@ git add .
 git commit -m "feat: implementación módulo Spring Batch - Lab 04-00-01"
 ```
 
-> ⚠️ **Advertencia:** El comando `TRUNCATE TABLE` eliminará todos los datos de las tablas. Solo ejecútalo si deseas limpiar completamente el entorno de pruebas. Si quieres conservar los datos para revisión posterior, omite el paso 3.
 
-> ⚠️ **Advertencia:** No elimines el contenedor Docker si planeas continuar con laboratorios posteriores que usen la misma base de datos. Usa `docker stop` en lugar de `docker rm`.
+<br/>
 
----
+> **Advertencia:** El comando `TRUNCATE TABLE` eliminará todos los datos de las tablas. Solo ejecútalo si deseas limpiar completamente el entorno de pruebas. Si quieres conservar los datos para revisión posterior, omite el paso 3.
+
+> **Advertencia:** No elimines el contenedor Docker si planeas continuar con laboratorios posteriores que usen la misma base de datos. Usa `docker stop` en lugar de `docker rm`.
+
+<br/><br/>
 
 ## Resumen
 
 ### Lo que Lograste
 
 - **Proyecto Spring Batch completo**: Creaste desde cero un módulo de procesamiento por lotes con Spring Boot 3.2 y Spring Batch 5, configurando todas las dependencias necesarias y la estructura de paquetes empresarial
+
 - **Job principal con 3 Steps secuenciales**: Implementaste el patrón completo Tasklet → Chunk-oriented → Tasklet, con flujo de datos entre Steps usando `ExecutionContext`
+
 - **Procesamiento Chunk-oriented real**: Configuraste `FlatFileItemReader` para leer un CSV de 20 registros, `EmpleadoItemProcessor` con reglas de negocio (aumentos de salario por departamento) y `JdbcBatchItemWriter` para persistir en PostgreSQL
+
 - **Tolerancia a fallos en producción**: Aplicaste políticas de skip (máximo 5 registros inválidos) y retry (máximo 3 reintentos para errores de BD) con la configuración `faultTolerant()` de Spring Batch 5
+
 - **Job condicional con Decider**: Implementaste `JobExecutionDecider` para tomar decisiones de flujo basadas en métricas de ejecución (EXITOSO / CON_ERRORES / SIN_DATOS)
+
 - **API REST para operación de Jobs**: Expusiste 5 endpoints REST con Spring MVC para lanzar Jobs, consultar estado y listar historial, usando `JobLauncher` y `JobExplorer`
+
 - **Pruebas unitarias obligatorias**: Escribiste 12 pruebas unitarias para el Processor (reglas de negocio + validaciones) y el Tasklet (existencia de archivo + persistencia en ExecutionContext)
+
+
+<br/>
+<br/>
 
 ### Conceptos Clave Aprendidos
 
 - **Arquitectura Job → Step → Reader/Processor/Writer**: La jerarquía fundamental de Spring Batch donde cada nivel tiene una responsabilidad bien definida
+
 - **Chunk-oriented processing**: El patrón de procesamiento en bloques que optimiza el rendimiento y la gestión de transacciones al procesar N registros por transacción
+
 - **ExecutionContext**: El mecanismo de Spring Batch para compartir datos entre Steps y persistir estado para soporte de restart
+
 - **faultTolerant() + skip() + retry()**: La tríada de configuración para construir Jobs resilientes que se recuperan de fallos parciales sin reiniciar desde cero
+
 - **JobRepository**: La base de datos interna de Spring Batch que registra cada ejecución y hace posible el monitoreo y el restart
+
 - **JobExecutionDecider**: El mecanismo para implementar flujos condicionales basados en el resultado del procesamiento
 
-### Próximos Pasos
 
-- **Lección 4.2 — Conceptos de Jobs y Steps**: Profundizar en la configuración avanzada de Jobs: flujos paralelos, Steps particionados y configuración de JobParameters para ejecuciones parametrizadas
-- **Lección 4.3 — ItemReaders y ItemWriters**: Explorar los readers y writers predefinidos de Spring Batch para JPA, MongoDB, JSON y servicios REST
-- **Integración con el proyecto completo**: Conectar este módulo batch con el frontend desarrollado en los laboratorios anteriores para visualizar el estado de ejecución en tiempo real
-- **Monitoreo con Spring Boot Admin**: Configurar Spring Boot Admin para visualizar las ejecuciones de Jobs en un dashboard web
 
----
+<br/><br/>
 
 ## Recursos Adicionales
 

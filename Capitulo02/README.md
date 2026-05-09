@@ -1,11 +1,5 @@
-# Laboratorio 2. Proyecto Integrado usando tecnologías Frontend
+# Laboratorio 2. Proyecto Integrador — Uso de tecnologías Frontend
 
-<br/>
-<br/>
-
-## Descripción General
-
-En este laboratorio construirás una **aplicación web de página única (SPA)** que funciona como catálogo interactivo de productos empresariales. Comenzarás desde cero con HTML5 semántico y CSS3 avanzado, añadirás interactividad con JavaScript ES6+, refactorizarás la interfaz hacia Web Components nativos y finalmente migrarás los componentes a **Lit 3.x** con propiedades reactivas y Shadow DOM. Al finalizar, tendrás un proyecto frontend modular, probado con Vitest y listo para integrarse con el backend del Laboratorio 7.
 
 <br/>
 <br/>
@@ -63,7 +57,7 @@ code --install-extension esbenp.prettier-vscode
 
 <br/>
 
-### Paso 1 — Inicialización del Proyecto con Vite
+### Paso 1. Inicialización del Proyecto con Vite
 
 1. Abre una terminal en el directorio donde deseas crear el proyecto y ejecuta:
 
@@ -230,7 +224,7 @@ npm run dev
 <br/>
 <br/>
 
-### Paso 2 — Estructura HTML5 Semántica
+### Paso 2. Estructura HTML5 Semántica
 
 
 1. Reemplaza el contenido de `index.html` en la raíz del proyecto con la siguiente estructura semántica completa:
@@ -577,7 +571,7 @@ npm run dev
 <br/>
 <br/>
 
-### Paso 3 — Estilos CSS3 con Variables, Flexbox y Grid
+### Paso 3. Estilos CSS3 con Variables, Flexbox y Grid
 
 
 1. Crea el archivo `src/styles/main.css`:
@@ -1367,7 +1361,7 @@ body {
 <br/>
 <br/>
 
-### Paso 4 — Datos y Lógica JavaScript ES6+
+### Paso 4. Datos y Lógica JavaScript ES6+
 
 1. Crea `src/data/productos.js` con los datos iniciales del catálogo:
 
@@ -1892,7 +1886,7 @@ function agregarAlCarrito(productoId) {
 
   const totalItems = estado.carrito.reduce((acc, item) => acc + item.cantidad, 0);
   actualizarContadorCarrito(totalItems);
-  mostrarToast(`✅ "${producto.nombre}" agregado al carrito`, 'success');
+  mostrarToast(`"${producto.nombre}" agregado al carrito`, 'success');
 }
 
 // ============================================================
@@ -1922,7 +1916,7 @@ function manejarEnvioFormulario(formulario) {
 
   estado.productos.push(nuevoProducto);
   formulario.reset();
-  mostrarToast(`✅ Producto "${nuevoProducto.nombre}" agregado exitosamente`, 'success');
+  mostrarToast(`Producto "${nuevoProducto.nombre}" agregado exitosamente`, 'success');
   navegarA('catalogo');
   renderizarProductos();
 }
@@ -1967,8 +1961,8 @@ function limpiarErrores() {
 function inicializar() {
   renderizarProductos();
   inicializarEventos();
-  console.log('✅ CatálogoTech inicializado correctamente');
-  console.log(`📦 ${estado.productos.length} productos cargados`);
+  console.log('CatálogoTech inicializado correctamente');
+  console.log(`${estado.productos.length} productos cargados`);
 }
 
 // Ejecutar cuando el DOM esté listo
@@ -1987,7 +1981,7 @@ document.addEventListener('DOMContentLoaded', inicializar);
 <br/>
 <br/>
 
-### Paso 5 — Web Component Nativo: `<product-card>`
+### Paso 5. Web Component Nativo: `<product-card>`
 
 1. Crea `src/components/product-card.js`:
 

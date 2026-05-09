@@ -1,42 +1,32 @@
 # Laboratorio 7. Proyecto Integrador — Aplicación Full Stack con Docker
 
-## 1. Metadatos
 
-| Campo            | Detalle                                      |
-|------------------|----------------------------------------------|
-| **Duración**     | 80 minutos                                   |
-| **Complejidad**  | Alta                                         |
-| **Nivel Bloom**  | Crear                                        |
-| **Módulo**       | 7 — Integración Full Stack Empresarial       |
-| **Laboratorio**  | 07-00-01                                     |
+<br/><br/>
 
----
+## Objetivos
 
-## 2. Descripción General
+Al completar este laboratorio, serás capaz de:
 
-En este laboratorio integrador, el participante une todos los componentes desarrollados a lo largo del curso en una aplicación full stack cohesiva y lista para producción. Se conectará el frontend construido con Lit al backend RESTful (Node.js/Express), se configurará CORS, se verificará la persistencia de datos en base de datos, y se contenerizará toda la solución mediante Docker y Docker Compose. El laboratorio concluye con la validación end-to-end del sistema completo y un repaso de los conceptos clave del módulo.
+- Configurar CORS en el backend Express y consumir la API REST desde componentes Lit usando `fetch` con manejo de estados de carga y error.
+- Conectar el backend Node.js/Express a una base de datos (PostgreSQL o MongoDB) y verificar que las operaciones CRUD se persistan correctamente desde el frontend.
+- Crear `Dockerfile` optimizados para el frontend (Nginx) y el backend (Node.js), y orquestar todos los servicios con `docker-compose.yml`.
+- Aplicar buenas prácticas empresariales: variables de entorno con `.env`, `.dockerignore`, health checks y logging estructurado.
+- Validar el funcionamiento integral del sistema mediante pruebas end-to-end con Postman y el navegador.
 
----
 
-## 3. Objetivos
+<br/><br/>
 
-Al completar este laboratorio, el participante será capaz de:
 
-- [ ] Configurar CORS en el backend Express y consumir la API REST desde componentes Lit usando `fetch` con manejo de estados de carga y error.
-- [ ] Conectar el backend Node.js/Express a una base de datos (PostgreSQL o MongoDB) y verificar que las operaciones CRUD se persistan correctamente desde el frontend.
-- [ ] Crear `Dockerfile` optimizados para el frontend (Nginx) y el backend (Node.js), y orquestar todos los servicios con `docker-compose.yml`.
-- [ ] Aplicar buenas prácticas empresariales: variables de entorno con `.env`, `.dockerignore`, health checks y logging estructurado.
-- [ ] Validar el funcionamiento integral del sistema mediante pruebas end-to-end con Postman y el navegador.
-
----
-
-## 4. Prerrequisitos
+## Prerrequisitos
 
 ### Conocimiento previo
 - Laboratorio 2 completado: proyecto frontend funcional con al menos un componente Lit que liste y cree registros.
 - Comprensión de métodos HTTP (GET, POST, PUT, DELETE) y códigos de estado (200, 201, 400, 404, 500).
 - Backend Node.js/Express con endpoints CRUD disponibles (desarrollado en módulos anteriores).
 - Familiaridad básica con Docker: imágenes, contenedores, puertos.
+
+
+<br/>
 
 ### Acceso y herramientas requeridas
 - Docker Desktop 4.29+ instalado y en ejecución (`docker --version` y `docker compose version` sin errores).
@@ -45,9 +35,9 @@ Al completar este laboratorio, el participante será capaz de:
 - Editor de código: VS Code 1.88+ o IntelliJ IDEA 2024.1.
 - Repositorio Git del proyecto del curso con acceso de escritura.
 
----
+<br/><br/>
 
-## 5. Entorno del Laboratorio
+## Entorno del Laboratorio
 
 ### Hardware mínimo recomendado
 
@@ -57,6 +47,8 @@ Al completar este laboratorio, el participante será capaz de:
 | Almacenamiento | 50 GB libres (SSD)  | 100 GB libres (SSD) |
 | CPU            | i5 8va gen / Ryzen 5| i7 10ma gen / Ryzen 7|
 | Pantalla       | 1920×1080           | Dual monitor        |
+
+<br/>
 
 ### Software y versiones
 
@@ -70,6 +62,9 @@ Al completar este laboratorio, el participante será capaz de:
 | PostgreSQL         | 15.x         | Base de datos relacional         |
 | MongoDB            | 7.0          | Base de datos NoSQL (alternativa)|
 | Postman            | 11.x         | Pruebas de API                   |
+
+<br/>
+<br/>
 
 ### Verificación del entorno antes de comenzar
 
@@ -96,6 +91,8 @@ docker compose version
 docker info | grep "Server Version"
 ```
 
+<br/>
+
 ### Estructura del proyecto al inicio del laboratorio
 
 ```
@@ -111,21 +108,19 @@ proyecto-fullstack/
 └── README.md
 ```
 
+<br/>
+
 > **Checkpoint Git**: Si no tienes el proyecto de los laboratorios anteriores, clona la rama de referencia:
 > ```bash
 > git clone -b checkpoint/lab-06-complete https://github.com/<tu-org>/proyecto-fullstack.git
 > cd proyecto-fullstack
 > ```
 
----
+<br/><br/>
 
-## 6. Pasos del Laboratorio
+## Instrucciones 
 
-### Paso 1: Configurar CORS en el Backend Express
-
-**Objetivo**: Permitir que el frontend (corriendo en un puerto diferente) pueda consumir la API del backend sin errores de CORS.
-
-#### Instrucciones
+### Paso 1. Configurar CORS en el Backend Express
 
 1. Abre una terminal y navega al directorio del backend:
 
@@ -133,11 +128,15 @@ proyecto-fullstack/
    cd proyecto-fullstack/backend
    ```
 
+<br/>
+
 2. Instala el paquete `cors` si no está ya en las dependencias:
 
    ```bash
    npm install cors
    ```
+
+<br/>
 
 3. Abre el archivo principal del servidor (usualmente `src/app.js` o `src/index.js`) y agrega la configuración de CORS. Reemplaza o actualiza el bloque de configuración de middlewares:
 
@@ -178,6 +177,8 @@ proyecto-fullstack/
    module.exports = app;
    ```
 
+<br/>
+
 4. Crea el archivo `.env` en la raíz del directorio `backend/` con las variables de entorno:
 
    ```bash
@@ -206,6 +207,8 @@ proyecto-fullstack/
    # MONGO_URI=mongodb://localhost:27017/empresa_db
    ```
 
+<br/>
+
 5. Instala `dotenv` y cárgalo al inicio de tu archivo de entrada (`src/server.js` o `src/index.js`):
 
    ```bash
@@ -225,6 +228,8 @@ proyecto-fullstack/
    });
    ```
 
+<br/>
+
 6. Inicia el backend en modo desarrollo para verificar:
 
    ```bash
@@ -233,6 +238,7 @@ proyecto-fullstack/
    node src/server.js
    ```
 
+<br/>
 #### Resultado esperado
 
 ```
@@ -240,23 +246,24 @@ proyecto-fullstack/
 [INFO] Ambiente: development
 ```
 
-#### Verificación
+<br/>
+
+### Verificación
 
 Abre Postman y realiza una solicitud GET a `http://localhost:3000/api/employees`. Debes recibir un código `200 OK` con un array JSON. Verifica también que los headers de respuesta incluyan `Access-Control-Allow-Origin`.
 
----
+<br/><br/>
 
-### Paso 2: Conectar el Componente Lit a la API REST
 
-**Objetivo**: Actualizar el componente Lit principal para consumir la API del backend con manejo correcto de estados de carga, error y datos.
-
-#### Instrucciones
+### Paso 2. Conectar el Componente Lit a la API REST
 
 1. Navega al directorio del frontend:
 
    ```bash
    cd ../frontend
    ```
+
+<br/>
 
 2. Crea un archivo de configuración de la API para centralizar la URL base. Esto facilita el cambio entre ambientes:
 
@@ -271,6 +278,8 @@ Abre Postman y realiza una solicitud GET a `http://localhost:3000/api/employees`
    // La variable de entorno se inyecta en tiempo de build (Vite)
    export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
    ```
+
+<br/>
 
 3. Crea un archivo de utilidades para las llamadas HTTP con manejo robusto de errores:
 
@@ -337,6 +346,8 @@ Abre Postman y realiza una solicitud GET a `http://localhost:3000/api/employees`
      delete: (endpoint)         => request(endpoint, { method: 'DELETE' }),
    };
    ```
+
+<br/>
 
 4. Actualiza el componente principal de lista de empleados (ajusta el nombre del archivo según tu proyecto del Lab 2):
 
@@ -409,7 +420,7 @@ Abre Postman y realiza una solicitud GET a `http://localhost:3000/api/employees`
        if (this.error) {
          return html`
            <div class="error">
-             <strong>⚠️ Error:</strong> ${this.error}
+             <strong>Error:</strong> ${this.error}
              <br />
              <button class="retry-btn" @click=${this.loadEmployees}>Reintentar</button>
            </div>
@@ -446,6 +457,8 @@ Abre Postman y realiza una solicitud GET a `http://localhost:3000/api/employees`
    customElements.define('employee-list', EmployeeList);
    ```
 
+<br/>
+
 5. Crea el archivo `.env` en la raíz del directorio `frontend/`:
 
    ```dotenv
@@ -453,15 +466,21 @@ Abre Postman y realiza una solicitud GET a `http://localhost:3000/api/employees`
    VITE_API_URL=http://localhost:3000/api
    ```
 
+<br/>
+
 6. Inicia el servidor de desarrollo del frontend:
 
    ```bash
    npm run dev
    ```
 
+<br/>
+
 #### Resultado esperado
 
 El servidor de desarrollo de Vite arranca en `http://localhost:5173`. Al abrir el navegador, el componente `<employee-list>` debe mostrar los datos provenientes del backend. La consola del navegador no debe mostrar errores CORS.
+
+<br/>
 
 #### Verificación
 
@@ -470,13 +489,11 @@ El servidor de desarrollo de Vite arranca en `http://localhost:5173`. Al abrir e
 3. Recarga la página y verifica que la solicitud a `http://localhost:3000/api/employees` devuelve `200 OK`.
 4. Detén el backend (`Ctrl+C`) y recarga la página: debe aparecer el mensaje de error con el botón "Reintentar".
 
----
+<br/><br/>
 
-### Paso 3: Crear los Dockerfiles para Frontend y Backend
 
-**Objetivo**: Contenerizar el frontend y el backend con imágenes Docker optimizadas para producción.
+### Paso 3. Crear los Dockerfiles para Frontend y Backend
 
-#### Instrucciones
 
 ##### 3a. Dockerfile del Backend (Node.js/Express)
 
@@ -515,6 +532,8 @@ El servidor de desarrollo de Vite arranca en `http://localhost:5173`. Al abrir e
    CMD ["node", "src/server.js"]
    ```
 
+<br/>
+
 2. Agrega el endpoint `/health` al backend si no existe. Abre `src/app.js`:
 
    ```javascript
@@ -527,6 +546,8 @@ El servidor de desarrollo de Vite arranca en `http://localhost:5173`. Al abrir e
      });
    });
    ```
+
+<br/>
 
 3. Crea el archivo `.dockerignore` en `backend/`:
 
@@ -542,6 +563,8 @@ El servidor de desarrollo de Vite arranca en `http://localhost:5173`. Al abrir e
    *.test.js
    coverage/
    ```
+
+<br/>
 
 ##### 3b. Dockerfile del Frontend (Lit + Vite + Nginx)
 
@@ -581,6 +604,8 @@ El servidor de desarrollo de Vite arranca en `http://localhost:5173`. Al abrir e
    CMD ["nginx", "-g", "daemon off;"]
    ```
 
+<br/>
+
 2. Crea el archivo de configuración de Nginx en `frontend/nginx.conf`:
 
    ```nginx
@@ -615,6 +640,8 @@ El servidor de desarrollo de Vite arranca en `http://localhost:5173`. Al abrir e
    }
    ```
 
+<br/>
+
 3. Crea el archivo `.dockerignore` en `frontend/`:
 
    ```
@@ -630,9 +657,13 @@ El servidor de desarrollo de Vite arranca en `http://localhost:5173`. Al abrir e
    coverage/
    ```
 
+<br/>
+
 #### Resultado esperado
 
 Los archivos `Dockerfile`, `.dockerignore` y (para el frontend) `nginx.conf` están creados en sus respectivos directorios. No se producen errores al escribir los archivos.
+
+<br/>
 
 #### Verificación
 
@@ -644,13 +675,11 @@ ls backend/Dockerfile backend/.dockerignore
 ls frontend/Dockerfile frontend/.dockerignore frontend/nginx.conf
 ```
 
----
+<br/><br/>
 
-### Paso 4: Crear el archivo `docker-compose.yml`
 
-**Objetivo**: Definir y orquestar todos los servicios (frontend, backend, base de datos) con redes internas, volúmenes persistentes y variables de entorno correctamente configuradas.
+### Paso 4. Crear el archivo `docker-compose.yml`
 
-#### Instrucciones
 
 1. En la **raíz** del proyecto (`proyecto-fullstack/`), crea el archivo `docker-compose.yml`:
 
@@ -758,6 +787,8 @@ ls frontend/Dockerfile frontend/.dockerignore frontend/nginx.conf
        name: empresa-db-data
    ```
 
+<br/>
+
 2. Crea el archivo `.env` en la **raíz** del proyecto para las variables compartidas:
 
    ```dotenv
@@ -767,6 +798,8 @@ ls frontend/Dockerfile frontend/.dockerignore frontend/nginx.conf
    DB_USER=postgres
    DB_PASSWORD=postgres123
    ```
+
+<br/>
 
 3. Crea el directorio y el script de inicialización de la base de datos:
 
@@ -796,6 +829,8 @@ ls frontend/Dockerfile frontend/.dockerignore frontend/nginx.conf
    ON CONFLICT (email) DO NOTHING;
    ```
 
+<br/>
+
 4. Agrega un archivo `.gitignore` en la raíz para proteger los secretos:
 
    ```
@@ -805,6 +840,8 @@ ls frontend/Dockerfile frontend/.dockerignore frontend/nginx.conf
    !.env.example
    ```
 
+<br/>
+
 5. Crea un archivo `.env.example` como documentación de las variables requeridas:
 
    ```dotenv
@@ -813,6 +850,8 @@ ls frontend/Dockerfile frontend/.dockerignore frontend/nginx.conf
    DB_USER=postgres
    DB_PASSWORD=CAMBIAR_EN_PRODUCCION
    ```
+
+<br/>
 
 #### Resultado esperado
 
@@ -837,6 +876,8 @@ proyecto-fullstack/
     └── ...
 ```
 
+<br/>
+
 #### Verificación
 
 ```bash
@@ -846,13 +887,11 @@ docker compose config
 # Debe imprimir la configuración expandida sin errores
 ```
 
----
+<br/><br/>
 
-### Paso 5: Construir y Levantar la Aplicación Completa
 
-**Objetivo**: Construir las imágenes Docker y levantar todos los servicios orquestados, verificando que la comunicación entre contenedores funciona correctamente.
+### Paso 5. Construir y Levantar la Aplicación Completa
 
-#### Instrucciones
 
 1. Desde la **raíz** del proyecto, construye todas las imágenes (la primera vez tarda varios minutos):
 
@@ -862,11 +901,15 @@ docker compose config
 
    > **Nota de tiempo**: La construcción puede tardar 3–8 minutos dependiendo de la velocidad de internet y el hardware. El flag `--no-cache` garantiza una construcción limpia.
 
+<br/>
+
 2. Levanta todos los servicios en modo detached (background):
 
    ```bash
    docker compose up -d
    ```
+
+<br/>
 
 3. Monitorea el estado de los servicios y espera a que todos estén `healthy`:
 
@@ -880,6 +923,8 @@ docker compose config
    # Ver logs de un servicio específico
    docker compose logs -f backend
    ```
+
+<br/>
 
 4. Verifica la salud de cada servicio individualmente:
 
@@ -896,7 +941,11 @@ docker compose config
    docker compose exec backend wget -qO- http://localhost:3000/api/employees
    ```
 
+<br/>
+
 5. Abre el navegador en `http://localhost:80` y verifica que la aplicación carga correctamente.
+
+<br/>
 
 #### Resultado esperado
 
@@ -908,6 +957,8 @@ empresa-backend      proyecto-backend          Up (healthy)              0.0.0.0
 empresa-frontend     proyecto-frontend         Up (healthy)              0.0.0.0:80->80/tcp
 ```
 
+<br/>
+
 #### Verificación
 
 ```bash
@@ -915,15 +966,13 @@ empresa-frontend     proyecto-frontend         Up (healthy)              0.0.0.0
 docker compose ps --format "table {{.Name}}\t{{.Status}}"
 ```
 
----
+<br/><br/>
 
-### Paso 6: Validar el CRUD Completo End-to-End
-
-**Objetivo**: Confirmar que las operaciones Create, Read, Update y Delete funcionan de forma completa desde el frontend hasta la base de datos, pasando por el backend.
-
-#### Instrucciones
+### Paso 6. Validar el CRUD Completo End-to-End
 
 1. **READ — Leer empleados**: Abre `http://localhost:80` en el navegador. La lista de empleados debe mostrar los 3 registros del script `init.sql`.
+
+<br/>
 
 2. **CREATE — Crear un empleado**: En Postman, crea una solicitud POST:
 
@@ -939,9 +988,16 @@ docker compose ps --format "table {{.Name}}\t{{.Status}}"
    }
    ```
 
+<br/>
+
    Respuesta esperada: `201 Created` con el objeto creado incluyendo el `id` asignado.
 
+
+<br/>
+
 3. **Verificar persistencia**: Recarga la página en `http://localhost:80`. El nuevo empleado debe aparecer en la lista.
+
+<br/>
 
 4. **UPDATE — Actualizar un empleado**: En Postman, actualiza el empleado recién creado (reemplaza `{id}` con el ID obtenido):
 
@@ -954,11 +1010,19 @@ docker compose ps --format "table {{.Name}}\t{{.Status}}"
    }
    ```
 
+<br/>
+
    Respuesta esperada: `200 OK` con el objeto actualizado.
+
+<br/>
 
 5. **DELETE — Eliminar desde el frontend**: En la interfaz web, haz clic en "Eliminar" en el empleado "Luis Fernández". Confirma el diálogo. El empleado debe desaparecer de la lista sin recargar la página.
 
+<br/>
+
 6. **Verificar persistencia del DELETE**: Recarga la página. El empleado eliminado no debe reaparecer.
+
+<br/>
 
 7. **Probar manejo de errores**: En Postman, intenta crear un empleado con un email duplicado:
 
@@ -976,9 +1040,13 @@ docker compose ps --format "table {{.Name}}\t{{.Status}}"
 
    Respuesta esperada: `409 Conflict` con un mensaje de error estructurado.
 
+<br/>
+
 #### Resultado esperado
 
 Todas las operaciones CRUD funcionan correctamente. Los datos persisten en el volumen Docker `empresa-db-data` y sobreviven reinicios del contenedor.
+
+<br/>
 
 #### Verificación
 
@@ -988,7 +1056,8 @@ docker compose exec database psql -U postgres -d empresa_db \
   -c "SELECT id, name, email, department FROM employees ORDER BY id;"
 ```
 
----
+<br/><br/>
+
 
 ## 7. Validación y Pruebas
 
@@ -1007,17 +1076,24 @@ Completa esta lista antes de dar el laboratorio por terminado:
 | 7 | Datos persisten | Reiniciar contenedores y verificar | Datos siguen presentes |
 | 8 | Variables de entorno | `docker compose exec backend env \| grep DB` | Variables de DB visibles |
 
+
+<br/>
+
 ### Prueba de persistencia de datos
 
 ```bash
 # Detener y reiniciar los contenedores (sin eliminar volúmenes)
 docker compose stop
+
 docker compose start
 
 # Esperar 30 segundos y verificar que los datos persisten
 sleep 30
+
 curl http://localhost:3000/api/employees | python3 -m json.tool
 ```
+
+<br/>
 
 ### Prueba de resiliencia
 
@@ -1033,7 +1109,7 @@ docker compose start backend
 # Esperar el health check (~30s) y probar el botón "Reintentar" en el frontend
 ```
 
----
+<br/><br/>
 
 ## 8. Solución de Problemas
 
@@ -1046,26 +1122,39 @@ Access to fetch at 'http://localhost:3000/api/employees' from origin
 No 'Access-Control-Allow-Origin' header is present on the requested resource.
 ```
 
-**Causa**: El middleware `cors` no está configurado correctamente en el backend, o el origen del frontend no coincide con el valor en `FRONTEND_URL`. Esto ocurre frecuentemente cuando se cambia el puerto del servidor de desarrollo de Vite (por defecto 5173, pero puede cambiar si el puerto está ocupado).
+<br/>
+
+**Causa**: El middleware `cors` no está configurado correctamente en el backend, o el origen del frontend no coincide con el valor en `FRONTEND_URL`. Esto ocurre frecuentemente cuando se cambia el puerto del servidor de desarrollo de Vite 
+(por defecto 5173, pero puede cambiar si el puerto está ocupado).
+
+
+<br/>
 
 **Solución**:
 
 1. Verifica el puerto real en el que corre el frontend:
+
    ```bash
    # Observa la salida de npm run dev
    # Ejemplo: "Local: http://localhost:5174" (puerto diferente al esperado)
    ```
+
+<br/>
 
 2. Actualiza el archivo `.env` del backend con el puerto correcto:
    ```dotenv
    FRONTEND_URL=http://localhost:5174
    ```
 
+<br/>
+
 3. En desarrollo, como alternativa temporal, permite todos los orígenes:
    ```javascript
    // src/app.js — SOLO para desarrollo, nunca en producción
    app.use(cors({ origin: '*' }));
    ```
+
+<br/>
 
 4. Reinicia el servidor backend:
    ```bash
@@ -1076,23 +1165,34 @@ No 'Access-Control-Allow-Origin' header is present on the requested resource.
    docker compose restart backend
    ```
 
+<br/>
+
 5. Recarga la página del frontend. El error CORS debe desaparecer.
 
----
+<br/><br/>
+
 
 ### Problema 2: El contenedor del backend falla con `depends_on` pero la base de datos no está lista
 
 **Síntoma**: Al ejecutar `docker compose up`, el backend arranca pero falla con un error similar a:
+
 ```
 Error: connect ECONNREFUSED 127.0.0.1:5432
 ```
+
 o
+
 ```
 error: database "empresa_db" does not exist
 ```
+
 El contenedor `empresa-backend` aparece como `Exited` o `Restarting`.
 
+<br/>
+
 **Causa**: Docker Compose con `depends_on` solo espera a que el contenedor de la base de datos esté **iniciado**, no a que PostgreSQL esté **listo para aceptar conexiones**. PostgreSQL puede tardar 10–20 segundos en inicializarse completamente, especialmente en la primera ejecución cuando crea los archivos de datos.
+
+<br/>
 
 **Solución**:
 
@@ -1102,6 +1202,8 @@ El contenedor `empresa-backend` aparece como `Exited` o `Restarting`.
    # Si aparece "(health: starting)", espera 30 segundos más
    ```
 
+<br/>
+
 2. Confirma que el `docker-compose.yml` tiene la condición correcta en `depends_on`:
    ```yaml
    backend:
@@ -1110,6 +1212,8 @@ El contenedor `empresa-backend` aparece como `Exited` o `Restarting`.
          condition: service_healthy   # ← Esto es crítico
    ```
    Si solo dice `depends_on: [database]` sin la condición, cámbialo a la forma extendida mostrada arriba.
+
+<br/>
 
 3. Agrega lógica de reintento en el backend para manejar la latencia de inicio. Instala `pg-retry` o implementa un loop de reconexión en la configuración de tu pool de conexiones:
 
@@ -1142,6 +1246,8 @@ El contenedor `empresa-backend` aparece como `Exited` o `Restarting`.
    module.exports = pool;
    ```
 
+<br/>
+
 4. Reconstruye y levanta los servicios:
    ```bash
    docker compose down
@@ -1149,7 +1255,8 @@ El contenedor `empresa-backend` aparece como `Exited` o `Restarting`.
    docker compose logs -f backend
    ```
 
----
+<br/><br/>
+
 
 ## 9. Limpieza
 
@@ -1163,6 +1270,8 @@ docker compose stop
 docker compose ps
 ```
 
+<br/>
+
 ### Detener y eliminar contenedores (conservando volúmenes)
 
 ```bash
@@ -1173,9 +1282,13 @@ docker compose down
 docker volume ls | grep empresa
 ```
 
+<br/>
+
 ### Limpieza completa (incluyendo datos)
 
-> ⚠️ **Advertencia**: Este comando elimina todos los datos de la base de datos. Úsalo solo al finalizar el laboratorio o cuando quieras empezar desde cero.
+> **Advertencia**: Este comando elimina todos los datos de la base de datos. Úsalo solo al finalizar el laboratorio o cuando quieras empezar desde cero.
+
+<br/>
 
 ```bash
 # Eliminar contenedores, redes Y volúmenes
@@ -1185,6 +1298,8 @@ docker compose down -v
 docker volume ls | grep empresa
 # No debe aparecer ningún resultado
 ```
+
+<br/>
 
 ### Limpiar imágenes construidas (opcional)
 
@@ -1196,6 +1311,8 @@ docker compose down --rmi local
 docker image prune -f
 ```
 
+<br/>
+
 ### Comandos por sistema operativo
 
 | Acción | Windows (PowerShell) | macOS / Linux (Bash) |
@@ -1205,7 +1322,8 @@ docker image prune -f
 | Limpieza completa | `docker compose down -v` | `docker compose down -v` |
 | Ver logs | `docker compose logs` | `docker compose logs` |
 
----
+<br/><br/>
+
 
 ## 10. Resumen
 
@@ -1215,13 +1333,24 @@ En este laboratorio integrador completaste el ciclo completo de una aplicación 
 
 1. **Integración Frontend-Backend**: Configuraste CORS en Express y creaste un cliente HTTP centralizado en el frontend Lit que maneja estados de carga, error y datos de forma profesional, siguiendo el patrón cliente-servidor estudiado en la lección 7.1.
 
+<br/>
+
 2. **Comunicación HTTP robusta**: Implementaste el patrón `fetch` + `async/await` con verificación explícita de `response.ok`, distinguiendo entre errores de red y errores HTTP, tal como se explicó en la lección.
+
+<br/>
 
 3. **Contenerización completa**: Creaste Dockerfiles multi-stage optimizados para producción (Node.js + Nginx), garantizando imágenes ligeras y seguras.
 
+<br/>
+
 4. **Orquestación con Docker Compose**: Definiste un stack completo con tres servicios, redes internas separadas, volúmenes persistentes y health checks que garantizan el orden correcto de inicio.
 
+<br/>
+
 5. **Buenas prácticas empresariales**: Aplicaste variables de entorno con `.env`, `.dockerignore` para imágenes optimizadas, usuario no-root en los contenedores y logging estructurado.
+
+
+<br/>
 
 ### Conceptos clave reforzados
 
@@ -1235,14 +1364,21 @@ En este laboratorio integrador completaste el ciclo completo de una aplicación 
 | Health checks | Orquestación confiable con `condition: service_healthy` |
 | Persistencia | Volumen Docker nombrado para datos de PostgreSQL |
 
-### Recursos adicionales
+<br/>
+
+## Recursos Adicionales
 
 - **Docker Compose Reference**: Documentación oficial de todas las opciones de `docker-compose.yml`. [https://docs.docker.com/compose/compose-file/](https://docs.docker.com/compose/compose-file/)
+
 - **Nginx Configuration Guide**: Configuración de Nginx para aplicaciones SPA. [https://nginx.org/en/docs/](https://nginx.org/en/docs/)
+
 - **MDN Fetch API**: Referencia completa de la Fetch API con ejemplos avanzados. [https://developer.mozilla.org/es/docs/Web/API/Fetch_API/Using_Fetch](https://developer.mozilla.org/es/docs/Web/API/Fetch_API/Using_Fetch)
+
 - **Docker Best Practices for Node.js**: Guía oficial de Docker para aplicaciones Node.js. [https://docs.docker.com/language/nodejs/](https://docs.docker.com/language/nodejs/)
+
 - **Rama de solución completa**: `git checkout solution/lab-07-complete` para obtener el código final de referencia.
 
----
+<br/><br/>
+
 
 > **Felicitaciones**: Has completado el Laboratorio 7 y el proyecto integrador del curso Full Stack Empresarial. Tu aplicación está contenerizada, las capas se comunican correctamente y el sistema está listo para un despliegue en entorno productivo.

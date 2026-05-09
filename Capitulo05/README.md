@@ -1,30 +1,20 @@
 # Laboratorio 5. Proyecto Integrador — Capa de Persistencia Completa
 
-## Metadatos
-
-| Propiedad | Valor |
-|-----------|-------|
-| **Duración** | 120 minutos |
-| **Complejidad** | Intermedio |
-| **Nivel Bloom** | Crear |
-| **Tecnologías** | PostgreSQL 16.x, MongoDB 7.0, Spring Boot 3.2.x, Spring Data JPA, Spring Data MongoDB |
-
-## Descripción General
-
-En este laboratorio implementarás la capa de persistencia completa del proyecto integrador empresarial, trabajando simultáneamente con dos paradigmas de almacenamiento: el modelo relacional en PostgreSQL y el modelo documental en MongoDB. Diseñarás un esquema relacional normalizado con mínimo 5 tablas relacionadas, ejecutarás consultas SQL de complejidad creciente incluyendo JOINs, subconsultas y window functions, e implementarás transacciones explícitas con control ACID. En la parte NoSQL, modelarás colecciones MongoDB para datos no estructurados, ejecutarás operaciones CRUD con operadores avanzados y construirás pipelines de agregación. Al finalizar, integrarás ambas bases de datos en el proyecto Spring Boot demostrando la coexistencia de Spring Data JPA y Spring Data MongoDB en una misma aplicación.
-
-Este laboratorio refleja un escenario real de arquitectura empresarial donde los sistemas modernos combinan bases de datos relacionales para transacciones críticas con bases de datos documentales para datos flexibles y logs de actividad.
+<br/><br/>
 
 ## Objetivos 
 
 Al completar este laboratorio, serás capaz de:
 
-- [ ] Diseñar e implementar un esquema relacional normalizado en PostgreSQL con claves primarias, claves foráneas, índices y constraints de integridad
-- [ ] Escribir consultas SQL avanzadas incluyendo JOINs múltiples, subconsultas correlacionadas, funciones de agregación y window functions
-- [ ] Implementar transacciones explícitas en PostgreSQL aplicando los principios ACID para operaciones críticas del negocio
-- [ ] Modelar y crear colecciones MongoDB con documentos embebidos y referencias para datos no estructurados
-- [ ] Ejecutar operaciones CRUD completas en MongoDB usando operadores de consulta, actualización y agregación avanzada
-- [ ] Integrar Spring Data JPA y Spring Data MongoDB en un mismo proyecto Spring Boot con configuración dual de fuentes de datos
+- Diseñar e implementar un esquema relacional normalizado en PostgreSQL con claves primarias, claves foráneas, índices y constraints de integridad
+- Escribir consultas SQL avanzadas incluyendo JOINs múltiples, subconsultas correlacionadas, funciones de agregación y window functions
+- Implementar transacciones explícitas en PostgreSQL aplicando los principios ACID para operaciones críticas del negocio
+- Modelar y crear colecciones MongoDB con documentos embebidos y referencias para datos no estructurados
+- Ejecutar operaciones CRUD completas en MongoDB usando operadores de consulta, actualización y agregación avanzada
+- Integrar Spring Data JPA y Spring Data MongoDB en un mismo proyecto Spring Boot con configuración dual de fuentes de datos
+
+<br/><br/>
+
 
 ## Prerrequisitos
 
@@ -36,6 +26,7 @@ Al completar este laboratorio, serás capaz de:
 - Experiencia con Spring Boot y configuración de dependencias Maven (Labs anteriores)
 - Comprensión de inyección de dependencias y anotaciones de Spring
 
+
 ### Acceso Requerido
 
 - PostgreSQL 16.x instalado y en ejecución (local o via Docker)
@@ -45,21 +36,14 @@ Al completar este laboratorio, serás capaz de:
 - IntelliJ IDEA con el proyecto Spring Boot del Laboratorio 4 como base
 - Acceso a terminal/consola con permisos de administración
 
+<br/><br/>
+
 ## Entorno de Laboratorio
-
-### Requisitos de Hardware
-
-| Componente | Especificación |
-|------------|----------------|
-| Procesador | Intel Core i5 8va gen o superior / AMD Ryzen 5 |
-| Memoria RAM | Mínimo 16 GB DDR4 (recomendado 32 GB) |
-| Almacenamiento | Mínimo 20 GB libres en SSD |
-| Pantalla | Resolución mínima 1920x1080 |
 
 ### Requisitos de Software
 
 | Software | Versión | Propósito |
-|----------|---------|-----------|
+|<br/><br/><br/><br/><br/><br/>-|<br/><br/><br/><br/><br/><br/>|<br/><br/><br/><br/><br/><br/>--|
 | PostgreSQL | 16.x | Base de datos relacional principal |
 | pgAdmin 4 | 8.x | Administración visual de PostgreSQL |
 | MongoDB | 7.0 Community | Base de datos documental |
@@ -69,6 +53,9 @@ Al completar este laboratorio, serás capaz de:
 | IntelliJ IDEA | 2024.1 | IDE principal |
 | Maven | 3.9.x | Gestión de dependencias |
 | Docker Desktop | 4.29+ | Alternativa para infraestructura |
+
+
+<br/><br/>
 
 ### Configuración Inicial
 
@@ -100,7 +87,10 @@ docker run -d \
 docker ps --filter "name=postgres-integrador" --filter "name=mongo-integrador"
 ```
 
+<br/>
+
 **Para Windows (PowerShell):**
+
 ```powershell
 # Crear red Docker
 docker network create proyecto-integrador-net
@@ -124,15 +114,15 @@ docker run -d `
   mongo:7.0
 ```
 
-> ⚠️ **Nota:** Si ya tienes PostgreSQL y MongoDB instalados localmente, asegúrate de que los puertos 5432 y 27017 estén disponibles. Ajusta las credenciales según tu configuración local en los pasos siguientes.
+<br/>
+
+> **Nota:** Si ya tienes PostgreSQL y MongoDB instalados localmente, asegúrate de que los puertos 5432 y 27017 estén disponibles. Ajusta las credenciales según tu configuración local en los pasos siguientes.
+
+<br/><br/>
 
 ## Instrucciones 
 
-### Paso 1: Diseño e Implementación del Esquema Relacional en PostgreSQL
-
-**Objetivo:** Crear el esquema completo de la base de datos relacional con 5 tablas normalizadas, aplicando claves primarias, claves foráneas, índices y constraints de integridad para el dominio de una tienda en línea.
-
-**Instrucciones:**
+### Paso 1. Diseño e Implementación del Esquema Relacional en PostgreSQL
 
 1. Abre pgAdmin 4 y conéctate a tu instancia de PostgreSQL. Si usas Docker, crea una nueva conexión con los siguientes datos:
    - Host: `localhost`
@@ -140,6 +130,8 @@ docker run -d `
    - Base de datos: `tienda_db`
    - Usuario: `admin`
    - Contraseña: `admin123`
+
+<br/>
 
 2. Abre el Query Tool en pgAdmin (clic derecho sobre `tienda_db` → Query Tool) y ejecuta el siguiente script DDL completo. Este script crea el esquema normalizado aplicando los principios de la Lección 5.1:
 
@@ -276,6 +268,8 @@ COMMENT ON TABLE pedidos IS 'Órdenes de compra realizadas por los clientes';
 COMMENT ON TABLE detalle_pedidos IS 'Líneas de detalle de cada pedido (relación N:M pedidos-productos)';
 ```
 
+<br/>
+
 3. Verifica que las 5 tablas se crearon correctamente ejecutando:
 
 ```sql
@@ -304,11 +298,13 @@ WHERE tc.constraint_type = 'FOREIGN KEY'
 ORDER BY tc.table_name;
 ```
 
+<br/>
+
 **Salida Esperada:**
 
 ```
  table_name       | num_columnas
-------------------+--------------
++-----------------|--------------------
  categorias       | 4
  clientes         | 7
  detalle_pedidos  | 5
@@ -317,7 +313,7 @@ ORDER BY tc.table_name;
 (5 filas)
 
  tabla_origen    | columna_fk        | tabla_referenciada | columna_pk_referenciada
------------------+-------------------+--------------------+------------------------
+-----------------+--------------------+-------------------+----------------------- | 
  categorias      | categoria_padre_id| categorias         | categoria_id
  detalle_pedidos | pedido_id         | pedidos            | pedido_id
  detalle_pedidos | producto_id       | productos          | producto_id
@@ -326,19 +322,18 @@ ORDER BY tc.table_name;
 (5 filas)
 ```
 
+
+<br/>
+
 **Verificación:**
 
 - Confirma que aparecen exactamente 5 tablas en el resultado
 - Verifica que las 5 relaciones de clave foránea están correctamente definidas
 - En pgAdmin, expande el nodo `Tables` en el panel izquierdo y confirma que todas las tablas tienen el ícono de llave junto a sus columnas PK
 
----
+<br/><br/>
 
-### Paso 2: Poblar la Base de Datos con Datos de Prueba
-
-**Objetivo:** Insertar un conjunto representativo de datos de prueba en todas las tablas para poder ejecutar consultas significativas en los pasos siguientes.
-
-**Instrucciones:**
+### Paso 2. Poblar la Base de Datos con Datos de Prueba
 
 1. En el Query Tool de pgAdmin, ejecuta el siguiente script DML para insertar datos de prueba:
 
@@ -445,6 +440,8 @@ INSERT INTO detalle_pedidos (pedido_id, producto_id, cantidad, precio_unitario, 
 (12, 5,  1,  180000.00, 0);
 ```
 
+<br/>
+
 2. Verifica la inserción con conteos rápidos:
 
 ```sql
@@ -460,11 +457,14 @@ SELECT 'detalle_pedidos', COUNT(*) FROM detalle_pedidos
 ORDER BY tabla;
 ```
 
+<br/>
+
+
 **Salida Esperada:**
 
 ```
  tabla            | registros
-------------------+-----------
+------------------| ---------------
  categorias       | 9
  clientes         | 10
  detalle_pedidos  | 21
@@ -473,18 +473,17 @@ ORDER BY tabla;
 (5 filas)
 ```
 
+<br/>
+
 **Verificación:**
 
 - Todos los conteos deben coincidir con los valores de la tabla anterior
 - En pgAdmin, haz clic derecho sobre cualquier tabla → "View/Edit Data" → "All Rows" para confirmar visualmente los datos
 
----
+<br/><br/>
 
-### Paso 3: Consultas SQL de Complejidad Creciente
+### Paso 3. Consultas SQL de Complejidad Creciente
 
-**Objetivo:** Ejecutar 10 consultas SQL de complejidad creciente que demuestren el poder del modelo relacional: desde SELECTs básicos hasta window functions y reportes complejos.
-
-**Instrucciones:**
 
 1. Ejecuta las siguientes consultas en orden. Cada una introduce un concepto nuevo:
 
@@ -504,6 +503,8 @@ WHERE ciudad = 'Bogotá'
 ORDER BY fecha_registro DESC;
 ```
 
+<br/>
+
 ```sql
 -- ============================================================
 -- CONSULTA 2: INNER JOIN - Pedidos con datos del cliente
@@ -521,6 +522,8 @@ INNER JOIN clientes c ON p.cliente_id = c.cliente_id
 ORDER BY p.fecha_pedido DESC;
 ```
 
+<br/>
+
 ```sql
 -- ============================================================
 -- CONSULTA 3: LEFT JOIN - Clientes con o sin pedidos
@@ -536,6 +539,8 @@ LEFT JOIN pedidos p ON c.cliente_id = p.cliente_id
 GROUP BY c.cliente_id, c.nombre, c.email
 ORDER BY total_pedidos ASC;
 ```
+
+<br/>
 
 ```sql
 -- ============================================================
@@ -555,6 +560,8 @@ WHERE ped.estado != 'CANCELADO'
 GROUP BY pr.producto_id, pr.nombre, cat.nombre
 ORDER BY unidades_vendidas DESC, ingresos_netos DESC;
 ```
+
+<br/>
 
 ```sql
 -- ============================================================
@@ -577,6 +584,8 @@ HAVING COUNT(p.pedido_id) > 1
 ORDER BY gasto_total DESC;
 ```
 
+<br/>
+
 ```sql
 -- ============================================================
 -- CONSULTA 6: Subconsulta en WHERE (correlacionada)
@@ -598,6 +607,9 @@ WHERE p.precio > (
 )
 ORDER BY cat.nombre, p.precio DESC;
 ```
+
+<br/>
+
 
 ```sql
 -- ============================================================
@@ -623,6 +635,8 @@ WHERE resumen.total_pedidos >= 1
 ORDER BY resumen.ingresos_totales DESC;
 ```
 
+<br/>
+
 ```sql
 -- ============================================================
 -- CONSULTA 8: Window Function - ROW_NUMBER y RANK
@@ -640,6 +654,9 @@ WHERE p.estado != 'CANCELADO'
 GROUP BY c.cliente_id, c.nombre, c.ciudad
 ORDER BY gasto_total DESC;
 ```
+
+<br/>
+
 
 ```sql
 -- ============================================================
@@ -659,6 +676,8 @@ WHERE estado NOT IN ('CANCELADO', 'PENDIENTE')
 GROUP BY TO_CHAR(fecha_pedido, 'YYYY-MM')
 ORDER BY mes;
 ```
+
+<br/>
 
 ```sql
 -- ============================================================
@@ -699,16 +718,20 @@ FROM metricas_productos
 ORDER BY ingresos_brutos DESC;
 ```
 
+<br/>
+
 **Salida Esperada (Consulta 10 - fragmento):**
 
 ```
  producto              | categoria  | precio_catalogo | stock_actual | unidades_vendidas | ingresos_brutos | clasificacion_rotacion | pct_ingresos_totales
------------------------+------------+-----------------+--------------+-------------------+-----------------+------------------------+---------------------
+-------------------- |------------|------------------|----------------|--------------------|---------------|----------|
  Laptop ProBook 450    | Computación| 2850000.00      | 25           | 4                 | 11400000        | ROTACIÓN MEDIA         | 38.52
  Smartphone Galaxy S24 | Telefonía  | 3200000.00      | 40           | 2                 | 6400000         | BAJA ROTACIÓN          | 21.61
  Monitor UltraWide 34" | Periféricos| 1800000.00      | 15           | 1                 | 1800000         | BAJA ROTACIÓN          | 6.08
  ...
 ```
+
+<br/>
 
 **Verificación:**
 
@@ -717,13 +740,10 @@ ORDER BY ingresos_brutos DESC;
 - La Consulta 9 debe mostrar ventas acumuladas crecientes mes a mes
 - La Consulta 10 debe mostrar exactamente 12 productos con su clasificación
 
----
+<br/><br/>
 
-### Paso 4: Implementación de Transacciones Explícitas ACID
+### Paso 4. Implementación de Transacciones Explícitas ACID
 
-**Objetivo:** Implementar 3 transacciones explícitas que demuestren los principios ACID (Atomicidad, Consistencia, Aislamiento, Durabilidad) para operaciones críticas de negocio.
-
-**Instrucciones:**
 
 1. **Transacción 1:** Crear un nuevo pedido completo (operación atómica: insertar pedido + detalles + actualizar stock):
 
@@ -734,7 +754,7 @@ ORDER BY ingresos_brutos DESC;
 -- ============================================================
 BEGIN;
 
--- Paso 1: Verificar stock disponible antes de proceder
+-- Paso 1. Verificar stock disponible antes de proceder
 DO $$
 DECLARE
     stock_laptop    INT;
@@ -751,17 +771,17 @@ BEGIN
     END IF;
 END $$;
 
--- Paso 2: Insertar el pedido
+-- Paso 2. Insertar el pedido
 INSERT INTO pedidos (cliente_id, fecha_pedido, estado, total, direccion_envio)
 VALUES (3, NOW(), 'CONFIRMADO', 3210000.00, 'Cll 15 #30-45, Cali');
 
--- Paso 3: Insertar los detalles del pedido (usando el ID recién creado)
+-- Paso 3. Insertar los detalles del pedido (usando el ID recién creado)
 INSERT INTO detalle_pedidos (pedido_id, producto_id, cantidad, precio_unitario, descuento)
 VALUES 
     (LASTVAL(), 1, 1, 2850000.00, 0),
     (LASTVAL(), 5, 2,  180000.00, 0);
 
--- Paso 4: Actualizar el stock (descontar unidades vendidas)
+-- Paso 4. Actualizar el stock (descontar unidades vendidas)
 UPDATE productos SET stock = stock - 1 WHERE producto_id = 1;
 UPDATE productos SET stock = stock - 2 WHERE producto_id = 5;
 
@@ -774,6 +794,8 @@ SELECT p.pedido_id, c.nombre AS cliente, p.total, p.estado
 FROM pedidos p JOIN clientes c ON p.cliente_id = c.cliente_id
 ORDER BY p.pedido_id DESC LIMIT 1;
 ```
+
+<br/>
 
 2. **Transacción 2:** Cancelar un pedido con rollback de stock (operación que restaura el estado):
 
@@ -826,6 +848,8 @@ WHERE producto_id IN (
 );
 ```
 
+<br/>
+
 3. **Transacción 3:** Demostrar ROLLBACK explícito cuando ocurre un error de integridad:
 
 ```sql
@@ -867,6 +891,9 @@ WHERE producto_id = 1;
 SELECT 'ROLLBACK exitoso: el stock fue restaurado automáticamente' AS verificacion;
 ```
 
+<br/>
+
+
 **Salida Esperada (Transacción 3):**
 
 ```
@@ -875,9 +902,11 @@ DETAIL:  Key (cliente_id)=(9999) is not present in table "clientes".
 
 -- Después del ROLLBACK:
  producto_id | nombre           | stock
--------------+------------------+-------
+<br/><br/><br/><br/><br/><br/><br/><br/>-+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>+<br/><br/><br/><br/>-
  1           | Laptop ProBook 450| 23    ← mismo valor que antes, ROLLBACK exitoso
 ```
+
+<br/>
 
 **Verificación:**
 
@@ -885,19 +914,19 @@ DETAIL:  Key (cliente_id)=(9999) is not present in table "clientes".
 - La Transacción 2 debe cambiar el estado del pedido 5 a CANCELADO y restaurar el stock
 - La Transacción 3 debe mostrar el error de integridad referencial y confirmar que el stock no cambió después del ROLLBACK
 
----
+<br/><br/>
 
-### Paso 5: Diseño e Implementación del Modelo MongoDB
-
-**Objetivo:** Diseñar y crear colecciones MongoDB con validación de esquema JSON Schema para almacenar datos no estructurados del proyecto: logs de actividad, configuraciones dinámicas y datos de sesión.
-
-**Instrucciones:**
+### Paso 5. Diseño e Implementación del Modelo MongoDB
 
 1. Abre MongoDB Compass y conéctate a tu instancia:
    - Connection String: `mongodb://localhost:27017`
    - Si usas Docker: `mongodb://localhost:27017`
 
+<br/>
+
 2. Crea la base de datos `tienda_logs` haciendo clic en "+" en el panel izquierdo.
+
+<br/>
 
 3. Abre el shell de MongoDB Compass (pestaña "MONGOSH" en la parte inferior) y ejecuta los siguientes comandos para crear las colecciones con validación de esquema:
 
@@ -1014,6 +1043,8 @@ db.sesiones_usuario.createIndex(
 )
 ```
 
+<br/>
+
 4. Verifica la creación de las colecciones:
 
 ```javascript
@@ -1024,24 +1055,24 @@ db.getCollectionNames()
 db.getCollectionInfos({ name: "logs_actividad" })
 ```
 
+<br/>
+
 **Salida Esperada:**
 
 ```javascript
 [ 'configuraciones_dinamicas', 'logs_actividad', 'sesiones_usuario' ]
 ```
 
+<br/>
+
 **Verificación:**
 
 - Las 3 colecciones deben aparecer en MongoDB Compass en el panel izquierdo bajo `tienda_logs`
 - En la colección `sesiones_usuario`, verifica que los índices se crearon en la pestaña "Indexes" de Compass
 
----
+<br/><br/>
 
-### Paso 6: Operaciones CRUD en MongoDB con Operadores Avanzados
-
-**Objetivo:** Ejecutar operaciones CRUD completas en MongoDB utilizando operadores de consulta y actualización avanzados para demostrar el poder del modelo documental.
-
-**Instrucciones:**
+### Paso 6. Operaciones CRUD en MongoDB con Operadores Avanzados
 
 1. Inserta documentos de prueba en las colecciones:
 
@@ -1283,6 +1314,8 @@ db.sesiones_usuario.insertMany([
 ])
 ```
 
+<br/>
+
 2. Ejecuta operaciones de consulta con operadores avanzados:
 
 ```javascript
@@ -1335,6 +1368,8 @@ db.configuraciones_dinamicas.find({
   _id: 0
 })
 ```
+
+<br/>
 
 3. Ejecuta operaciones de actualización con operadores avanzados:
 
@@ -1410,6 +1445,8 @@ db.sesiones_usuario.findOne(
 )
 ```
 
+<br/>
+
 **Salida Esperada (verificación del carrito):**
 
 ```javascript
@@ -1427,19 +1464,17 @@ db.sesiones_usuario.findOne(
 }
 ```
 
+<br/>
+
 **Verificación:**
 
 - Confirma que los 10 logs de actividad fueron insertados (usa `db.logs_actividad.countDocuments()`)
 - Verifica que la configuración de catálogo tiene `version: 4` después de la actualización
 - El carrito del usuario 1 debe tener 4 items después del `$push`
 
----
+<br/><br/>
 
-### Paso 7: Pipeline de Agregación MongoDB
-
-**Objetivo:** Construir un pipeline de agregación MongoDB con las etapas `$match`, `$group`, `$sort` y `$project` para generar un reporte de actividad de usuarios.
-
-**Instrucciones:**
+### Paso 7. Pipeline de Agregación MongoDB
 
 1. Ejecuta el pipeline de agregación completo:
 
@@ -1563,6 +1598,9 @@ db.logs_actividad.aggregate([
 ])
 ```
 
+<br/>
+
+
 2. Verifica el conteo total de documentos en cada colección:
 
 ```javascript
@@ -1572,6 +1610,8 @@ print("logs_actividad:           " + db.logs_actividad.countDocuments())
 print("configuraciones_dinamicas: " + db.configuraciones_dinamicas.countDocuments())
 print("sesiones_usuario:          " + db.sesiones_usuario.countDocuments())
 ```
+
+<br/>
 
 **Salida Esperada (Pipeline 1):**
 
@@ -1590,19 +1630,18 @@ print("sesiones_usuario:          " + db.sesiones_usuario.countDocuments())
 ]
 ```
 
+<br/>
+
 **Verificación:**
 
 - El Pipeline 1 debe retornar resultados agrupados por usuario con sus métricas
 - El Pipeline 2 debe mostrar estadísticas por módulo con desglose de éxitos/fallos
 - El conteo de `logs_actividad` debe ser 10
 
----
+<br/><br/>
 
-### Paso 8: Integración Spring Boot — Configuración Dual de Fuentes de Datos
+### Paso 8. Integración Spring Boot — Configuración Dual de Fuentes de Datos
 
-**Objetivo:** Configurar el proyecto Spring Boot para conectarse simultáneamente a PostgreSQL (via Spring Data JPA) y MongoDB (via Spring Data MongoDB), demostrando la coexistencia de ambas tecnologías.
-
-**Instrucciones:**
 
 1. Abre el proyecto Spring Boot en IntelliJ IDEA. Actualiza el archivo `pom.xml` para incluir las dependencias necesarias:
 
@@ -1641,6 +1680,9 @@ print("sesiones_usuario:          " + db.sesiones_usuario.countDocuments())
     <artifactId>spring-boot-starter-web</artifactId>
 </dependency>
 ```
+
+<br/>
+
 
 2. Crea el archivo de configuración `src/main/resources/application.yml`:
 
@@ -1702,6 +1744,8 @@ server:
   port: 8080
 ```
 
+<br/>
+
 3. Crea la entidad JPA para la tabla `clientes`. Crea el archivo `src/main/java/com/tienda/entity/Cliente.java`:
 
 ```java
@@ -1743,6 +1787,8 @@ public class Cliente {
     private Boolean activo;
 }
 ```
+
+<br/>
 
 4. Crea la entidad JPA para `Pedido`. Crea `src/main/java/com/tienda/entity/Pedido.java`:
 
@@ -1788,6 +1834,8 @@ public class Pedido {
     private String direccionEnvio;
 }
 ```
+
+<br/>
 
 5. Crea el documento MongoDB para `LogActividad`. Crea `src/main/java/com/tienda/document/LogActividad.java`:
 
@@ -1836,6 +1884,8 @@ public class LogActividad {
     private Map<String, Object> detalles;
 }
 ```
+
+<br/>
 
 6. Crea los repositorios. Primero `src/main/java/com/tienda/repository/ClienteRepository.java`:
 
@@ -1907,6 +1957,8 @@ public interface LogActividadRepository extends MongoRepository<LogActividad, St
     List<org.bson.Document> findTopUsuariosPorActividad();
 }
 ```
+
+<br/>
 
 7. Crea un servicio de integración que use ambas bases de datos. Crea `src/main/java/com/tienda/service/DashboardService.java`:
 
@@ -1992,6 +2044,9 @@ public class DashboardService {
 }
 ```
 
+<br/>
+
+
 8. Crea un controlador REST básico para probar la integración. Crea `src/main/java/com/tienda/controller/DashboardController.java`:
 
 ```java
@@ -2031,6 +2086,8 @@ public class DashboardController {
 }
 ```
 
+<br/>
+
 9. Compila y ejecuta la aplicación:
 
 ```bash
@@ -2051,6 +2108,8 @@ mvn clean compile
 mvn spring-boot:run
 ```
 
+<br/>
+
 10. Prueba los endpoints con curl:
 
 ```bash
@@ -2060,6 +2119,8 @@ curl -X GET http://localhost:8080/api/dashboard
 # Registrar un log de actividad
 curl -X POST "http://localhost:8080/api/dashboard/log?usuarioId=1&accion=VER_PRODUCTO&modulo=catalogo"
 ```
+
+<br/>
 
 **Salida Esperada (fragmento del dashboard):**
 
@@ -2081,6 +2142,8 @@ curl -X POST "http://localhost:8080/api/dashboard/log?usuarioId=1&accion=VER_PRO
 }
 ```
 
+<br/>
+
 **Verificación:**
 
 - La aplicación debe iniciar sin errores en la consola
@@ -2088,13 +2151,10 @@ curl -X POST "http://localhost:8080/api/dashboard/log?usuarioId=1&accion=VER_PRO
 - Los logs de Hibernate deben mostrar las queries SQL a PostgreSQL
 - Los logs de MongoDB deben mostrar las operaciones a la colección `logs_actividad`
 
----
+<br/><br/>
 
-### Paso 9: Análisis Comparativo — Modelo Relacional vs. Documental
+### Paso 9. Análisis Comparativo — Modelo Relacional vs. Documental
 
-**Objetivo:** Documentar y analizar las diferencias prácticas observadas durante el laboratorio entre el modelo relacional (PostgreSQL) y el modelo documental (MongoDB) aplicadas al dominio del proyecto.
-
-**Instrucciones:**
 
 1. Ejecuta las siguientes consultas comparativas para evidenciar las diferencias de diseño:
 
@@ -2124,6 +2184,8 @@ WHERE p.pedido_id = 1
 ORDER BY pr.nombre;
 ```
 
+<br/>
+
 ```javascript
 // ============================================================
 // MONGODB: El mismo pedido como documento único (sin JOINs)
@@ -2145,6 +2207,8 @@ db.logs_actividad.findOne(
 )
 ```
 
+<br/>
+
 2. Crea un archivo de análisis en el proyecto. Crea `src/main/resources/analisis_comparativo.md`:
 
 ```markdown
@@ -2154,7 +2218,7 @@ db.logs_actividad.findOne(
 ### 1. Estructura de Datos
 
 | Aspecto | PostgreSQL (Relacional) | MongoDB (Documental) |
-|---------|------------------------|----------------------|
+------------------------------------------------------------------------------------|
 | Organización | Tablas con esquema fijo | Colecciones con documentos flexibles |
 | Relaciones | Claves foráneas explícitas | Referencias o documentos embebidos |
 | Esquema | Rígido (DDL define estructura) | Flexible (JSON Schema opcional) |
@@ -2208,11 +2272,16 @@ La combinación de ambas tecnologías permite:
 4. Aprovechar las fortalezas de cada paradigma según el caso de uso
 ```
 
+<br/>
+
 **Verificación:**
 
 - El archivo `analisis_comparativo.md` debe existir en `src/main/resources/`
 - La consulta SQL debe retornar las 2 líneas del pedido 1 con todos los detalles
 - El documento MongoDB debe mostrar la estructura del log de creación de pedido
+
+<br/>
+<br/>
 
 ## Validación y Pruebas
 
@@ -2229,6 +2298,9 @@ La combinación de ambas tecnologías permite:
 - [ ] El endpoint `GET /api/dashboard` retorna datos combinados de ambas bases de datos
 - [ ] El archivo de análisis comparativo fue creado y documenta las diferencias observadas
 
+<br/>
+<br/>
+
 ### Procedimiento de Pruebas
 
 1. Verificar el esquema PostgreSQL:
@@ -2238,7 +2310,11 @@ La combinación de ambas tecnologías permite:
    WHERE table_schema = 'public'
    ORDER BY table_name, constraint_type;
    ```
+<br/>
+
    **Resultado Esperado:** Al menos 15 constraints (PKs, FKs, CHECKs, UNIQUEs)
+
+<br/>
 
 2. Verificar la integridad referencial con una inserción inválida:
    ```sql
@@ -2246,12 +2322,19 @@ La combinación de ambas tecnologías permite:
    INSERT INTO pedidos (cliente_id, fecha_pedido, estado, total)
    VALUES (9999, NOW(), 'PENDIENTE', 100.00);
    ```
+<br/>
+
    **Resultado Esperado:** `ERROR: insert or update on table "pedidos" violates foreign key constraint`
+<br/>
+
 
 3. Verificar las colecciones MongoDB:
    ```javascript
    db.getCollectionInfos().forEach(c => print(c.name + ": " + db[c.name].countDocuments() + " documentos"))
    ```
+
+<br/>
+
    **Resultado Esperado:**
    ```
    configuraciones_dinamicas: 3 documentos
@@ -2259,13 +2342,20 @@ La combinación de ambas tecnologías permite:
    sesiones_usuario: 2 documentos
    ```
 
+<br/>
+
 4. Probar el endpoint del dashboard Spring Boot:
+
    ```bash
    curl -s http://localhost:8080/api/dashboard | python3 -m json.tool
    ```
+<br/>
+
    **Resultado Esperado:** JSON con campos `total_clientes_postgresql`, `total_logs_mongodb` y `top_usuarios_activos`
+<br/>
 
 5. Verificar que el ROLLBACK funciona correctamente:
+
    ```sql
    -- Antes del ROLLBACK, verificar stock
    SELECT stock FROM productos WHERE producto_id = 1;
@@ -2275,7 +2365,13 @@ La combinación de ambas tecnologías permite:
    ROLLBACK;
    SELECT stock FROM productos WHERE producto_id = 1; -- Debe ser el valor original
    ```
+
+<br/>
+
    **Resultado Esperado:** El stock regresa al valor original después del ROLLBACK
+
+<br/>
+<br/>
 
 ## Solución de Problemas
 
@@ -2286,8 +2382,12 @@ La combinación de ambas tecnologías permite:
 - pgAdmin muestra "Server not listening"
 - Spring Boot lanza `org.postgresql.util.PSQLException: Connection refused`
 
+<br/>
+
 **Causa:**
-El servicio de PostgreSQL no está en ejecución o está escuchando en un puerto diferente al 5432.
+- El servicio de PostgreSQL no está en ejecución o está escuchando en un puerto diferente al 5432.
+
+<br/>
 
 **Solución:**
 ```bash
@@ -2313,7 +2413,7 @@ netstat -tlnp | grep 5432
 netstat -ano | findstr :5432
 ```
 
----
+<br/><br/>
 
 ### Problema 2: Error de Autenticación PostgreSQL "password authentication failed"
 
@@ -2321,8 +2421,12 @@ netstat -ano | findstr :5432
 - `FATAL: password authentication failed for user "admin"`
 - pgAdmin no puede conectarse con las credenciales proporcionadas
 
+<br/>
+
 **Causa:**
-Las credenciales configuradas no coinciden con las del servidor PostgreSQL local o del contenedor Docker.
+- Las credenciales configuradas no coinciden con las del servidor PostgreSQL local o del contenedor Docker.
+
+<br/>
 
 **Solución:**
 ```bash
@@ -2347,7 +2451,7 @@ ALTER USER admin WITH PASSWORD 'admin123';
 psql -h localhost -U admin -d tienda_db -c "SELECT version();"
 ```
 
----
+<br/><br/>
 
 ### Problema 3: Error de Validación de Esquema MongoDB "Document failed validation"
 
@@ -2355,8 +2459,12 @@ psql -h localhost -U admin -d tienda_db -c "SELECT version();"
 - `MongoWriteException: Document failed validation`
 - Los insertMany fallan con error de validación
 
+<br/>
+
 **Causa:**
-El documento que se intenta insertar no cumple con el JSON Schema definido en la colección. Usualmente ocurre cuando el campo `accion` tiene un valor no listado en el enum.
+- El documento que se intenta insertar no cumple con el JSON Schema definido en la colección. Usualmente ocurre cuando el campo `accion` tiene un valor no listado en el enum.
+
+<br/>
 
 **Solución:**
 ```javascript
@@ -2382,7 +2490,7 @@ db.runCommand({
 })
 ```
 
----
+<br/><br/>
 
 ### Problema 4: Spring Boot Error "Table 'clientes' doesn't exist" con ddl-auto: validate
 
@@ -2390,22 +2498,26 @@ db.runCommand({
 - `javax.persistence.PersistenceException: Table 'tienda_db.clientes' doesn't exist`
 - La aplicación Spring Boot no inicia
 
+<br/>
+
 **Causa:**
-La configuración `ddl-auto: validate` intenta validar que las tablas JPA existen en la base de datos, pero las tablas no fueron creadas o el esquema no coincide.
+- La configuración `ddl-auto: validate` intenta validar que las tablas JPA existen en la base de datos, pero las tablas no fueron creadas o el esquema no coincide.
+
+<br/>
 
 **Solución:**
 ```bash
-# Paso 1: Verificar que las tablas existen en PostgreSQL
+# Paso 1. Verificar que las tablas existen en PostgreSQL
 psql -h localhost -U admin -d tienda_db -c "\dt"
 
 # Si las tablas no existen, ejecutar el script DDL del Paso 1
 
-# Paso 2: Verificar que el nombre de la base de datos en application.yml
+# Paso 2. Verificar que el nombre de la base de datos en application.yml
 # coincide exactamente con la base de datos creada
 # En application.yml: url: jdbc:postgresql://localhost:5432/tienda_db
 # La base de datos debe llamarse 'tienda_db'
 
-# Paso 3: Si quieres que Spring cree las tablas automáticamente (solo para desarrollo)
+# Paso 3. Si quieres que Spring cree las tablas automáticamente (solo para desarrollo)
 # Cambiar en application.yml:
 # jpa:
 #   hibernate:
@@ -2421,7 +2533,7 @@ spring:
       ddl-auto: update  # Crea/actualiza tablas sin borrar datos existentes
 ```
 
----
+<br/><br/>
 
 ### Problema 5: Error de Transacción "ERROR: current transaction is aborted"
 
@@ -2429,8 +2541,12 @@ spring:
 - `ERROR: current transaction is aborted, commands ignored until end of transaction block`
 - Las consultas posteriores a un error fallan aunque parezcan válidas
 
+<br/>
+
 **Causa:**
-En PostgreSQL, cuando una sentencia dentro de un bloque de transacción falla, todas las sentencias posteriores en esa misma transacción son ignoradas hasta que se ejecute ROLLBACK.
+- En PostgreSQL, cuando una sentencia dentro de un bloque de transacción falla, todas las sentencias posteriores en esa misma transacción son ignoradas hasta que se ejecute ROLLBACK.
+
+<br/>
 
 **Solución:**
 ```sql
@@ -2462,7 +2578,7 @@ END $$;
 COMMIT;
 ```
 
----
+<br/><br/>
 
 ### Problema 6: Maven "Could not resolve dependencies" al compilar
 
@@ -2470,10 +2586,15 @@ COMMIT;
 - `Could not resolve artifact org.springframework.boot:spring-boot-starter-data-mongodb:jar`
 - El proyecto no compila por dependencias no encontradas
 
+<br/>
+
 **Causa:**
-Problemas de conectividad a Maven Central o caché local corrupta.
+- Problemas de conectividad a Maven Central o caché local corrupta.
+
+<br/>
 
 **Solución:**
+
 ```bash
 # Limpiar caché local de Maven y forzar descarga
 mvn dependency:purge-local-repository -DreResolve=true
@@ -2492,6 +2613,9 @@ mvn clean install -U
 # Debe ser 3.2.x para compatibilidad con Java 17
 mvn help:evaluate -Dexpression=project.version -q -DforceStdout
 ```
+
+<br/>
+<br/>
 
 ## Limpieza
 
@@ -2513,6 +2637,9 @@ docker network rm proyecto-integrador-net
 docker ps -a | grep -E "postgres-integrador|mongo-integrador"
 ```
 
+<br/>
+<br/>
+
 ```sql
 -- ============================================================
 -- LIMPIEZA DE POSTGRESQL (si instalación local, no Docker)
@@ -2530,6 +2657,9 @@ DROP TABLE IF EXISTS clientes CASCADE;
 -- DROP DATABASE tienda_db;
 ```
 
+<br/>
+<br/>
+
 ```javascript
 // ============================================================
 // LIMPIEZA DE MONGODB (si instalación local, no Docker)
@@ -2544,6 +2674,9 @@ db.sesiones_usuario.drop()
 // O eliminar toda la base de datos
 db.dropDatabase()
 ```
+
+<br/>
+<br/>
 
 ```bash
 # ============================================================
@@ -2561,7 +2694,11 @@ lsof -i :8080
 netstat -ano | findstr :8080
 ```
 
-> ⚠️ **Advertencia:** Si eliminas los contenedores Docker, **todos los datos insertados durante el laboratorio se perderán permanentemente**. Si deseas conservar los datos para referencia futura, primero exporta los datos:
+<br/>
+<br/>
+
+
+> **Advertencia:** Si eliminas los contenedores Docker, **todos los datos insertados durante el laboratorio se perderán permanentemente**. Si deseas conservar los datos para referencia futura, primero exporta los datos:
 > ```bash
 > # Exportar datos PostgreSQL
 > docker exec postgres-integrador pg_dump -U admin tienda_db > backup_tienda_db.sql
@@ -2570,39 +2707,56 @@ netstat -ano | findstr :8080
 > docker cp mongo-integrador:/tmp/backup ./backup_mongo
 > ```
 
+<br/>
+<br/>
+
 ## Resumen
 
 ### Lo que Lograste
 
 - **Esquema relacional normalizado:** Diseñaste e implementaste 5 tablas en PostgreSQL aplicando 3FN, con claves primarias, claves foráneas, índices y constraints de integridad que garantizan la consistencia de los datos
+
 - **Consultas SQL avanzadas:** Ejecutaste 10 consultas de complejidad creciente incluyendo JOINs múltiples, subconsultas correlacionadas, funciones de agregación con GROUP BY/HAVING, y window functions (RANK, SUM OVER PARTITION) para análisis de negocio
+
 - **Transacciones ACID:** Implementaste 3 transacciones explícitas con BEGIN/COMMIT/ROLLBACK, demostrando atomicidad en la creación de pedidos, consistencia en la cancelación con restauración de stock, y la garantía de rollback automático ante errores de integridad
+
 - **Modelo documental MongoDB:** Creaste 3 colecciones con validación JSON Schema para logs de actividad, configuraciones dinámicas y sesiones de usuario, aprovechando documentos embebidos y arrays para datos naturalmente jerárquicos
+
 - **Operaciones CRUD avanzadas:** Ejecutaste operaciones con operadores `$set`, `$push`, `$pull`, `$in`, `$regex`, `$gt`, `$lt`, `$exists` y construiste 3 pipelines de agregación con `$match`, `$group`, `$sort` y `$project`
+
 - **Integración Spring Boot dual:** Configuraste Spring Data JPA y Spring Data MongoDB en el mismo proyecto, creando entidades, documentos, repositorios y un servicio que combina datos de ambas fuentes en tiempo real
+
+<br/>
 
 ### Conceptos Clave Aprendidos
 
 - La **normalización** (3FN) elimina redundancias y anomalías de actualización, pero requiere JOINs para reconstituir entidades completas
+
 - Las **claves foráneas** con `ON DELETE RESTRICT` y `ON DELETE CASCADE` implementan automáticamente reglas de negocio críticas a nivel de base de datos
+
 - Las **window functions** como `RANK() OVER (PARTITION BY ...)` permiten análisis comparativos dentro de grupos sin subconsultas complejas
+
 - Los **bloques BEGIN/COMMIT/ROLLBACK** garantizan que operaciones multi-paso sean atómicas: o todo se confirma o nada se confirma
+
 - El **modelo documental** es superior para datos con esquema variable, alta frecuencia de escritura y estructuras naturalmente anidadas como logs y configuraciones
+
 - La **coexistencia** de Spring Data JPA y Spring Data MongoDB en un mismo proyecto permite usar cada tecnología donde mejor se adapta, sin compromisos en ninguna dirección
 
-### Próximos Pasos
-
-- **Laboratorio 6:** Implementar Spring Batch para procesamiento por lotes de los datos del proyecto, incluyendo importación masiva de productos desde CSV y generación de reportes periódicos usando los datos de PostgreSQL y MongoDB configurados en este laboratorio
-- **Profundización SQL:** Practicar vistas materializadas, procedimientos almacenados y funciones en PostgreSQL para encapsular la lógica de negocio compleja identificada en las consultas de reporte
-- **MongoDB Avanzado:** Explorar el uso de índices compuestos, índices de texto completo y Change Streams para notificaciones en tiempo real cuando se insertan nuevos logs de actividad
-- **Optimización de consultas:** Usar `EXPLAIN ANALYZE` en PostgreSQL y `.explain("executionStats")` en MongoDB para identificar y optimizar las consultas más lentas del proyecto
+<br/>
+<br/>
 
 ## Recursos Adicionales
 
 - **PostgreSQL Official Documentation - SQL Commands:** Referencia completa de todas las sentencias SQL soportadas por PostgreSQL, incluyendo window functions y CTEs. Disponible en: https://www.postgresql.org/docs/16/sql-commands.html
+
 - **MongoDB Manual - Aggregation Pipeline:** Documentación oficial de todas las etapas del pipeline de agregación con ejemplos detallados. Disponible en: https://www.mongodb.com/docs/manual/core/aggregation-pipeline/
+
 - **Spring Data JPA Reference Documentation:** Guía oficial para configurar repositorios JPA, queries derivados y queries JPQL en Spring Boot 3.x. Disponible en: https://docs.spring.io/spring-data/jpa/reference/
+
 - **Spring Data MongoDB Reference Documentation:** Guía oficial para configurar MongoTemplate, repositorios MongoDB y aggregations en Spring Boot 3.x. Disponible en: https://docs.spring.io/spring-data/mongodb/reference/
+
 - **"Use The Index, Luke" - Markus Winand:** Recurso gratuito en línea sobre optimización de consultas SQL con índices, aplicable a PostgreSQL. Disponible en: https://use-the-index-luke.com/
+
 - **PostgreSQL EXPLAIN Visualizer (explain.dalibo.com):** Herramienta visual gratuita para interpretar los planes de ejecución de EXPLAIN ANALYZE. Disponible en: https://explain.dalibo.com/
+
 - **Elmasri, R., & Navathe, S. B. (2015). Fundamentals of Database Systems (7th ed.):** Referencia académica completa sobre el modelo relacional, normalización y diseño de esquemas. Editorial Pearson.
