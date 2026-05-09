@@ -585,6 +585,8 @@ Al ejecutar `mvn validate` en la terminal del proyecto, Maven debe validar el `p
 
 Al compilar con `./mvnw compile`, no debe haber errores. La clase `Producto` debe mostrar en IntelliJ los métodos generados por Lombok (getters, setters, builder) en la vista de estructura del archivo.
 
+<br/>
+
 **Verificación:**
 
 - [ ] La clase `Producto` compila sin errores y Lombok genera los métodos (verifica en IntelliJ: View → Tool Windows → Structure)
@@ -885,6 +887,8 @@ Al compilar con `./mvnw compile`, no debe haber errores. La clase `Producto` deb
 <br/>
 
 Al ejecutar `./mvnw compile`, el proyecto debe compilar sin errores.
+
+<br/>
 
 **Verificación:**
 
