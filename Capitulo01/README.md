@@ -2549,7 +2549,8 @@ El archivo `README.md` aparece en GitHub con formato Markdown renderizado correc
 <br/>
 
 **Causa:**
-Node.js está tratando el archivo como CommonJS en lugar de ES Module. Esto ocurre cuando falta `"type": "module"` en `package.json` o cuando el archivo no tiene extensión `.mjs`.
+
+- Node.js está tratando el archivo como CommonJS en lugar de ES Module. Esto ocurre cuando falta `"type": "module"` en `package.json` o cuando el archivo no tiene extensión `.mjs`.
 
 <br/>
 
@@ -2577,7 +2578,7 @@ code package.json
 <br/>
 
 **Causa:**
-`JAVA_HOME` no está configurado o el directorio `bin` del JDK no está en el `PATH`.
+- `JAVA_HOME` no está configurado o el directorio `bin` del JDK no está en el `PATH`.
 
 <br/>
 
@@ -2618,7 +2619,7 @@ export PATH=$JAVA_HOME/bin:$PATH
 <br/>
 
 **Causa:**
-GitHub eliminó la autenticación por contraseña en agosto de 2021. Ahora se requiere un **Personal Access Token (PAT)** o autenticación SSH.
+- GitHub eliminó la autenticación por contraseña en agosto de 2021. Ahora se requiere un **Personal Access Token (PAT)** o autenticación SSH.
 
 <br/>
 
@@ -2660,7 +2661,7 @@ git config --global credential.helper "cache --timeout=3600"
 <br/>
 
 **Causa:**
-El archivo `.gitignore` no fue creado correctamente o no contiene la entrada `*.class`.
+- El archivo `.gitignore` no fue creado correctamente o no contiene la entrada `*.class`.
 
 <br/>
 
@@ -2693,7 +2694,7 @@ git status
 <br/>
 
 **Causa:**
-En módulos ES de Node.js, las importaciones deben incluir la extensión del archivo (`.js`). A diferencia de CommonJS, los módulos ES no resuelven extensiones automáticamente.
+- En módulos ES de Node.js, las importaciones deben incluir la extensión del archivo (`.js`). A diferencia de CommonJS, los módulos ES no resuelven extensiones automáticamente.
 
 
 <br/>
@@ -2706,10 +2707,10 @@ grep -r "from './" src/js-moderno/
 # Todas las líneas de import deben terminar en .js
 
 # Ejemplo correcto:
-# import { formatearMoneda } from "./utilidades.js";   ✅
+# import { formatearMoneda } from "./utilidades.js";   
 
 # Ejemplo incorrecto:
-# import { formatearMoneda } from "./utilidades";      ❌
+# import { formatearMoneda } from "./utilidades";    
 ```
 
 
