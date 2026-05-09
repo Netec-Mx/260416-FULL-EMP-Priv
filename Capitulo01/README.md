@@ -2219,14 +2219,10 @@ Si hay cambios pendientes (archivos `.class` de Java deberían estar ignorados):
 
 
   ```bash
-    git commit -m "feat(js): implementar módulos ES6+ con sistema de empleados
-
-    - Agregar variables-y-funciones.js con let/const y arrow functions
-    - Agregar destructuring-spread-rest.js con operadores modernos
-    - Agregar async-await.js con Promises y Promise.all/allSettled
-    - Agregar ServicioEmpleados.js con módulos ES y campos privados
-    - Agregar utilidades.js con funciones de formato y validación"
+    git commit -m "feat(js): implementar módulos ES6+ con sistema de empleados"
   ```
+
+<br/>
 
   ```bash
     git push origin feature/javascript-moderno
