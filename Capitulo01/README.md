@@ -2284,91 +2284,135 @@ origin  https://github.com/TU_USUARIO/curso-fullstack-lab01.git (push)
 
 2. Escribe el siguiente contenido en `README.md`:
 
-   ```markdown
-   # Lab 01: JavaScript Moderno, POO, Java y Git
+  ````md
+# Lab 01: JavaScript Moderno, POO, Java y Git
 
-   Laboratorio 1 del Curso Full Stack Empresarial. Este proyecto demuestra las
-   características fundamentales de JavaScript ES6+, Programación Orientada a
-   Objetos, comparación con Java 17 y flujo de trabajo con Git/GitHub.
+Laboratorio 1 del Curso Full Stack Empresarial. Este proyecto demuestra características fundamentales de JavaScript ES6+, Programación Orientada a Objetos (POO), comparación básica con Java 17 y flujo de trabajo utilizando Git y GitHub.
 
-   ## Estructura del Proyecto
+---
 
-   ```
-   lab-01/
-   ├── src/
-   │   ├── js-moderno/          # Módulos ES6+ de JavaScript
-   │   │   ├── variables-y-funciones.js
-   │   │   ├── destructuring-spread-rest.js
-   │   │   ├── async-await.js
-   │   │   ├── ServicioEmpleados.js
-   │   │   ├── utilidades.js
-   │   │   └── index.js
-   │   ├── poo/                 # POO con clases JavaScript
-   │   │   ├── Persona.js
-   │   │   ├── Empleado.js
-   │   │   ├── EmpleadoTecnico.js
-   │   │   ├── Gerente.js
-   │   │   └── index.js
-   │   └── java-comparacion/    # Código Java equivalente
-   │       └── SistemaEmpleados.java
-   ├── package.json
-   ├── .gitignore
-   └── README.md
-   ```
+# Estructura del Proyecto
 
-   ## Requisitos
+```plaintext
+lab-01/
+├── src/
+│   ├── js-moderno/                 # Módulos ES6+ de JavaScript
+│   │   ├── variables-y-funciones.js
+│   │   ├── destructuring-spread-rest.js
+│   │   ├── async-await.js
+│   │   ├── ServicioEmpleados.js
+│   │   ├── utilidades.js
+│   │   └── index.js
+│   │
+│   ├── poo/                        # POO con clases JavaScript
+│   │   ├── Persona.js
+│   │   ├── Empleado.js
+│   │   ├── EmpleadoTecnico.js
+│   │   ├── Gerente.js
+│   │   └── index.js
+│   │
+│   └── java-comparacion/           # Código Java equivalente
+│       └── SistemaEmpleados.java
+│
+├── package.json
+├── .gitignore
+└── README.md
+```
 
-   - Node.js 20.x LTS
-   - JDK 17
-   - Git 2.44+
+> **Nota:** Git no versiona carpetas vacías de forma nativa; por ello, durante el laboratorio pueden utilizarse archivos `.gitkeep` para conservar la estructura inicial del proyecto.
 
-   ## Ejecución
+---
 
-   ```bash
-   # JavaScript Moderno (módulos ES)
-   npm run js-moderno
+# Requisitos
 
-   # POO con clases JavaScript
-   npm run poo
+- Node.js 20.x LTS
+- JDK 17
+- Git 2.44+
 
-   # Java (compilar y ejecutar)
-   javac src/java-comparacion/SistemaEmpleados.java
-   java -cp src/java-comparacion SistemaEmpleados
-   ```
+---
 
-   ## Conceptos Demostrados
+# Ejecución
 
-   ### JavaScript ES6+
-   - `let`/`const` con alcance de bloque
-   - Arrow functions y contexto `this`
-   - Desestructuración de objetos y arrays
-   - Operadores spread y rest
-   - Promesas y `async/await`
-   - `Promise.all` y `Promise.allSettled`
-   - Módulos ES (`import`/`export`)
+## JavaScript Moderno
 
-   ### POO en JavaScript
-   - Clases con campos privados (`#campo`)
-   - Herencia con `extends` y `super`
-   - Encapsulamiento con getters/setters
-   - Polimorfismo con sobrescritura de métodos
-   - Miembros estáticos
-   - Prevención de instanciación de clases abstractas
+```bash
+npm run js-moderno
+```
 
-   ### Comparación Java vs JavaScript
-   | Concepto | JavaScript | Java |
-   |----------|-----------|------|
-   | Variables | `let`/`const` | Tipos explícitos |
-   | Privado | `#campo` | `private` |
-   | Herencia | `extends` | `extends` |
-   | Iteración | `.filter()/.map()/.reduce()` | `.stream().filter()...` |
-   | Errores | `throw new Error()` | `throw new Exception()` |
-   | Colecciones | Arrays/Objects | `List`/`Map` |
+## POO con JavaScript
 
-   ## Autor
+```bash
+npm run poo
+```
 
-   Participante del Curso Full Stack Empresarial: <TU_NOMBRE>
-   ```
+## Java
+
+### Compilar
+
+```bash
+javac src/java-comparacion/SistemaEmpleados.java
+```
+
+### Ejecutar
+
+```bash
+java -cp src/java-comparacion SistemaEmpleados
+```
+
+---
+
+# Conceptos Demostrados
+
+## JavaScript ES6+
+
+- `let` y `const`
+- Arrow functions
+- Template Literals
+- Desestructuración
+- Operadores spread y rest
+- Promesas
+- `async/await`
+- `Promise.all`
+- Módulos ES (`import/export`)
+
+---
+
+## Programación Orientada a Objetos
+
+- Clases
+- Herencia
+- Encapsulamiento
+- Polimorfismo
+- Miembros estáticos
+- Sobrescritura de métodos
+- Campos privados (`#campo`)
+
+---
+
+## Comparación Java vs JavaScript
+
+| Concepto | JavaScript | Java |
+|---|---|---|
+| Variables | `let` / `const` | Tipos explícitos |
+| Privacidad | `#campo` | `private` |
+| Herencia | `extends` | `extends` |
+| Colecciones | Arrays / Objects | `List` / `Map` |
+| Funcional | `.map()/.filter()` | Streams API |
+| Excepciones | `Error` | `Exception` |
+
+---
+
+# Buenas Prácticas Git
+
+> **Nota:** Aunque `git add .` facilita agregar múltiples cambios rápidamente, se recomienda revisar previamente la salida de `git status` y agregar únicamente los archivos necesarios mediante `git add <archivo>`, evitando incluir cambios accidentales y reduciendo el esfuerzo de revertir errores posteriormente.
+
+---
+
+# Autor
+
+Participante del Curso Full Stack Empresarial: `<TU_NOMBRE>`
+````
+
 
 <br/>
 
