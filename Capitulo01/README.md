@@ -356,21 +356,23 @@ lab-01/
 
 <br/>
 
-> **Nota:** El bloque mostrado utiliza un *Template Literal* de JavaScript, identificado por el uso de acentos invertidos (\`). Los Template Literals permiten construir cadenas multilínea e interpolar variables o expresiones mediante la sintaxis `${...}`.
->
-> En el código anterior también se utilizaron algunos métodos de `String`:
->
-> - `String(valor)`  
->   Convierte un valor a texto.
->
-> - `padEnd(longitud)`  
->   Completa la cadena con espacios al final hasta alcanzar la longitud indicada. Se utilizó para alinear columnas visualmente.
->
-> - `substring(inicio, fin)`  
->   Extrae una parte del texto entre las posiciones indicadas. Se usó para limitar el tamaño del nombre del producto.
->
-> - `toFixed(2)`  
->   Convierte un número decimal a texto con una cantidad fija de decimales. En este caso, dos posiciones para representar valores monetarios.
+### **Notas:** 
+
+El bloque mostrado utiliza un *Template Literal* de JavaScript, identificado por el uso de acentos invertidos (\`). Los Template Literals permiten construir cadenas multilínea e interpolar variables o expresiones mediante la sintaxis `${...}`.
+
+En el código anterior también se utilizaron algunos métodos de `String`:
+
+- `String(valor)`  
+   Convierte un valor a texto.
+
+- `padEnd(longitud)`  
+   Completa la cadena con espacios al final hasta alcanzar la longitud indicada. Se utilizó para alinear columnas visualmente.
+
+- `substring(inicio, fin)`  
+  Extrae una parte del texto entre las posiciones indicadas. Se usó para limitar el tamaño del nombre del producto.
+
+- `toFixed(2)`  
+  Convierte un número decimal a texto con una cantidad fija de decimales. En este caso, dos posiciones para representar valores monetarios.
 
 
 <br/>
