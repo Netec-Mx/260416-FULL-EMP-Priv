@@ -2226,9 +2226,9 @@ Si hay cambios pendientes (archivos `.class` de Java deberían estar ignorados):
     - Agregar async-await.js con Promises y Promise.all/allSettled
     - Agregar ServicioEmpleados.js con módulos ES y campos privados
     - Agregar utilidades.js con funciones de formato y validación"
-    ```
+  ```
 
-    ```bash
+  ```bash
     git push origin feature/javascript-moderno
   ```
 
