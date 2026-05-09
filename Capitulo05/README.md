@@ -15,7 +15,7 @@ En este laboratorio implementarás la capa de persistencia completa del proyecto
 
 Este laboratorio refleja un escenario real de arquitectura empresarial donde los sistemas modernos combinan bases de datos relacionales para transacciones críticas con bases de datos documentales para datos flexibles y logs de actividad.
 
-## Objetivos de Aprendizaje
+## Objetivos 
 
 Al completar este laboratorio, serás capaz de:
 

@@ -192,8 +192,6 @@ Si Maven no está instalado globalmente, no te preocupes: el proyecto generado c
 
 **Salida Esperada:**
 
-<br/>
-
 ```
 [INFO] BUILD SUCCESS
 [INFO] Total time: 3.456 s
@@ -580,6 +578,8 @@ Al ejecutar `mvn validate` en la terminal del proyecto, Maven debe validar el `p
    git add src/
    git commit -m "feat: agregar modelo de dominio Producto con JPA y Lombok, configurar H2"
    ```
+
+<br/>
 
 **Salida Esperada:**
 

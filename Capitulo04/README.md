@@ -20,7 +20,7 @@ Este laboratorio refleja patrones reales de arquitectura empresarial donde los s
 
 ---
 
-## Objetivos de Aprendizaje
+## Objetivos 
 
 Al completar este laboratorio, serás capaz de:
 

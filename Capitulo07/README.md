@@ -18,7 +18,7 @@ En este laboratorio integrador, el participante une todos los componentes desarr
 
 ---
 
-## 3. Objetivos de Aprendizaje
+## 3. Objetivos
 
 Al completar este laboratorio, el participante será capaz de:
 

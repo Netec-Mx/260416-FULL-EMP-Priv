@@ -14,7 +14,7 @@ En este laboratorio contenerizarás el proyecto integrador completo —frontend 
 
 Este laboratorio representa el punto de integración final del curso: toma todo lo construido en los laboratorios anteriores (API REST con Spring Boot, frontend con Lit/Web Components, persistencia en PostgreSQL y MongoDB) y lo empaqueta en un stack listo para despliegue en cualquier entorno, eliminando el clásico problema de "funciona en mi máquina" que Docker fue diseñado para resolver.
 
-## Objetivos de Aprendizaje
+## Objetivos
 
 Al completar este laboratorio, serás capaz de:
 
