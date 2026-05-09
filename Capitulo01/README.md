@@ -21,7 +21,7 @@ Al completar este laboratorio, serás capaz de:
 
 <br/>
 
-### Conocimientos Requeridos
+### Conocimientos
 
 - Conocimientos básicos de programación: variables, condicionales, bucles y funciones en cualquier lenguaje.
 - Comprensión de lógica de programación y estructuras de control (if/else, for, while).

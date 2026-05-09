@@ -18,7 +18,7 @@ Al completar este laboratorio, serás capaz de:
 
 ## Prerrequisitos
 
-### Conocimientos Requeridos
+### Conocimientos
 
 - Comprensión de tablas, filas, columnas, claves primarias y claves foráneas (Lección 5.1)
 - Conocimientos básicos de SQL: SELECT, INSERT, UPDATE, DELETE
@@ -27,7 +27,7 @@ Al completar este laboratorio, serás capaz de:
 - Comprensión de inyección de dependencias y anotaciones de Spring
 
 
-### Acceso Requerido
+### Acceso y Herramientas Requeridas
 
 - PostgreSQL 16.x instalado y en ejecución (local o via Docker)
 - MongoDB 7.0 Community instalado y en ejecución (local o via Docker)

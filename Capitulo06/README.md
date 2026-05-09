@@ -18,7 +18,7 @@ Al completar este laboratorio, serás capaz de:
 
 ## Prerrequisitos
 
-### Conocimientos Requeridos
+### Conocimientos
 
 - Comprensión de los conceptos de imágenes y contenedores Docker (Lección 6.1)
 - Conocimiento básico de línea de comandos (bash en macOS/Linux o PowerShell en Windows)
@@ -29,7 +29,7 @@ Al completar este laboratorio, serás capaz de:
 <br/>
 <br/>
 
-### Acceso Requerido
+### Acceso y Herramientas Requeridas
 
 - Cuenta de GitHub creada, verificada y con SSH key configurada
 - Docker Desktop 4.25 o superior instalado y en ejecución

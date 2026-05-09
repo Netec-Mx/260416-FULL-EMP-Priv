@@ -19,7 +19,8 @@ Al completar este laboratorio, serás capaz de:
 
 ## Prerrequisitos
 
-### Conocimiento previo
+### Conocimiento
+
 - Laboratorio 2 completado: proyecto frontend funcional con al menos un componente Lit que liste y cree registros.
 - Comprensión de métodos HTTP (GET, POST, PUT, DELETE) y códigos de estado (200, 201, 400, 404, 500).
 - Backend Node.js/Express con endpoints CRUD disponibles (desarrollado en módulos anteriores).
@@ -39,17 +40,6 @@ Al completar este laboratorio, serás capaz de:
 
 ## Entorno del Laboratorio
 
-### Hardware mínimo recomendado
-
-| Recurso        | Mínimo              | Recomendado         |
-|----------------|---------------------|---------------------|
-| RAM            | 16 GB               | 32 GB               |
-| Almacenamiento | 50 GB libres (SSD)  | 100 GB libres (SSD) |
-| CPU            | i5 8va gen / Ryzen 5| i7 10ma gen / Ryzen 7|
-| Pantalla       | 1920×1080           | Dual monitor        |
-
-<br/>
-
 ### Software y versiones
 
 | Herramienta        | Versión      | Propósito                        |
@@ -66,7 +56,7 @@ Al completar este laboratorio, serás capaz de:
 <br/>
 <br/>
 
-### Verificación del entorno antes de comenzar
+### Verificación del entorno 
 
 Ejecuta los siguientes comandos en tu terminal para confirmar que el entorno está listo:
 

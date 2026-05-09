@@ -18,7 +18,7 @@ Al completar este laboratorio, serás capaz de:
 
 ## Prerrequisitos
 
-### Conocimientos Requeridos
+### Conocimientos 
 
 - Java 17: records, lambdas, anotaciones y manejo de excepciones
 - Spring Boot: anotaciones `@Component`, `@Service`, `@Repository`, `@Configuration`, `@Bean`
@@ -30,7 +30,7 @@ Al completar este laboratorio, serás capaz de:
 
 <br/>
 
-### Acceso Requerido
+### Acceso y Herramientas Requeridas
 
 - PostgreSQL 16 corriendo localmente o vía Docker en puerto 5432
 - IntelliJ IDEA 2024.1 con JDK 17 configurado
@@ -58,7 +58,7 @@ Al completar este laboratorio, serás capaz de:
 
 <br/>
 
-### Configuración Inicial del Entorno
+### Configuración Inicial
 
 #### Opción A — PostgreSQL Local
 

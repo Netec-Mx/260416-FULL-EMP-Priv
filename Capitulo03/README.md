@@ -20,7 +20,7 @@ Al completar este laboratorio, serás capaz de:
 
 ## Prerrequisitos
 
-### Conocimientos Requeridos
+### Conocimientos 
 
 - Programación orientada a objetos en Java (clases, herencia, interfaces, anotaciones)
 - Conceptos básicos de HTTP: métodos (GET, POST, PUT, DELETE), códigos de estado (200, 201, 404, 400, 500) y headers
@@ -30,7 +30,7 @@ Al completar este laboratorio, serás capaz de:
 
 <br/>
 
-### Acceso Requerido
+### Acceso y Herramientas Requeridas
 
 - JDK 17 instalado y variable `JAVA_HOME` configurada
 - Maven 3.9.x instalado o uso del Maven Wrapper (`mvnw`) que se genera con el proyecto
