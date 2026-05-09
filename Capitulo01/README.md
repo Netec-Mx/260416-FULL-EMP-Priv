@@ -427,7 +427,9 @@ Total de inventario (con impuesto): $56260.00 MXN
 - Confirma que el reporte multilínea se muestra formateado correctamente.
 
 <br/>
+
 **Nota:**
+
 Si dos funciones realizan exactamente la misma operación, ¿por qué JavaScript ofrece una sintaxis tradicional y otra tipo arrow (`=>`)? ¿Qué ventajas o diferencias prácticas encuentras entre ambas?
 
 
@@ -760,7 +762,7 @@ Formato de empleado:
 
    const cargarDashboard = async () => {
      console.log("\n=== SECCIÓN 3: Promise.all (ejecución paralela) ===\n");
-     console.log("⏳ Cargando datos del dashboard en paralelo...");
+     console.log("Cargando datos del dashboard en paralelo...");
 
      const inicio = Date.now();
 
@@ -932,8 +934,8 @@ Todas las demostraciones completadas
    // Función de logging con timestamp
    export const log = (nivel, mensaje, datos = null) => {
      const timestamp = new Date().toISOString();
-     const niveles = { INFO: "ℹ️", WARN: "⚠️", ERROR: "❌", SUCCESS: "✅" };
-     const icono = niveles[nivel] || "📝";
+     const niveles = { INFO: "i", WARN: "w", ERROR: "e", SUCCESS: "s" };
+     const icono = niveles[nivel] || "i|w|e|s";
      console.log(`[${timestamp}] ${icono} [${nivel}] ${mensaje}`);
      if (datos) console.log("  Datos:", datos);
    };
@@ -1171,10 +1173,10 @@ Todas las demostraciones completadas
 **Resultado Esperado:**
 
 ```
-╔══════════════════════════════════════════════════╗
+╔═══════════════════════════════════════════════╗
 ║  Sistema de Gestión Empresarial v1.0.0        ║
-║  Fecha: [fecha actual en español]  ║
-╚══════════════════════════════════════════════════╝
+║  Fecha: [fecha actual en español]             ║
+╚═══════════════════════════════════════════════╝
 
 [timestamp] [INFO] ServicioEmpleados inicializado { totalEmpleados: 4 }
 
@@ -2116,7 +2118,10 @@ HERENCIA - instanceof:
 
 <br/>
 
-> **Nota:** Aunque `git add .` facilita agregar múltiples cambios rápidamente, puede convertirse en una mala práctica si no se tiene claridad sobre el directorio actual o los archivos modificados; por ello, se recomienda revisar primero la salida de `git status` y agregar explícitamente únicamente los archivos necesarios mediante `git add <archivo>`, evitando incluir cambios accidentales y reduciendo el esfuerzo de revertir errores posteriormente.
+### **Nota:** 
+
+- Aunque `git add .` facilita agregar múltiples cambios rápidamente, puede convertirse en una mala práctica si no se tiene claridad sobre el directorio actual o los archivos modificados; por ello, se recomienda revisar primero la salida de `git status` y agregar explícitamente únicamente los archivos necesarios mediante `git add <archivo>`, evitando incluir cambios accidentales y reduciendo el esfuerzo de revertir errores posteriormente.
+
 
 <br/>
 
@@ -2210,7 +2215,8 @@ HERENCIA - instanceof:
 
 <br/>
 
-    Si hay cambios pendientes (archivos `.class` de Java deberían estar ignorados):
+Si hay cambios pendientes (archivos `.class` de Java deberían estar ignorados):
+
 
     ```bash
     git commit -m "feat(js): implementar módulos ES6+ con sistema de empleados
