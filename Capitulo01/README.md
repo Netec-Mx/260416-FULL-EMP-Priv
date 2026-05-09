@@ -138,30 +138,31 @@ Si alguna herramienta no responde correctamente, detente y resuelve la instalaci
 
 2. Crea la estructura de subdirectorios del proyecto:
 
-   ```bash
-   # En Windows (CMD)
-  mkdir src
-  mkdir src\js-moderno
-  mkdir src\poo
-  mkdir src\java-comparacion
+  ```bash
+    # En Windows (CMD)
+    mkdir src
+    mkdir src\js-moderno
+    mkdir src\poo
+    mkdir src\java-comparacion
 
-  type nul > src\js-moderno\.gitkeep
-  type nul > src\poo\.gitkeep
-  type nul > src\java-comparacion\.gitkeep
+    type nul > src\js-moderno\.gitkeep
+    type nul > src\poo\.gitkeep
+    type nul > src\java-comparacion\.gitkeep
 
-   # En Windows (PowerShell)
-   mkdir src
-   mkdir src\js-moderno
-   mkdir src\poo
-   mkdir src\java-comparacion
-   New-Item src\js-moderno\.gitkeep -ItemType File
-   New-Item src\poo\.gitkeep -ItemType File
-   New-Item src\java-comparacion\.gitkeep -ItemType File
+    # En Windows (PowerShell)
+    mkdir src
+    mkdir src\js-moderno
+    mkdir src\poo
+    mkdir src\java-comparacion
+    
+    New-Item src\js-moderno\.gitkeep -ItemType File
+    New-Item src\poo\.gitkeep -ItemType File
+    New-Item src\java-comparacion\.gitkeep -ItemType File
 
-   # En macOS / Linux
-   mkdir -p src/js-moderno src/poo src/java-comparacion
-   touch src/js-moderno/.gitkeep src/poo/.gitkeep src/java-comparacion/.gitkeep
-   ```
+    # En macOS / Linux
+    mkdir -p src/js-moderno src/poo src/java-comparacion
+    touch src/js-moderno/.gitkeep src/poo/.gitkeep src/java-comparacion/.gitkeep
+  ```
 
 <br/>
 
