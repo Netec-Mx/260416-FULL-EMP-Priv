@@ -1,15 +1,8 @@
 # JavaScript Moderno, POO, Java y Git
 
-## Metadatos
+<br/>
+<br/>
 
-| Propiedad | Valor |
-|-----------|-------|
-| **Duración** | 220 minutos |
-| **Complejidad** | Intermedio |
-| **Nivel Bloom** | Aplicar |
-| **Tecnologías** | JavaScript ES6+, Node.js, Java 17, Git, GitHub, VS Code |
-
----
 
 ## Descripción General
 
@@ -17,29 +10,36 @@ En este laboratorio aplicarás las características fundamentales del JavaScript
 
 Este laboratorio es el punto de partida del curso y establece las competencias técnicas esenciales que se utilizarán de forma acumulativa en los laboratorios posteriores. Al finalizar, tendrás un proyecto organizado con módulos ES, clases, operaciones asíncronas y control de versiones profesional.
 
----
+<br/>
+<br/>
 
 ## Objetivos de Aprendizaje
 
 Al completar este laboratorio, serás capaz de:
 
-- [ ] Aplicar `let`, `const`, arrow functions, desestructuración, spread/rest y template literals en código funcional real
-- [ ] Implementar Promises y `async/await` para simular y manejar operaciones asíncronas con manejo de errores
-- [ ] Organizar código JavaScript en módulos ES usando `import` y `export` nombrados y por defecto
-- [ ] Diseñar e implementar una jerarquía de clases JavaScript con herencia, encapsulamiento y polimorfismo
-- [ ] Contrastar estructuras de datos y paradigmas entre JavaScript y Java 17 mediante ejemplos paralelos
-- [ ] Configurar un repositorio Git local con ramas, commits descriptivos y push a GitHub
+- Aplicar `let`, `const`, arrow functions, desestructuración, spread/rest y template literals en código funcional real
+- Implementar Promises y `async/await` para simular y manejar operaciones asíncronas con manejo de errores
+- Organizar código JavaScript en módulos ES usando `import` y `export` nombrados y por defecto
+- Diseñar e implementar una jerarquía de clases JavaScript con herencia, encapsulamiento y polimorfismo
+- Contrastar estructuras de datos y paradigmas entre JavaScript y Java 17 mediante ejemplos paralelos
+- Configurar un repositorio Git local con ramas, commits descriptivos y push a GitHub
 
----
+<br/>
+<br/>
 
 ## Prerrequisitos
 
+<br/>
+
 ### Conocimientos Requeridos
 
-- Conocimientos básicos de programación: variables, condicionales, bucles y funciones en cualquier lenguaje
-- Comprensión de lógica de programación y estructuras de control (if/else, for, while)
-- Manejo básico de línea de comandos: navegar directorios, crear archivos, ejecutar comandos
-- Lectura del material teórico de la Lección 1.1: JavaScript Moderno
+- Conocimientos básicos de programación: variables, condicionales, bucles y funciones en cualquier lenguaje.
+- Comprensión de lógica de programación y estructuras de control (if/else, for, while).
+- Manejo básico de línea de comandos: navegar directorios, crear archivos, ejecutar comandos.
+- Lectura del material teórico de la Lección 1.1: JavaScript Moderno.
+
+<br/>
+
 
 ### Acceso y Herramientas Requeridas
 
@@ -50,9 +50,13 @@ Al completar este laboratorio, serás capaz de:
 - VS Code 1.88+ instalado con extensión **JavaScript (ES6) code snippets**
 - Conexión a Internet para crear repositorio remoto en GitHub
 
----
+<br/>
+<br/>
+
 
 ## Entorno de Laboratorio
+
+<br/>
 
 ### Requisitos de Hardware
 
@@ -64,6 +68,8 @@ Al completar este laboratorio, serás capaz de:
 | Pantalla | Resolución 1366x768 mínimo (1920x1080 recomendado) |
 | Conexión a Internet | 5 Mbps o superior |
 
+<br/>
+
 ### Requisitos de Software
 
 | Software | Versión | Propósito |
@@ -74,11 +80,15 @@ Al completar este laboratorio, serás capaz de:
 | VS Code | 1.88+ | Editor principal para JavaScript |
 | Terminal | Bash / PowerShell / Zsh | Ejecutar comandos del laboratorio |
 
+
+<br/>
+
 ### Configuración Inicial
 
 Verifica que todas las herramientas estén instaladas correctamente antes de comenzar:
 
 ```bash
+
 # Verificar Node.js
 node --version
 # Resultado esperado: v20.x.x
@@ -100,17 +110,16 @@ git --version
 # Resultado esperado: git version 2.44.x
 ```
 
-Si alguna herramienta no responde correctamente, detente y resuelve la instalación antes de continuar.
+<br/>
 
----
+Si alguna herramienta no responde correctamente, detente y resuelve la instalación antes de continuar.  
 
-## Instrucciones Paso a Paso
+<br/>
+<br/>
+
+## Instrucciones  
 
 ### Paso 1: Crear la Estructura del Proyecto
-
-**Objetivo:** Establecer la estructura de directorios del proyecto que se usará durante todo el laboratorio y configurar el entorno de Node.js.
-
-**Instrucciones:**
 
 1. Abre una terminal (PowerShell en Windows, Terminal en macOS/Linux) y crea el directorio raíz del proyecto:
 
@@ -124,9 +133,22 @@ Si alguna herramienta no responde correctamente, detente y resuelve la instalaci
    cd ~/curso-fullstack/lab-01
    ```
 
+<br/>
+
+
 2. Crea la estructura de subdirectorios del proyecto:
 
    ```bash
+   # En Windows (CMD)
+  mkdir src
+  mkdir src\js-moderno
+  mkdir src\poo
+  mkdir src\java-comparacion
+
+  type nul > src\js-moderno\.gitkeep
+  type nul > src\poo\.gitkeep
+  type nul > src\java-comparacion\.gitkeep
+
    # En Windows (PowerShell)
    mkdir src
    mkdir src\js-moderno
@@ -141,11 +163,15 @@ Si alguna herramienta no responde correctamente, detente y resuelve la instalaci
    touch src/js-moderno/.gitkeep src/poo/.gitkeep src/java-comparacion/.gitkeep
    ```
 
+<br/>
+
 3. Inicializa el proyecto Node.js:
 
    ```bash
    npm init -y
    ```
+
+<br/>
 
 4. Abre el archivo `package.json` generado y agrega la configuración de módulos ES. Edita el archivo con VS Code:
 
@@ -172,13 +198,20 @@ Si alguna herramienta no responde correctamente, detente y resuelve la instalaci
    }
    ```
 
-   > ⚠️ **Importante:** La línea `"type": "module"` es esencial. Le indica a Node.js que todos los archivos `.js` del proyecto usan la sintaxis de módulos ES (`import`/`export`) en lugar de CommonJS (`require`).
+<br/>
+
+   > **Importante:** La línea `"type": "module"` es esencial. Le indica a Node.js que todos los archivos `.js` del proyecto usan la sintaxis de módulos ES (`import`/`export`) en lugar de CommonJS (`require`).
+
+<br/>
 
 5. Abre VS Code en el directorio del proyecto:
 
    ```bash
+   # Recuerda que el símbolo `.` representa el actual directorio de trabajo
    code .
    ```
+
+<br/>
 
 **Resultado Esperado:**
 
@@ -194,18 +227,25 @@ lab-01/
         └── .gitkeep
 ```
 
+<br/>
+
 **Verificación:**
 
 - Ejecuta `cat package.json` (macOS/Linux) o `type package.json` (Windows) y confirma que aparece `"type": "module"`.
 - Confirma que la estructura de directorios existe con `ls -la src/` (macOS/Linux) o `dir src\` (Windows).
 
----
+<br/>
+
+> También puedes verificar o crear esta estructura utilizando el Explorador de Archivos de Windows (File Explorer / File Manager), creando manualmente las carpetas y archivos requeridos.
+
+<br/>
+
+> **Nota:**Git no versiona carpetas vacías de forma nativa.  
+> Por ello se utiliza un archivo `.gitkeep` como marcador temporal para conservar la estructura de directorios del proyecto dentro del repositorio.
+
+<br/><br/>
 
 ### Paso 2: Aplicar `let`, `const`, Arrow Functions y Template Literals
-
-**Objetivo:** Escribir código JavaScript ES6+ funcional que resuelva un problema empresarial real utilizando las características modernas de declaración de variables, funciones flecha y cadenas de texto enriquecidas.
-
-**Instrucciones:**
 
 1. Crea el archivo principal de esta sección:
 
@@ -216,6 +256,8 @@ lab-01/
    # En Windows (PowerShell)
    New-Item src\js-moderno\variables-y-funciones.js -ItemType File
    ```
+
+<br/>
 
 2. Abre el archivo en VS Code y escribe el siguiente código completo:
 
@@ -239,7 +281,7 @@ lab-01/
      const mensajeIteracion = `Iteración ${i} de 3`; // const dentro del bloque
      console.log(mensajeIteracion);
    }
-   // 'i' y 'mensajeIteracion' NO son accesibles aquí
+   // 'i' y 'mensajeIteracion' NO son accesibles aquí. La variable i es local al bloque del for.
 
    // const con objetos: la referencia es constante, no el contenido
    const producto = {
@@ -248,7 +290,7 @@ lab-01/
      precio: 15000
    };
 
-   producto.precio = 14500; // ✅ Permitido: modificamos propiedad
+   producto.precio = 14500; // Permitido: modificamos propiedad, la referencia al objeto no cambia, el contenido si.
    console.log(`\nProducto actualizado: ${producto.nombre} - $${producto.precio} ${MONEDA}`);
 
    // ============================================================
@@ -280,6 +322,7 @@ lab-01/
    console.log("Precios con impuesto:", preciosConImpuesto.map(p => p.toFixed(2)));
    console.log(`Total de inventario (con impuesto): $${totalInventario.toFixed(2)} ${MONEDA}`);
 
+
    // ============================================================
    // PARTE 3: Template Literals
    // ============================================================
@@ -287,8 +330,8 @@ lab-01/
    console.log("\n=== SECCIÓN 3: Template Literals ===\n");
 
    const generarReporteProducto = (prod, descuento = 0) => {
-     const precioFinal = calcularPrecioFinal(prod.precio, descuento);
-     const ahorros = prod.precio - (prod.precio * (1 - descuento / 100));
+       const precioFinal = calcularPrecioFinal(prod.precio, descuento);
+       const ahorros = prod.precio - (prod.precio * (1 - descuento / 100));
 
      // Template literal multilínea con expresiones
      return `
@@ -310,11 +353,34 @@ lab-01/
    export { calcularImpuesto, calcularPrecioFinal, generarReporteProducto };
    ```
 
+<br/>
+
+> **Nota:** El bloque mostrado utiliza un *Template Literal* de JavaScript, identificado por el uso de acentos invertidos (\`). Los Template Literals permiten construir cadenas multilínea e interpolar variables o expresiones mediante la sintaxis `${...}`.
+>
+> En el código anterior también se utilizaron algunos métodos de `String`:
+>
+> - `String(valor)`  
+>   Convierte un valor a texto.
+>
+> - `padEnd(longitud)`  
+>   Completa la cadena con espacios al final hasta alcanzar la longitud indicada. Se utilizó para alinear columnas visualmente.
+>
+> - `substring(inicio, fin)`  
+>   Extrae una parte del texto entre las posiciones indicadas. Se usó para limitar el tamaño del nombre del producto.
+>
+> - `toFixed(2)`  
+>   Convierte un número decimal a texto con una cantidad fija de decimales. En este caso, dos posiciones para representar valores monetarios.
+
+
+<br/>
+
 3. Ejecuta el archivo para verificar que funciona correctamente:
 
    ```bash
    node src/js-moderno/variables-y-funciones.js
    ```
+
+<br/>
 
 **Resultado Esperado:**
 
@@ -339,28 +405,32 @@ Total de inventario (con impuesto): $56260.00 MXN
 ┌─────────────────────────────────────────┐
 │ REPORTE DE PRODUCTO                     │
 ├─────────────────────────────────────────┤
-│ ID:              1                       │
-│ Nombre:          Laptop Empresarial      │
-│ Precio base:     $14500.00               │
-│ Descuento:       10%                     │
-│ Ahorro:          $1450.00                │
-│ Precio final:    $15138.00               │
+│ ID:              1                      │
+│ Nombre:          Laptop Empresarial     │
+│ Precio base:     $14500.00              │
+│ Descuento:       10%                    │
+│ Ahorro:          $1450.00               │
+│ Precio final:    $15138.00              │
 └─────────────────────────────────────────┘
 ```
+
+<br/>
 
 **Verificación:**
 
 - Confirma que no hay errores de `SyntaxError` en la consola.
-- Verifica que los cálculos de impuesto (16%) son correctos: $15,000 con 10% de descuento = $13,500 + $2,160 impuesto = $15,660. Los valores pueden variar ligeramente según el precio base actualizado en el código.
+- Verifica que los cálculos de impuesto (16%) son correctos: $15,000 con 10% de descuento = $13,500 + $2,160 impuesto = $15,660. 
+- Los valores pueden variar ligeramente según el precio base actualizado en el código.
 - Confirma que el reporte multilínea se muestra formateado correctamente.
 
----
+<br/>
+**Nota:**
+Si dos funciones realizan exactamente la misma operación, ¿por qué JavaScript ofrece una sintaxis tradicional y otra tipo arrow (`=>`)? ¿Qué ventajas o diferencias prácticas encuentras entre ambas?
+
+
+<br/><br/>
 
 ### Paso 3: Implementar Desestructuración, Spread y Rest
-
-**Objetivo:** Aplicar los operadores de desestructuración, spread y rest para manipular objetos y arrays de forma expresiva en el contexto de un sistema de inventario empresarial.
-
-**Instrucciones:**
 
 1. Crea el archivo para esta sección:
 
@@ -372,9 +442,12 @@ Total de inventario (con impuesto): $56260.00 MXN
    New-Item src\js-moderno\destructuring-spread-rest.js -ItemType File
    ```
 
+<br/>
+
 2. Escribe el siguiente código en el archivo:
 
    ```javascript
+
    // src/js-moderno/destructuring-spread-rest.js
    // ============================================================
    // PARTE 1: Desestructuración de Objetos
@@ -427,6 +500,7 @@ Total de inventario (con impuesto): $56260.00 MXN
    let valorA = 100;
    let valorB = 200;
    console.log(`\nAntes del intercambio: A=${valorA}, B=${valorB}`);
+
    [valorA, valorB] = [valorB, valorA];
    console.log(`Después del intercambio: A=${valorA}, B=${valorB}`);
 
@@ -494,18 +568,22 @@ Total de inventario (con impuesto): $56260.00 MXN
    export { calcularBonificacion, formatearEmpleado };
    ```
 
+<br/>
+ 
 3. Ejecuta el archivo:
 
    ```bash
    node src/js-moderno/destructuring-spread-rest.js
    ```
 
+<br/>
+
 **Resultado Esperado:**
 
 ```
 === SECCIÓN 1: Desestructuración de Objetos ===
 
-Empleado #101: María González - Tecnología
+Empleado 101: María González - Tecnología
 Área: Tecnología | Sueldo: $45000
 Contacto de María González: maria.gonzalez@empresa.com
 Puesto: Sin asignar | Nivel: 1
@@ -542,19 +620,22 @@ Formato de empleado:
 [Senior Developer] María González | Tecnología | $50,000
 ```
 
+<br/>
+
 **Verificación:**
 
 - Confirma que el intercambio de variables `A` y `B` funciona correctamente sin variable temporal.
 - Verifica que el objeto `empleado` original no fue modificado (el salario sigue siendo $45,000 mientras que `empleadoActualizado` tiene $50,000).
 - Comprueba que el cálculo de bonificación con múltiples factores es correcto: (15+10+20+5)/4 = 12.5%.
 
----
+<br/>
+
+> **Nota:** Este ejercicio introduce conceptos clave del JavaScript moderno como desestructuración, operadores spread/rest, funciones arrow y manipulación avanzada de objetos y arreglos.
+
+
+<br/><br/>
 
 ### Paso 4: Implementar Promesas y `async/await`
-
-**Objetivo:** Crear funciones asíncronas que simulen operaciones de base de datos y API REST, implementando manejo de errores robusto con `try/catch` y ejecución paralela con `Promise.all`.
-
-**Instrucciones:**
 
 1. Crea el archivo para manejo asíncrono:
 
@@ -565,6 +646,8 @@ Formato de empleado:
    # En Windows (PowerShell)
    New-Item src\js-moderno\async-await.js -ItemType File
    ```
+
+<br/>
 
 2. Escribe el siguiente código:
 
@@ -587,6 +670,7 @@ Formato de empleado:
        { id: 30, nombre: "Finanzas", presupuesto: 350000 }
      ]
    };
+
 
    // ============================================================
    // PARTE 1: Funciones que devuelven Promesas
@@ -621,13 +705,14 @@ Formato de empleado:
      });
    };
 
+
    // Consumir promesa con .then() / .catch()
    buscarEmpleadoPorId(1)
      .then(empleado => {
-       console.log("✅ Empleado encontrado (con .then):", empleado.nombre);
+       console.log("Empleado encontrado (con .then):", empleado.nombre);
      })
      .catch(error => {
-       console.error("❌ Error:", error.message);
+       console.error("Error:", error.message);
      });
 
    // ============================================================
@@ -648,7 +733,7 @@ Formato de empleado:
          presupuestoDepartamento: departamento.presupuesto
        };
      } catch (error) {
-       console.error(`❌ Error al obtener empleado ${empleadoId}:`, error.message);
+       console.error(`Error al obtener empleado ${empleadoId}:`, error.message);
        throw error; // Propagar el error para que el llamador lo maneje
      }
    };
@@ -656,7 +741,7 @@ Formato de empleado:
    const mostrarEmpleadoConDepartamento = async (id) => {
      try {
        const resultado = await obtenerEmpleadoConDepartamento(id);
-       console.log(`✅ Empleado completo:`);
+       console.log(`Empleado completo:`);
        console.log(`   Nombre: ${resultado.nombre}`);
        console.log(`   Departamento: ${resultado.departamento}`);
        console.log(`   Presupuesto del área: $${resultado.presupuestoDepartamento.toLocaleString("es-MX")}`);
@@ -686,7 +771,7 @@ Formato de empleado:
 
        const tiempoTotal = Date.now() - inicio;
 
-       console.log(`✅ Dashboard cargado en ${tiempoTotal}ms (paralelo)`);
+       console.log(`Dashboard cargado en ${tiempoTotal}ms (paralelo)`);
        console.log("\nEmpleados activos:");
        [empleado1, empleado2, empleado4].forEach(emp => {
          if (emp.activo) {
@@ -695,7 +780,7 @@ Formato de empleado:
        });
 
      } catch (error) {
-       console.error("❌ Error al cargar el dashboard:", error.message);
+       console.error("Error al cargar el dashboard:", error.message);
      }
    };
 
@@ -716,9 +801,9 @@ Formato de empleado:
      resultados.forEach((resultado, index) => {
        const id = idsABuscar[index];
        if (resultado.status === "fulfilled") {
-         console.log(`✅ ID ${id}: ${resultado.value.nombre} - ${resultado.value.departamento}`);
+         console.log(`ID ${id}: ${resultado.value.nombre} - ${resultado.value.departamento}`);
        } else {
-         console.log(`❌ ID ${id}: ${resultado.reason.message}`);
+         console.log(`ID ${id}: ${resultado.reason.message}`);
        }
      });
    };
@@ -728,7 +813,7 @@ Formato de empleado:
      await mostrarEmpleadoConDepartamento(2);
      await cargarDashboard();
      await cargarConManejoDeErrores();
-     console.log("\n✅ Todas las demostraciones completadas");
+     console.log("\nTodas las demostraciones completadas");
    };
 
    ejecutarDemostraciones();
@@ -736,11 +821,15 @@ Formato de empleado:
    export { buscarEmpleadoPorId, buscarDepartamentoPorId, obtenerEmpleadoConDepartamento };
    ```
 
+<br/>
+
 3. Ejecuta el archivo:
 
    ```bash
    node src/js-moderno/async-await.js
    ```
+
+<br/>
 
 **Resultado Esperado:**
 
@@ -749,17 +838,17 @@ Formato de empleado:
 
 === SECCIÓN 2: async/await ===
 
-✅ Empleado encontrado (con .then): Ana Torres
-✅ Empleado completo:
-   Nombre: Luis Ramírez
-   Departamento: Recursos Humanos
-   Presupuesto del área: $200,000
-   Estado: Activo
+ Empleado encontrado (con .then): Ana Torres
+ Empleado completo:
+ Nombre: Luis Ramírez
+ Departamento: Recursos Humanos
+ Presupuesto del área: $200,000
+ Estado: Activo
 
 === SECCIÓN 3: Promise.all (ejecución paralela) ===
 
-⏳ Cargando datos del dashboard en paralelo...
-✅ Dashboard cargado en ~350ms (paralelo)
+Cargando datos del dashboard en paralelo...
+Dashboard cargado en ~350ms (paralelo)
 
 Empleados activos:
   - Ana Torres (Tecnología)
@@ -768,12 +857,14 @@ Empleados activos:
 
 === SECCIÓN 4: Promise.allSettled (tolerante a errores) ===
 
-✅ ID 1: Ana Torres - Tecnología
-❌ ID 99: Empleado con ID 99 no encontrado
-✅ ID 4: Roberto Silva - Finanzas
+ID 1: Ana Torres - Tecnología
+ID 99: Empleado con ID 99 no encontrado
+ID 4: Roberto Silva - Finanzas
 
-✅ Todas las demostraciones completadas
+Todas las demostraciones completadas
 ```
+
+<br/>
 
 **Verificación:**
 
@@ -781,13 +872,10 @@ Empleados activos:
 - Verifica que `Promise.allSettled` no falla aunque uno de los IDs no exista (a diferencia de `Promise.all` que fallaría completamente).
 - Comprueba que el manejo de errores con `try/catch` funciona correctamente para el ID inexistente (99).
 
----
+<br/>
+<br/>
 
 ### Paso 5: Organizar Código con Módulos ES
-
-**Objetivo:** Crear un sistema de módulos ES bien organizado que integre las funciones creadas en los pasos anteriores, demostrando exportaciones nombradas, exportaciones por defecto e importaciones selectivas.
-
-**Instrucciones:**
 
 1. Crea el módulo de utilidades compartidas:
 
@@ -798,6 +886,8 @@ Empleados activos:
    # En Windows (PowerShell)
    New-Item src\js-moderno\utilidades.js -ItemType File
    ```
+
+<br/>
 
 2. Escribe el contenido del módulo de utilidades:
 
@@ -846,6 +936,8 @@ Empleados activos:
    };
    ```
 
+<br/>
+
 3. Crea el módulo del servicio de empleados:
 
    ```bash
@@ -855,6 +947,8 @@ Empleados activos:
    # En Windows (PowerShell)
    New-Item src\js-moderno\ServicioEmpleados.js -ItemType File
    ```
+
+<br/>
 
 4. Escribe el servicio con exportación por defecto:
 
@@ -963,6 +1057,8 @@ Empleados activos:
    export default ServicioEmpleados;
    ```
 
+<br/>
+
 5. Crea el archivo `index.js` que integra todos los módulos:
 
    ```bash
@@ -972,6 +1068,8 @@ Empleados activos:
    # En Windows (PowerShell)
    New-Item src\js-moderno\index.js -ItemType File
    ```
+
+<br/>
 
 6. Escribe el archivo principal:
 
@@ -997,14 +1095,14 @@ Empleados activos:
    const servicio = new ServicioEmpleados();
 
    // Mostrar todos los empleados
-   console.log("\n📋 LISTA DE EMPLEADOS:");
+   console.log("\nLISTA DE EMPLEADOS:");
    console.log("─".repeat(60));
    servicio.obtenerTodos().forEach(emp => {
      console.log(`  [${emp.id}] ${emp.nombre.padEnd(20)} | ${emp.departamento.padEnd(15)} | ${formatearMoneda(emp.salario)}`);
    });
 
    // Agregar un nuevo empleado
-   console.log("\n➕ AGREGAR NUEVO EMPLEADO:");
+   console.log("\n AGREGAR NUEVO EMPLEADO:");
    console.log("─".repeat(60));
    try {
      const nuevoEmp = servicio.agregar({
@@ -1026,7 +1124,7 @@ Empleados activos:
    }
 
    // Buscar por departamento
-   console.log("\n🔍 EMPLEADOS DE TECNOLOGÍA:");
+   console.log("\nEMPLEADOS DE TECNOLOGÍA:");
    console.log("─".repeat(60));
    const tecnologia = servicio.buscarPorDepartamento("Tecnología");
    tecnologia.forEach(emp => {
@@ -1034,7 +1132,7 @@ Empleados activos:
    });
 
    // Mostrar estadísticas
-   console.log("\n📊 ESTADÍSTICAS GENERALES:");
+   console.log("\nESTADÍSTICAS GENERALES:");
    console.log("─".repeat(60));
    const stats = servicio.obtenerEstadisticas();
    console.log(`  Total de empleados:  ${stats.totalEmpleados}`);
@@ -1043,25 +1141,29 @@ Empleados activos:
    console.log(`  Salario mínimo:      ${formatearMoneda(stats.salarioMinimo)}`);
    console.log(`  Masa laboral total:  ${formatearMoneda(stats.masaLaboral)}`);
 
-   console.log("\n📈 ESTADÍSTICAS POR DEPARTAMENTO:");
+   console.log("\nESTADÍSTICAS POR DEPARTAMENTO:");
    console.log("─".repeat(60));
    stats.porDepartamento.forEach(({ departamento, cantidad, salarioPromedio }) => {
      console.log(`  ${departamento.padEnd(20)} | ${String(cantidad).padStart(2)} empleados | Promedio: ${formatearMoneda(salarioPromedio)}`);
    });
 
    // Demostrar uso de función importada de otro módulo
-   console.log("\n💰 CÁLCULO DE PRECIO CON IMPUESTO (módulo externo):");
+   console.log("\nCÁLCULO DE PRECIO CON IMPUESTO (módulo externo):");
    console.log("─".repeat(60));
    const precioEjemplo = calcularPrecioFinal(10000, 15);
    console.log(`  Precio base: ${formatearMoneda(10000)} con 15% descuento`);
    console.log(`  Precio final (con IVA 16%): ${formatearMoneda(precioEjemplo)}`);
    ```
 
+<br/>
+
 7. Ejecuta el archivo principal:
 
    ```bash
    npm run js-moderno
    ```
+
+<br/>
 
 **Resultado Esperado:**
 
@@ -1071,28 +1173,28 @@ Empleados activos:
 ║  Fecha: [fecha actual en español]  ║
 ╚══════════════════════════════════════════════════╝
 
-[timestamp] ℹ️ [INFO] ServicioEmpleados inicializado { totalEmpleados: 4 }
+[timestamp] [INFO] ServicioEmpleados inicializado { totalEmpleados: 4 }
 
-📋 LISTA DE EMPLEADOS:
+LISTA DE EMPLEADOS:
 ────────────────────────────────────────────────────────────
   [1] Ana Torres            | Tecnología      | $45,000.00
   [2] Luis Ramírez          | RRHH            | $38,000.00
   [3] Carmen López          | Tecnología      | $52,000.00
   [4] Roberto Silva         | Finanzas        | $61,000.00
 
-➕ AGREGAR NUEVO EMPLEADO:
+AGREGAR NUEVO EMPLEADO:
 ────────────────────────────────────────────────────────────
-[timestamp] ✅ [SUCCESS] Empleado agregado: Patricia Mendoza { id: 5 }
+[timestamp] [SUCCESS] Empleado agregado: Patricia Mendoza { id: 5 }
   Empleado creado: Patricia Mendoza (ID: 5)
-[timestamp] ⚠️ [WARN] Validación fallida: Ya existe un empleado con el email: patricia.mendoza@empresa.com
+[timestamp] [WARN] Validación fallida: Ya existe un empleado con el email: patricia.mendoza@empresa.com
 
-🔍 EMPLEADOS DE TECNOLOGÍA:
+EMPLEADOS DE TECNOLOGÍA:
 ────────────────────────────────────────────────────────────
   - Ana Torres | $45,000.00
   - Carmen López | $52,000.00
   - Patricia Mendoza | $48,000.00
 
-📊 ESTADÍSTICAS GENERALES:
+ESTADÍSTICAS GENERALES:
 ────────────────────────────────────────────────────────────
   Total de empleados:  5
   Salario promedio:    $48,800.00
@@ -1101,19 +1203,19 @@ Empleados activos:
   Masa laboral total:  $244,000.00
 ```
 
+<br/>
+
 **Verificación:**
 
 - Confirma que la importación por defecto (`ServicioEmpleados`) y las importaciones nombradas (`formatearMoneda`, etc.) funcionan correctamente.
 - Verifica que el error de email duplicado es capturado y manejado sin detener la ejecución del programa.
 - Comprueba que las estadísticas incluyen al nuevo empleado (Patricia Mendoza) en el conteo.
 
----
+<br/>
+<br/>
 
 ### Paso 6: Implementar POO con Clases JavaScript
 
-**Objetivo:** Diseñar e implementar una jerarquía de clases que modele un sistema de empleados empresarial, aplicando herencia, encapsulamiento con campos privados, polimorfismo y abstracción.
-
-**Instrucciones:**
 
 1. Crea los archivos de la jerarquía de clases:
 
@@ -1132,6 +1234,8 @@ Empleados activos:
    New-Item src\poo\Gerente.js -ItemType File
    New-Item src\poo\index.js -ItemType File
    ```
+
+<br/>
 
 2. Escribe la clase base `Persona`:
 
@@ -1202,6 +1306,8 @@ Empleados activos:
      }
    }
    ```
+
+<br/>
 
 3. Escribe la clase `Empleado` que extiende `Persona`:
 
@@ -1280,6 +1386,9 @@ Empleados activos:
    }
    ```
 
+<br/>
+
+
 4. Escribe la clase `EmpleadoTecnico` que extiende `Empleado`:
 
    ```javascript
@@ -1336,6 +1445,8 @@ Empleados activos:
    }
    ```
 
+<br/>
+
 5. Escribe la clase `Gerente`:
 
    ```javascript
@@ -1384,6 +1495,8 @@ Empleados activos:
    }
    ```
 
+<br/>
+
 6. Escribe el archivo `index.js` de POO:
 
    ```javascript
@@ -1421,7 +1534,7 @@ Empleados activos:
    // ============================================================
    // Demostrar polimorfismo
    // ============================================================
-   console.log("📋 POLIMORFISMO - obtenerDescripcion():");
+   console.log("POLIMORFISMO - obtenerDescripcion():");
    console.log("─".repeat(60));
    const personas = [dev1, dev2, gerente];
    personas.forEach(p => {
@@ -1431,7 +1544,7 @@ Empleados activos:
    // ============================================================
    // Demostrar cálculo de bonos (polimorfismo)
    // ============================================================
-   console.log("\n💰 CÁLCULO DE BONOS (polimorfismo en calcularBono):");
+   console.log("\nCÁLCULO DE BONOS (polimorfismo en calcularBono):");
    console.log("─".repeat(60));
    personas.forEach(p => {
      const bono = p.calcularBono();
@@ -1441,29 +1554,29 @@ Empleados activos:
    // ============================================================
    // Demostrar encapsulamiento
    // ============================================================
-   console.log("\n🔒 ENCAPSULAMIENTO - Validaciones:");
+   console.log("\nENCAPSULAMIENTO - Validaciones:");
    console.log("─".repeat(60));
 
    try {
      dev1.salario = 20000; // Intentar reducir salario
    } catch (error) {
-     console.log(`  ✅ Error esperado al reducir salario: ${error.message}`);
+     console.log(`  Error esperado al reducir salario: ${error.message}`);
    }
 
    try {
      dev1.email = "email-invalido"; // Email inválido
    } catch (error) {
-     console.log(`  ✅ Error esperado con email inválido: ${error.message}`);
+     console.log(`  Error esperado con email inválido: ${error.message}`);
    }
 
    // Actualización válida
    dev1.email = "ana.torres@empresa.com";
-   console.log(`  ✅ Email actualizado correctamente: ${dev1.email}`);
+   console.log(`  Email actualizado correctamente: ${dev1.email}`);
 
    // ============================================================
    // Demostrar herencia e instanceof
    // ============================================================
-   console.log("\n🔗 HERENCIA - instanceof:");
+   console.log("\nHERENCIA - instanceof:");
    console.log("─".repeat(60));
    console.log(`  dev1 instanceof EmpleadoTecnico: ${dev1 instanceof EmpleadoTecnico}`);
    console.log(`  dev1 instanceof Empleado:        ${dev1 instanceof Empleado}`);
@@ -1473,7 +1586,7 @@ Empleados activos:
    // ============================================================
    // Promover empleado técnico
    // ============================================================
-   console.log("\n⬆️  PROMOCIÓN DE EMPLEADO:");
+   console.log("\nPROMOCIÓN DE EMPLEADO:");
    console.log("─".repeat(60));
    console.log(`  Estado actual: ${dev2.obtenerDescripcion()}`);
    const resultadoPromocion = dev2.promover();
@@ -1482,7 +1595,7 @@ Empleados activos:
    // ============================================================
    // Estadísticas del equipo
    // ============================================================
-   console.log("\n📊 ESTADÍSTICAS DEL EQUIPO:");
+   console.log("\nESTADÍSTICAS DEL EQUIPO:");
    console.log("─".repeat(60));
    console.log(`  Gerente: ${gerente.nombre}`);
    console.log(`  Tamaño del equipo: ${gerente.tamanoEquipo} personas`);
@@ -1490,16 +1603,20 @@ Empleados activos:
    console.log(`  Total de empleados creados: ${Empleado.obtenerTotalEmpleados()}`);
 
    // Serializar a JSON
-   console.log("\n📄 SERIALIZACIÓN A JSON:");
+   console.log("\nSERIALIZACIÓN A JSON:");
    console.log("─".repeat(60));
    console.log(JSON.stringify(dev1.toJSON(), null, 2));
    ```
+
+<br/>
 
 7. Ejecuta la demostración de POO:
 
    ```bash
    npm run poo
    ```
+
+<br/>
 
 **Resultado Esperado:**
 
@@ -1508,25 +1625,25 @@ Empleados activos:
 ║         DEMOSTRACIÓN DE POO EN JAVASCRIPT        ║
 ╚══════════════════════════════════════════════════╝
 
-📋 POLIMORFISMO - obtenerDescripcion():
+POLIMORFISMO - obtenerDescripcion():
 ────────────────────────────────────────────────────────────
   [Senior] Ana Torres | Tecnologías: JavaScript, React, Node.js | Salario: $45,000
   [Junior] Carlos Vega | Tecnologías: Python, Django | Salario: $32,000
   [GERENTE] María Directora | Tecnología | Equipo: 2 personas | Salario: $85,000
 
-💰 CÁLCULO DE BONOS (polimorfismo en calcularBono):
+CÁLCULO DE BONOS (polimorfismo en calcularBono):
 ────────────────────────────────────────────────────────────
   Ana Torres           | Tipo: EmpleadoTecnico    | Bono: $5,400.00
   Carlos Vega          | Tipo: EmpleadoTecnico    | Bono: $1,600.00
   María Directora      | Tipo: Gerente            | Bono: $18,000.00
 
-🔒 ENCAPSULAMIENTO - Validaciones:
+ENCAPSULAMIENTO - Validaciones:
 ────────────────────────────────────────────────────────────
-  ✅ Error esperado al reducir salario: No se puede reducir el salario de un empleado
-  ✅ Error esperado con email inválido: Email inválido: email-invalido
-  ✅ Email actualizado correctamente: ana.torres@empresa.com
+  Error esperado al reducir salario: No se puede reducir el salario de un empleado
+  Error esperado con email inválido: Email inválido: email-invalido
+  Email actualizado correctamente: ana.torres@empresa.com
 
-🔗 HERENCIA - instanceof:
+HERENCIA - instanceof:
 ────────────────────────────────────────────────────────────
   dev1 instanceof EmpleadoTecnico: true
   dev1 instanceof Empleado:        true
@@ -1534,19 +1651,19 @@ Empleados activos:
   gerente instanceof Empleado:     true
 ```
 
+<br/>
+<br/>
+
 **Verificación:**
 
 - Confirma que `instanceof` devuelve `true` para la clase directa y también para las clases padre (herencia).
 - Verifica que los errores de encapsulamiento son lanzados correctamente (reducir salario, email inválido).
 - Comprueba que el polimorfismo funciona: cada clase implementa `calcularBono()` y `obtenerDescripcion()` de forma diferente.
 
----
+<br/>
+<br/>
 
 ### Paso 7: Comparación JavaScript vs Java
-
-**Objetivo:** Implementar el mismo sistema de gestión de empleados en Java 17, identificando similitudes y diferencias con JavaScript en cuanto a sintaxis, tipos, colecciones, streams y manejo de excepciones.
-
-**Instrucciones:**
 
 1. Crea el directorio y archivo Java:
 
@@ -1558,6 +1675,8 @@ Empleados activos:
    # En Windows (PowerShell)
    New-Item src\java-comparacion\SistemaEmpleados.java -ItemType File
    ```
+
+<br/>
 
 2. Escribe el código Java en el archivo. Ábrelo en VS Code y escribe:
 
@@ -1753,18 +1872,18 @@ Empleados activos:
            try {
                Empleado invalido = new Empleado("X", "no-es-email", -1000, "Test");
            } catch (IllegalArgumentException e) {
-               System.out.println("  ✅ Excepción capturada (unchecked): " + e.getMessage());
+               System.out.println("  Excepción capturada (unchecked): " + e.getMessage());
            }
 
            // Try con múltiples catch
            try {
                empleados.get(0).setSalario(30000); // Intento de reducir salario
            } catch (IllegalStateException e) {
-               System.out.println("  ✅ Excepción de estado: " + e.getMessage());
+               System.out.println("  Excepción de estado: " + e.getMessage());
            } catch (Exception e) {
-               System.out.println("  ❌ Error inesperado: " + e.getMessage());
+               System.out.println("  Error inesperado: " + e.getMessage());
            } finally {
-               System.out.println("  ✅ Bloque finally siempre se ejecuta (igual que en JS)");
+               System.out.println("  Bloque finally siempre se ejecuta (igual que en JS)");
            }
 
            // --------------------------------------------------------
@@ -1799,11 +1918,15 @@ Empleados activos:
            System.out.printf("  Salario mínimo:   $%,.2f%n", estadisticas.getMin());
            System.out.printf("  Masa laboral:     $%,.2f%n", estadisticas.getSum());
 
-           System.out.println("\n✅ Comparación completada. Total empleados creados: " +
+           System.out.println("\nComparación completada. Total empleados creados: " +
                Empleado.getTotalEmpleados());
        }
    }
    ```
+
+<br/>
+<br/>
+
 
 3. Compila el archivo Java:
 
@@ -1819,6 +1942,8 @@ Empleados activos:
    cd ..\..
    ```
 
+<br/>
+ 
 4. Ejecuta el programa Java:
 
    ```bash
@@ -1828,6 +1953,8 @@ Empleados activos:
    # En Windows (PowerShell)
    java -cp src\java-comparacion SistemaEmpleados
    ```
+
+<br/>
 
 **Resultado Esperado:**
 
@@ -1855,9 +1982,9 @@ Empleados activos:
 
 === SECCIÓN 3: Manejo de Excepciones ===
 
-  ✅ Excepción capturada (unchecked): Email inválido: no-es-email
-  ✅ Excepción de estado: No se puede reducir el salario
-  ✅ Bloque finally siempre se ejecuta (igual que en JS)
+  Excepción capturada (unchecked): Email inválido: no-es-email
+  Excepción de estado: No se puede reducir el salario
+  Bloque finally siempre se ejecuta (igual que en JS)
 
 === SECCIÓN 4: Colecciones Map ===
 
@@ -1875,8 +2002,10 @@ Empleados activos:
   Salario mínimo:   $32,000.00
   Masa laboral:     $176,000.00
 
-✅ Comparación completada. Total empleados creados: 5
+ Comparación completada. Total empleados creados: 5
 ```
+
+<br/>
 
 **Verificación:**
 
@@ -1884,13 +2013,12 @@ Empleados activos:
 - Verifica que la salida de estadísticas en Java es equivalente a la producida por JavaScript.
 - Compara mentalmente las diferencias de sintaxis: tipos explícitos en Java vs tipado dinámico en JS, `stream()` vs métodos de array, `throws` vs `throw`.
 
----
+<br/>
+<br/>
+
 
 ### Paso 8: Configurar Git y Realizar el Primer Push a GitHub
 
-**Objetivo:** Inicializar un repositorio Git local, crear commits descriptivos con la convención Conventional Commits, configurar el repositorio remoto en GitHub y realizar el primer push estableciendo el flujo de trabajo que se usará durante todo el curso.
-
-**Instrucciones:**
 
 1. Primero, configura tu identidad en Git si aún no lo has hecho:
 
@@ -1900,11 +2028,15 @@ Empleados activos:
    git config --global init.defaultBranch main
    ```
 
+<br/>
+
 2. Verifica la configuración:
 
    ```bash
    git config --global --list
    ```
+
+<br/>
 
 3. Inicializa el repositorio Git en la raíz del proyecto (asegúrate de estar en el directorio `lab-01`):
 
@@ -1921,6 +2053,8 @@ Empleados activos:
    # Inicializar repositorio
    git init
    ```
+
+<br/>
 
 4. Crea el archivo `.gitignore` para excluir archivos innecesarios:
 
@@ -1961,11 +2095,15 @@ Empleados activos:
    .env.local
    ```
 
+<br/>
+
 5. Verifica el estado del repositorio:
 
    ```bash
    git status
    ```
+
+<br/>
 
 6. Agrega todos los archivos al área de staging:
 
@@ -1973,11 +2111,19 @@ Empleados activos:
    git add .
    ```
 
+<br/>
+
+> **Nota:** Aunque `git add .` facilita agregar múltiples cambios rápidamente, puede convertirse en una mala práctica si no se tiene claridad sobre el directorio actual o los archivos modificados; por ello, se recomienda revisar primero la salida de `git status` y agregar explícitamente únicamente los archivos necesarios mediante `git add <archivo>`, evitando incluir cambios accidentales y reduciendo el esfuerzo de revertir errores posteriormente.
+
+<br/>
+
 7. Verifica qué archivos están en staging:
 
    ```bash
    git status
    ```
+
+<br/>
 
 8. Realiza el primer commit con mensaje descriptivo siguiendo la convención **Conventional Commits**:
 
@@ -1989,17 +2135,23 @@ Empleados activos:
    - Agregar .gitignore para Node.js, Java e IDEs"
    ```
 
+<br/>
+
 9. Crea una rama para el trabajo del laboratorio:
 
    ```bash
    git checkout -b feature/javascript-moderno
    ```
 
+<br/>
+
 10. Verifica las ramas existentes:
 
     ```bash
     git branch -a
     ```
+
+<br/>
 
 11. Ahora crea el repositorio en GitHub. Abre tu navegador y ve a [https://github.com/new](https://github.com/new). Configura:
     - **Repository name:** `curso-fullstack-lab01`
@@ -2008,17 +2160,23 @@ Empleados activos:
     - **NO** marques "Add a README file" (ya tenemos archivos locales)
     - Haz clic en **Create repository**
 
+<br/>
+
 12. Conecta tu repositorio local con el remoto (reemplaza `TU_USUARIO` con tu nombre de usuario de GitHub):
 
     ```bash
     git remote add origin https://github.com/TU_USUARIO/curso-fullstack-lab01.git
     ```
 
+<br/>
+
 13. Verifica la conexión remota:
 
     ```bash
     git remote -v
     ```
+
+<br/>
 
 14. Sube la rama `main` al repositorio remoto:
 
@@ -2028,12 +2186,16 @@ Empleados activos:
     git push -u origin main
     ```
 
+<br/>
+
 15. Sube también la rama de trabajo:
 
     ```bash
     git checkout feature/javascript-moderno
     git push -u origin feature/javascript-moderno
     ```
+
+<br/>
 
 16. Crea un commit adicional con el código desarrollado en esta rama:
 
@@ -2042,6 +2204,8 @@ Empleados activos:
     git add .
     git status
     ```
+
+<br/>
 
     Si hay cambios pendientes (archivos `.class` de Java deberían estar ignorados):
 
@@ -2059,11 +2223,15 @@ Empleados activos:
     git push origin feature/javascript-moderno
     ```
 
+<br/>
+
 17. Verifica el historial de commits:
 
     ```bash
     git log --oneline --graph --all
     ```
+
+<br/>
 
 **Resultado Esperado:**
 
@@ -2083,19 +2251,19 @@ origin  https://github.com/TU_USUARIO/curso-fullstack-lab01.git (push)
   remotes/origin/main
 ```
 
+<br/>
+
 **Verificación:**
 
 - Abre tu navegador y navega a `https://github.com/TU_USUARIO/curso-fullstack-lab01` para confirmar que el repositorio existe y tiene los archivos.
 - Verifica que aparecen ambas ramas (`main` y `feature/javascript-moderno`) en la interfaz de GitHub.
 - Confirma que `.class` (archivos compilados de Java) NO aparecen en el repositorio de GitHub gracias al `.gitignore`.
 
----
+
+<br/>
+<br/>
 
 ### Paso 9: Crear el README del Proyecto
-
-**Objetivo:** Documentar el proyecto con un archivo README profesional en formato Markdown que sirva como referencia para el repositorio y demuestre buenas prácticas de documentación.
-
-**Instrucciones:**
 
 1. Crea el archivo README en la raíz del proyecto:
 
@@ -2106,6 +2274,8 @@ origin  https://github.com/TU_USUARIO/curso-fullstack-lab01.git (push)
    # En Windows (PowerShell)
    New-Item README.md -ItemType File
    ```
+
+<br/>
 
 2. Escribe el siguiente contenido en `README.md`:
 
@@ -2192,8 +2362,10 @@ origin  https://github.com/TU_USUARIO/curso-fullstack-lab01.git (push)
 
    ## Autor
 
-   Participante del Curso Full Stack Empresarial
+   Participante del Curso Full Stack Empresarial: <TU_NOMBRE>
    ```
+
+<br/>
 
 3. Agrega y confirma el README:
 
@@ -2203,16 +2375,22 @@ origin  https://github.com/TU_USUARIO/curso-fullstack-lab01.git (push)
    git push origin feature/javascript-moderno
    ```
 
+<br/>
+
 **Resultado Esperado:**
 
 El archivo `README.md` aparece en GitHub con formato Markdown renderizado correctamente, mostrando la tabla de comparación y la estructura del proyecto.
+
+<br/>
 
 **Verificación:**
 
 - Navega a `https://github.com/TU_USUARIO/curso-fullstack-lab01/tree/feature/javascript-moderno` y confirma que el README se renderiza correctamente.
 - Verifica que la tabla de comparación JavaScript vs Java se muestra con el formato correcto.
 
----
+
+<br/>
+<br/>
 
 ## Validación y Pruebas
 
@@ -2229,6 +2407,9 @@ El archivo `README.md` aparece en GitHub con formato Markdown renderizado correc
 - [ ] El repositorio remoto en GitHub existe con ambas ramas (`main` y `feature/javascript-moderno`)
 - [ ] El archivo `.gitignore` excluye correctamente los archivos `.class`
 
+<br/>
+<br/>
+
 ### Procedimiento de Pruebas
 
 1. Prueba completa del módulo JavaScript moderno:
@@ -2238,12 +2419,16 @@ El archivo `README.md` aparece en GitHub con formato Markdown renderizado correc
    ```
    **Resultado Esperado:** Muestra el reporte de producto con precio calculado correctamente (precio con 10% descuento + 16% IVA).
 
+<br/>
+
 2. Prueba del módulo de desestructuración:
 
    ```bash
    node src/js-moderno/destructuring-spread-rest.js
    ```
    **Resultado Esperado:** El intercambio de variables muestra `A=200, B=100` después del intercambio. La bonificación promedio es `12.50%`.
+
+<br/>
 
 3. Prueba de operaciones asíncronas:
 
@@ -2252,6 +2437,8 @@ El archivo `README.md` aparece en GitHub con formato Markdown renderizado correc
    ```
    **Resultado Esperado:** El dashboard carga en menos de 400ms (paralelo). `Promise.allSettled` muestra éxito para IDs 1 y 4, y error para ID 99.
 
+<br/>
+
 4. Prueba del sistema integrado:
 
    ```bash
@@ -2259,12 +2446,16 @@ El archivo `README.md` aparece en GitHub con formato Markdown renderizado correc
    ```
    **Resultado Esperado:** La masa laboral total es $244,000 (incluyendo a Patricia Mendoza con $48,000).
 
+<br/>
+
 5. Prueba de POO:
 
    ```bash
    npm run poo
    ```
    **Resultado Esperado:** `instanceof EmpleadoTecnico` devuelve `true` para `dev1`. El error de reducción de salario es capturado correctamente.
+
+<br/>
 
 6. Prueba de Java:
 
@@ -2277,12 +2468,16 @@ El archivo `README.md` aparece en GitHub con formato Markdown renderizado correc
    ```
    **Resultado Esperado:** Masa laboral total de $176,000 con 4 empleados.
 
+<br/>
+
 7. Prueba de Git:
 
    ```bash
    git log --oneline --graph --all
    ```
    **Resultado Esperado:** Al menos 3 commits visibles con mensajes que siguen la convención `feat:`, `docs:`, etc.
+
+<br/>
 
 8. Verificar que `.class` está ignorado:
 
@@ -2291,7 +2486,9 @@ El archivo `README.md` aparece en GitHub con formato Markdown renderizado correc
    ```
    **Resultado Esperado:** Los archivos `.class` generados por `javac` NO aparecen en la lista de archivos sin seguimiento.
 
----
+
+<br/>
+<br/>
 
 ## Solución de Problemas
 
@@ -2300,8 +2497,12 @@ El archivo `README.md` aparece en GitHub con formato Markdown renderizado correc
 **Síntomas:**
 - Al ejecutar `node src/js-moderno/index.js` aparece el error: `SyntaxError: Cannot use import statement outside a module`
 
+<br/>
+
 **Causa:**
 Node.js está tratando el archivo como CommonJS en lugar de ES Module. Esto ocurre cuando falta `"type": "module"` en `package.json` o cuando el archivo no tiene extensión `.mjs`.
+
+<br/>
 
 **Solución:**
 
@@ -2316,15 +2517,20 @@ code package.json
 # Agregar "type": "module" dentro del objeto JSON principal
 ```
 
----
+<br/>
+<br/>
 
 ### Problema 2: Error `javac: command not found` o `'javac' no se reconoce`
 
 **Síntomas:**
 - Al ejecutar `javac SistemaEmpleados.java` aparece: `command not found` (macOS/Linux) o `'javac' no se reconoce como un comando` (Windows)
 
+<br/>
+
 **Causa:**
 `JAVA_HOME` no está configurado o el directorio `bin` del JDK no está en el `PATH`.
+
+<br/>
 
 **Solución:**
 
@@ -2352,15 +2558,20 @@ export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 export PATH=$JAVA_HOME/bin:$PATH
 ```
 
----
+<br/>
+<br/>
 
 ### Problema 3: Error de autenticación al hacer `git push`
 
 **Síntomas:**
 - Al ejecutar `git push -u origin main` aparece: `remote: Support for password authentication was removed` o `Authentication failed`
 
+<br/>
+
 **Causa:**
 GitHub eliminó la autenticación por contraseña en agosto de 2021. Ahora se requiere un **Personal Access Token (PAT)** o autenticación SSH.
+
+<br/>
 
 **Solución (Personal Access Token):**
 
@@ -2389,15 +2600,20 @@ git config --global credential.helper store
 git config --global credential.helper "cache --timeout=3600"
 ```
 
----
+<br/>
+<br/>
 
 ### Problema 4: Los archivos `.class` aparecen en `git status`
 
 **Síntomas:**
 - Después de compilar con `javac`, los archivos `.class` aparecen como `Untracked files` en `git status`
 
+<br/>
+
 **Causa:**
 El archivo `.gitignore` no fue creado correctamente o no contiene la entrada `*.class`.
+
+<br/>
 
 **Solución:**
 
@@ -2416,15 +2632,22 @@ git status
 # Los archivos .class no deben aparecer
 ```
 
----
+<br/>
+<br/>
 
 ### Problema 5: Error `Cannot find module './utilidades.js'`
 
 **Síntomas:**
 - Al ejecutar el `index.js` aparece: `Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/ruta/src/js-moderno/utilidades.js'`
 
+
+<br/>
+
 **Causa:**
 En módulos ES de Node.js, las importaciones deben incluir la extensión del archivo (`.js`). A diferencia de CommonJS, los módulos ES no resuelven extensiones automáticamente.
+
+
+<br/>
 
 **Solución:**
 
@@ -2440,7 +2663,9 @@ grep -r "from './" src/js-moderno/
 # import { formatearMoneda } from "./utilidades";      ❌
 ```
 
----
+
+<br/>
+<br/>
 
 ## Limpieza
 
@@ -2463,11 +2688,18 @@ git status
 # No debe mostrar cambios pendientes
 ```
 
-> ⚠️ **Advertencia:** NO elimines los archivos del repositorio Git ni el directorio `node_modules` si fue creado. El directorio `node_modules` debería estar en `.gitignore` y no debería existir ya que no instalamos dependencias externas en este laboratorio. Si aparece, puedes eliminarlo con `rm -rf node_modules` (macOS/Linux) o `Remove-Item -Recurse -Force node_modules` (Windows).
 
-> ⚠️ **Nota sobre el repositorio GitHub:** El repositorio `curso-fullstack-lab01` en GitHub debe **mantenerse** ya que se usará como referencia en laboratorios posteriores. No lo elimines al finalizar.
+<br/>
+<br/>
 
----
+> **Advertencia:** NO elimines los archivos del repositorio Git ni el directorio `node_modules` si fue creado. El directorio `node_modules` debería estar en `.gitignore` y no debería existir ya que no instalamos dependencias externas en este laboratorio. Si aparece, puedes eliminarlo con `rm -rf node_modules` (macOS/Linux) o `Remove-Item -Recurse -Force node_modules` (Windows).
+
+> **Nota sobre el repositorio GitHub:** El repositorio `curso-fullstack-lab01` en GitHub debe **mantenerse** ya que se usará como referencia en laboratorios posteriores. No lo elimines al finalizar.
+
+
+
+<br/>
+<br/>
 
 ## Resumen
 
@@ -2481,6 +2713,11 @@ git status
 - **Comparaste** JavaScript y Java 17 identificando equivalencias en POO, colecciones (`Array` vs `List`), iteración (`map/filter/reduce` vs `Stream`), y manejo de excepciones
 - **Configuraste** Git con identidad, `.gitignore` y flujo de trabajo con ramas, realizando el primer push a GitHub con commits descriptivos siguiendo Conventional Commits
 
+
+<br/>
+<br/>
+
+
 ### Conceptos Clave Aprendidos
 
 - **Alcance de bloque**: `let` y `const` tienen alcance de bloque `{}`, evitando los problemas de `var` con hoisting y scope de función
@@ -2491,6 +2728,10 @@ git status
 - **Encapsulamiento JS**: Los campos `#privados` son verdaderamente privados (no accesibles fuera de la clase), a diferencia de las convenciones `_privado` anteriores
 - **Conventional Commits**: Formato `tipo(scope): descripción` para commits legibles y compatibles con herramientas de changelog automático
 
+
+<br/>
+<br/>
+
 ### Próximos Pasos
 
 - En la **Lección 1.2** profundizarás en POO avanzada con JavaScript: mixins, composición vs herencia, y patrones de diseño aplicados a clases
@@ -2498,14 +2739,22 @@ git status
 - Practica los conceptos de este laboratorio modificando el `ServicioEmpleados` para agregar un método `buscarPorSalario(min, max)` usando `filter` y desestructuración
 - Explora la documentación de MDN sobre [Clases de JavaScript](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Classes) para profundizar en características avanzadas como campos estáticos privados y métodos de clase
 
----
+
+<br/>
+<br/>
 
 ## Recursos Adicionales
 
 - **MDN Web Docs - JavaScript**: Referencia completa de todas las características ES6+ con ejemplos interactivos - [https://developer.mozilla.org/es/docs/Web/JavaScript](https://developer.mozilla.org/es/docs/Web/JavaScript)
+
 - **JavaScript.info**: Tutorial moderno y profundo de JavaScript en español, desde fundamentos hasta temas avanzados - [https://javascript.info](https://javascript.info)
+
 - **Conventional Commits**: Especificación completa del estándar para mensajes de commit estructurados - [https://www.conventionalcommits.org/es/v1.0.0/](https://www.conventionalcommits.org/es/v1.0.0/)
+
 - **Node.js - ES Modules**: Documentación oficial sobre el uso de módulos ES en Node.js - [https://nodejs.org/api/esm.html](https://nodejs.org/api/esm.html)
+
 - **Git - Pro Git Book**: Libro completo y gratuito sobre Git en español - [https://git-scm.com/book/es/v2](https://git-scm.com/book/es/v2)
+
 - **Java Streams API**: Documentación oficial de la API de Streams de Java 17 - [https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html)
+
 - **TC39 Proposals**: Repositorio oficial de propuestas de nuevas características para JavaScript - [https://github.com/tc39/proposals](https://github.com/tc39/proposals)

@@ -134,7 +134,7 @@ mvn -version
 
 ---
 
-## Instrucciones Paso a Paso
+## Instrucciones 
 
 ### Paso 1: Crear el Proyecto Spring Boot con Spring Batch
 

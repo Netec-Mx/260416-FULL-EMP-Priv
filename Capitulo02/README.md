@@ -101,7 +101,7 @@ code --install-extension esbenp.prettier-vscode
 
 ---
 
-## Instrucciones Paso a Paso
+## Instrucciones  
 
 ---
 

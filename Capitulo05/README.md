@@ -126,7 +126,7 @@ docker run -d `
 
 > ⚠️ **Nota:** Si ya tienes PostgreSQL y MongoDB instalados localmente, asegúrate de que los puertos 5432 y 27017 estén disponibles. Ajusta las credenciales según tu configuración local en los pasos siguientes.
 
-## Instrucciones Paso a Paso
+## Instrucciones 
 
 ### Paso 1: Diseño e Implementación del Esquema Relacional en PostgreSQL
 

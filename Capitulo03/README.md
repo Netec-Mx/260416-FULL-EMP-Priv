@@ -97,7 +97,7 @@ Si Maven no está instalado globalmente, no te preocupes: el proyecto generado c
 
 ---
 
-## Instrucciones Paso a Paso
+## Instrucciones 
 
 ### Paso 1: Generar el Proyecto con Spring Initializr y Configurar el Repositorio Git
 

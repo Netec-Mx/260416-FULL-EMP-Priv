@@ -86,7 +86,7 @@ netstat -ano | findstr "80 8080 5432 27017 5050"
 
 Si `hello-world` se ejecuta correctamente, Docker está listo. Si algún puerto está ocupado, detén el servicio que lo usa antes de continuar.
 
-## Instrucciones Paso a Paso
+## Instrucciones 
 
 ### Paso 1: Preparar la Estructura del Proyecto Integrador
 
