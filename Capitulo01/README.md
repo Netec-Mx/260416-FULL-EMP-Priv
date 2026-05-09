@@ -2218,7 +2218,7 @@ HERENCIA - instanceof:
 Si hay cambios pendientes (archivos `.class` de Java deberían estar ignorados):
 
 
-    ```bash
+  ```bash
     git commit -m "feat(js): implementar módulos ES6+ con sistema de empleados
 
     - Agregar variables-y-funciones.js con let/const y arrow functions
@@ -2230,7 +2230,7 @@ Si hay cambios pendientes (archivos `.class` de Java deberían estar ignorados):
 
     ```bash
     git push origin feature/javascript-moderno
-    ```
+  ```
 
 <br/>
 
