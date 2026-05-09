@@ -241,7 +241,7 @@ lab-01/
 
 <br/>
 
-> **Nota:**Git no versiona carpetas vacías de forma nativa.  
+> **Nota:** Git no versiona carpetas vacías de forma nativa.  
 > Por ello se utiliza un archivo `.gitkeep` como marcador temporal para conservar la estructura de directorios del proyecto dentro del repositorio.
 
 <br/><br/>
