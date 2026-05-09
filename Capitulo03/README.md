@@ -1678,7 +1678,10 @@ Al ejecutar `./mvnw compile`, el proyecto debe compilar sin errores.
    curl -s "http://localhost:8080/api/v1/productos/bajo-stock?umbral=10" | python3 -m json.tool
    ```
 
+<br/>
+
    En Windows (PowerShell) sin `python3`:
+
    ```powershell
    # Obtener todos los productos
    Invoke-RestMethod -Uri "http://localhost:8080/api/v1/productos" -Method GET | ConvertTo-Json -Depth 5
@@ -2878,6 +2881,7 @@ git log --oneline -10
 # Debe mostrar todos los commits del laboratorio
 ```
 
+<br/>
 
 > **Advertencia:** No elimines el directorio del proyecto. El código generado en este laboratorio es la base del proyecto integrador que se usará en los laboratorios 4, 5, 6 y 7. Asegúrate de que el último estado esté commiteado y pusheado a GitHub antes de cerrar.
 
