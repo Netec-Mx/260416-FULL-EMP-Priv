@@ -1,15 +1,14 @@
 # Laboratorio 3. Proyecto Integrador — Backend Empresarial con Spring Boot y Maven
 
-## Metadatos
+<br/><br/>
 
-| Propiedad | Valor |
-|-----------|-------|
+
+
 | **Duración** | 170 minutos |
-| **Complejidad** | Difícil |
-| **Nivel Bloom** | Crear |
-| **Tecnologías** | Java 17, Spring Boot 3.2, Maven, Lombok, JUnit 5, Mockito, MockMvc, H2, Jackson |
 
----
+
+<br/>
+<br/>
 
 ## Descripción General
 
@@ -17,20 +16,24 @@ En este laboratorio construirás el backend empresarial del proyecto integrador 
 
 Este laboratorio representa el núcleo técnico del curso: todo lo que construyas aquí será la base sobre la que los laboratorios posteriores agregarán persistencia real con PostgreSQL y MongoDB, procesamiento por lotes con Spring Batch, y el frontend con Web Components y Lit. Es fundamental que lo completes con rigor, especialmente las pruebas unitarias, que son un entregable obligatorio.
 
----
 
-## Objetivos de Aprendizaje
+<br/>
+<br/>
+
+## Objetivos
 
 Al completar este laboratorio, serás capaz de:
 
-- [ ] Generar y configurar un proyecto Spring Boot 3.2 con Maven usando Spring Initializr, incluyendo dependencias correctas y estructura de paquetes por capas
-- [ ] Implementar una API REST completa con operaciones CRUD usando los verbos HTTP correctos (GET, POST, PUT, DELETE), códigos de estado apropiados y serialización JSON con Jackson
-- [ ] Aplicar el patrón DTO con conversión manual para separar el modelo de dominio de la API pública, controlando qué información se expone
-- [ ] Implementar el patrón Facade para encapsular y simplificar la lógica de negocio compleja desde la perspectiva del controlador
-- [ ] Configurar manejo global de errores con `@ControllerAdvice` y respuestas de error estandarizadas
-- [ ] Escribir pruebas unitarias con JUnit 5 y Mockito para la capa de servicio, y pruebas de controlador con MockMvc
+- Generar y configurar un proyecto Spring Boot 3.2 con Maven usando Spring Initializr, incluyendo dependencias correctas y estructura de paquetes por capas
+- Implementar una API REST completa con operaciones CRUD usando los verbos HTTP correctos (GET, POST, PUT, DELETE), códigos de estado apropiados y serialización JSON con Jackson
+- Aplicar el patrón DTO con conversión manual para separar el modelo de dominio de la API pública, controlando qué información se expone
+- Implementar el patrón Facade para encapsular y simplificar la lógica de negocio compleja desde la perspectiva del controlador
+- Configurar manejo global de errores con `@ControllerAdvice` y respuestas de error estandarizadas
+- Escribir pruebas unitarias con JUnit 5 y Mockito para la capa de servicio, y pruebas de controlador con MockMvc
 
----
+
+<br/>
+<br/>
 
 ## Prerrequisitos
 
@@ -42,6 +45,8 @@ Al completar este laboratorio, serás capaz de:
 - Laboratorio 1 completado: Java instalado, Git configurado, cuenta GitHub activa
 - Familiaridad básica con JSON como formato de intercambio de datos
 
+<br/>
+
 ### Acceso Requerido
 
 - JDK 17 instalado y variable `JAVA_HOME` configurada
@@ -51,18 +56,10 @@ Al completar este laboratorio, serás capaz de:
 - Conexión a internet para descarga de dependencias Maven (primera vez)
 - Cuenta GitHub para repositorio del proyecto integrador
 
----
+<br/>
+<br/>
 
 ## Entorno de Laboratorio
-
-### Requisitos de Hardware
-
-| Componente | Especificación |
-|------------|----------------|
-| Procesador | Intel Core i5 8va gen o AMD Ryzen 5 (o superior) |
-| Memoria RAM | Mínimo 8 GB (recomendado 16 GB con IntelliJ abierto) |
-| Almacenamiento | Mínimo 5 GB libres para dependencias Maven y proyecto |
-| Pantalla | Resolución 1920x1080 recomendada para IntelliJ + terminal |
 
 ### Requisitos de Software
 
@@ -74,6 +71,10 @@ Al completar este laboratorio, serás capaz de:
 | Spring Boot | 3.2.x | Framework principal del backend |
 | Postman / Thunder Client | 11.x / cualquier versión | Pruebas manuales de la API REST |
 | Git | 2.44 o superior | Control de versiones del proyecto integrador |
+
+
+<br/>
+<br/>
 
 ### Configuración Inicial
 
@@ -95,17 +96,16 @@ git --version
 
 Si Maven no está instalado globalmente, no te preocupes: el proyecto generado con Spring Initializr incluye el Maven Wrapper (`mvnw` / `mvnw.cmd`) que funciona sin instalación global.
 
----
+<br/>
+<br/>
 
 ## Instrucciones 
 
 ### Paso 1: Generar el Proyecto con Spring Initializr y Configurar el Repositorio Git
 
-**Objetivo:** Crear el proyecto Spring Boot base con todas las dependencias necesarias, verificar la estructura de directorios Maven y conectarlo a un repositorio GitHub.
-
-**Instrucciones:**
-
 1. Abre tu navegador y navega a [https://start.spring.io](https://start.spring.io)
+
+<br/>
 
 2. Configura el proyecto con los siguientes valores:
    - **Project:** Maven
@@ -119,6 +119,8 @@ Si Maven no está instalado globalmente, no te preocupes: el proyecto generado c
    - **Packaging:** Jar
    - **Java:** 17
 
+<br/>
+
 3. Agrega las siguientes dependencias haciendo clic en "ADD DEPENDENCIES":
    - **Spring Web** (Spring MVC, servidor Tomcat embebido)
    - **Spring Data JPA** (acceso a datos con Hibernate)
@@ -126,7 +128,11 @@ Si Maven no está instalado globalmente, no te preocupes: el proyecto generado c
    - **Lombok** (reducción de código boilerplate)
    - **Validation** (Bean Validation con Hibernate Validator)
 
+<br/>
+
 4. Haz clic en **"GENERATE"** para descargar el archivo ZIP.
+
+<br/>
 
 5. Descomprime el archivo en tu directorio de proyectos. Ejemplo:
 
@@ -142,6 +148,8 @@ Si Maven no está instalado globalmente, no te preocupes: el proyecto generado c
    cd inventario-api
    ```
 
+<br/>
+
 6. Verifica la estructura de directorios generada:
 
    ```bash
@@ -152,6 +160,8 @@ Si Maven no está instalado globalmente, no te preocupes: el proyecto generado c
    Get-ChildItem -Recurse -Include "*.java","pom.xml" | Select-Object FullName | Select-Object -First 20
    ```
 
+<br/>
+
 7. Inicializa el repositorio Git y haz el primer commit:
 
    ```bash
@@ -159,6 +169,8 @@ Si Maven no está instalado globalmente, no te preocupes: el proyecto generado c
    git add .
    git commit -m "feat: inicializar proyecto Spring Boot con Spring Initializr"
    ```
+
+<br/>
 
 8. Crea un repositorio en GitHub llamado `inventario-api` (sin README, sin .gitignore) y conecta el repositorio local:
 
@@ -168,20 +180,30 @@ Si Maven no está instalado globalmente, no te preocupes: el proyecto generado c
    git push -u origin main
    ```
 
+<br/>
+
 9. Abre el proyecto en IntelliJ IDEA:
    - **File → Open** → selecciona la carpeta `inventario-api`
    - IntelliJ detectará automáticamente el proyecto Maven
    - Espera a que finalice la indexación y descarga de dependencias (puede tomar 2-5 minutos la primera vez)
    - Verifica que el plugin Lombok esté activo: **File → Settings → Plugins** → busca "Lombok" → debe aparecer como instalado y habilitado
 
+<br/>
+
 **Salida Esperada:**
+
+<br/>
 
 ```
 [INFO] BUILD SUCCESS
 [INFO] Total time: 3.456 s
 ```
 
+<br/>
+
 Al ejecutar `mvn validate` en la terminal del proyecto, Maven debe validar el `pom.xml` sin errores.
+
+<br/>
 
 **Verificación:**
 
@@ -190,19 +212,19 @@ Al ejecutar `mvn validate` en la terminal del proyecto, Maven debe validar el `p
 - [ ] El archivo `pom.xml` contiene las dependencias: `spring-boot-starter-web`, `spring-boot-starter-data-jpa`, `h2`, `lombok`, `spring-boot-starter-validation`
 - [ ] El repositorio GitHub tiene el primer commit visible
 
----
+<br/>
+<br/>
 
 ### Paso 2: Revisar y Enriquecer el pom.xml
-
-**Objetivo:** Comprender la estructura del `pom.xml` generado, agregar configuraciones importantes y familiarizarse con el POM padre de Spring Boot.
-
-**Instrucciones:**
 
 1. Abre el archivo `pom.xml` en IntelliJ IDEA. Examina su estructura y localiza los siguientes elementos:
    - El bloque `<parent>` que hereda de `spring-boot-starter-parent`
    - El bloque `<properties>` con la versión de Java
    - El bloque `<dependencies>` con las dependencias seleccionadas
    - El bloque `<build>` con el plugin `spring-boot-maven-plugin`
+
+<br/>
+
 
 2. Reemplaza el contenido completo del `pom.xml` con la versión enriquecida siguiente. Presta atención a los comentarios explicativos:
 
@@ -317,7 +339,11 @@ Al ejecutar `mvn validate` en la terminal del proyecto, Maven debe validar el `p
    </project>
    ```
 
+<br/>
+
 3. Guarda el archivo. IntelliJ mostrará una notificación para recargar el proyecto Maven. Haz clic en **"Load Maven Changes"** (o el ícono de recarga que aparece en la esquina superior derecha del editor).
+
+<br/>
 
 4. Verifica que el proyecto compile correctamente:
 
@@ -329,12 +355,16 @@ Al ejecutar `mvn validate` en la terminal del proyecto, Maven debe validar el `p
    .\mvnw.cmd clean compile
    ```
 
+<br/>
+
 5. Haz commit del `pom.xml` actualizado:
 
    ```bash
    git add pom.xml
    git commit -m "build: enriquecer pom.xml con configuracion de plugins y comentarios"
    ```
+
+<br/>
 
 **Salida Esperada:**
 
@@ -345,19 +375,18 @@ Al ejecutar `mvn validate` en la terminal del proyecto, Maven debe validar el `p
 [INFO] BUILD SUCCESS
 ```
 
+<br/>
+
 **Verificación:**
 
 - [ ] `mvn clean compile` termina con `BUILD SUCCESS`
 - [ ] El directorio `target/classes/` fue creado con el archivo `.class` de la clase principal
 - [ ] No hay errores de compilación en IntelliJ (sin líneas rojas en el código)
 
----
+<br/>
+<br/>
 
 ### Paso 3: Crear la Estructura de Paquetes y el Modelo de Dominio
-
-**Objetivo:** Establecer la arquitectura en capas del proyecto creando los paquetes necesarios e implementando la entidad `Producto` con Lombok y JPA.
-
-**Instrucciones:**
 
 1. Crea la siguiente estructura de paquetes dentro de `src/main/java/com/empresa/inventario/`. En IntelliJ, haz clic derecho sobre el paquete base → **New → Package**:
 
@@ -403,6 +432,8 @@ Al ejecutar `mvn validate` en la terminal del proyecto, Maven debe validar el `p
    New-Item -ItemType Directory -Force -Path "$BASE\exception"
    New-Item -ItemType Directory -Force -Path "$BASE\config"
    ```
+
+<br/>
 
 2. Crea la entidad JPA `Producto`. En IntelliJ, haz clic derecho sobre el paquete `model` → **New → Java Class** → nombre: `Producto`:
 
@@ -483,6 +514,8 @@ Al ejecutar `mvn validate` en la terminal del proyecto, Maven debe validar el `p
    }
    ```
 
+<br/>
+
 3. Crea el enum `CategoriaProducto` en el paquete `model` para tipificar las categorías:
 
    ```java
@@ -501,6 +534,8 @@ Al ejecutar `mvn validate` en la terminal del proyecto, Maven debe validar el `p
        OTROS
    }
    ```
+
+<br/>
 
 4. Configura la base de datos H2 en `src/main/resources/application.properties`:
 
@@ -537,6 +572,8 @@ Al ejecutar `mvn validate` en la terminal del proyecto, Maven debe validar el `p
    logging.level.org.springframework.web=INFO
    ```
 
+<br/>
+
 5. Haz commit de los cambios:
 
    ```bash
@@ -554,13 +591,10 @@ Al compilar con `./mvnw compile`, no debe haber errores. La clase `Producto` deb
 - [ ] El archivo `application.properties` está en `src/main/resources/`
 - [ ] La estructura de paquetes está completa con todos los subdirectorios creados
 
----
+<br/>
+<br/>
 
 ### Paso 4: Implementar el Repositorio y la Capa de Servicio
-
-**Objetivo:** Crear el repositorio Spring Data JPA para acceso a datos y la interfaz de servicio con su implementación, separando correctamente las responsabilidades de cada capa.
-
-**Instrucciones:**
 
 1. Crea la interfaz `ProductoRepository` en el paquete `repository`:
 
@@ -617,6 +651,9 @@ Al compilar con `./mvnw compile`, no debe haber errores. La clase `Producto` deb
        List<Producto> findByActivoTrue();
    }
    ```
+
+<br/>
+
 
 2. Crea la interfaz `ProductoService` en el paquete `service`:
 
@@ -680,6 +717,8 @@ Al compilar con `./mvnw compile`, no debe haber errores. La clase `Producto` deb
    }
    ```
 
+<br/>
+
 3. Crea las excepciones personalizadas en el paquete `exception`:
 
    ```java
@@ -706,6 +745,8 @@ Al compilar con `./mvnw compile`, no debe haber errores. La clase `Producto` deb
        }
    }
    ```
+
+<br/>
 
 4. Crea la implementación `ProductoServiceImpl` en el paquete `service/impl`:
 
@@ -823,6 +864,9 @@ Al compilar con `./mvnw compile`, no debe haber errores. La clase `Producto` deb
    }
    ```
 
+<br/>
+
+
 5. Haz commit de la capa de servicio:
 
    ```bash
@@ -830,11 +874,15 @@ Al compilar con `./mvnw compile`, no debe haber errores. La clase `Producto` deb
    git commit -m "feat: implementar capa de repositorio y servicio con logica de negocio"
    ```
 
+<br/>
+
 **Salida Esperada:**
 
 ```
 [INFO] BUILD SUCCESS
 ```
+
+<br/>
 
 Al ejecutar `./mvnw compile`, el proyecto debe compilar sin errores.
 
@@ -846,13 +894,11 @@ Al ejecutar `./mvnw compile`, el proyecto debe compilar sin errores.
 - [ ] Las excepciones `ProductoNotFoundException` y `ProductoDuplicadoException` existen en el paquete `exception`
 - [ ] El proyecto compila con `./mvnw compile` sin errores
 
----
+
+<br/>
+<br/>
 
 ### Paso 5: Implementar DTOs y el Patrón Facade
-
-**Objetivo:** Crear los DTOs para controlar qué información se expone en la API y el Facade para encapsular la lógica de orquestación, separando la capa de presentación de la lógica de negocio.
-
-**Instrucciones:**
 
 1. Crea el DTO de request `CrearProductoRequest` en `dto/request/`:
 
@@ -894,6 +940,8 @@ Al ejecutar `./mvnw compile`, el proyecto debe compilar sin errores.
    }
    ```
 
+<br/>
+
 2. Crea el DTO de request `ActualizarProductoRequest` en `dto/request/`:
 
    ```java
@@ -929,6 +977,9 @@ Al ejecutar `./mvnw compile`, el proyecto debe compilar sin errores.
        private String categoria;
    }
    ```
+
+<br/>
+
 
 3. Crea el DTO de response `ProductoResponse` en `dto/response/`:
 
@@ -969,6 +1020,9 @@ Al ejecutar `./mvnw compile`, el proyecto debe compilar sin errores.
    }
    ```
 
+<br/>
+
+
 4. Crea el DTO `ErrorResponse` en `dto/response/` para respuestas de error estandarizadas:
 
    ```java
@@ -996,6 +1050,8 @@ Al ejecutar `./mvnw compile`, el proyecto debe compilar sin errores.
        private List<String> detalles;
    }
    ```
+
+<br/>
 
 5. Crea el mapper `ProductoMapper` en el paquete `dto/` para convertir entre entidades y DTOs:
 
@@ -1076,6 +1132,8 @@ Al ejecutar `./mvnw compile`, el proyecto debe compilar sin errores.
        }
    }
    ```
+
+<br/>
 
 6. Crea el `ProductoFacade` en el paquete `facade/`:
 
@@ -1161,6 +1219,8 @@ Al ejecutar `./mvnw compile`, el proyecto debe compilar sin errores.
    }
    ```
 
+<br/>
+
 7. Haz commit de DTOs y Facade:
 
    ```bash
@@ -1168,11 +1228,15 @@ Al ejecutar `./mvnw compile`, el proyecto debe compilar sin errores.
    git commit -m "feat: implementar DTOs, ProductoMapper y patron Facade"
    ```
 
+<br/>
+
 **Salida Esperada:**
 
 ```
 [INFO] BUILD SUCCESS
 ```
+
+<br/>
 
 **Verificación:**
 
@@ -1181,13 +1245,10 @@ Al ejecutar `./mvnw compile`, el proyecto debe compilar sin errores.
 - [ ] `ProductoFacade` inyecta `ProductoService` y `ProductoMapper` mediante constructor
 - [ ] El proyecto compila sin errores
 
----
+<br/>
+<br/>
 
 ### Paso 6: Implementar el Controlador REST y el Manejador Global de Errores
-
-**Objetivo:** Crear el controlador REST con todos los endpoints CRUD usando los verbos HTTP correctos y códigos de estado apropiados, e implementar el manejo global de errores con `@ControllerAdvice`.
-
-**Instrucciones:**
 
 1. Crea el manejador global de errores `GlobalExceptionHandler` en el paquete `exception/`:
 
@@ -1308,6 +1369,8 @@ Al ejecutar `./mvnw compile`, el proyecto debe compilar sin errores.
    }
    ```
 
+<br/>
+
 2. Crea la configuración CORS en el paquete `config/`:
 
    ```java
@@ -1348,6 +1411,8 @@ Al ejecutar `./mvnw compile`, el proyecto debe compilar sin errores.
        }
    }
    ```
+
+<br/>
 
 3. Crea el controlador principal `ProductoController` en el paquete `controller/`:
 
@@ -1489,6 +1554,8 @@ Al ejecutar `./mvnw compile`, el proyecto debe compilar sin errores.
    }
    ```
 
+<br/>
+
 4. Crea un `DataInitializer` para cargar datos de prueba al iniciar la aplicación. Esto facilita las pruebas manuales con Postman:
 
    ```java
@@ -1569,6 +1636,9 @@ Al ejecutar `./mvnw compile`, el proyecto debe compilar sin errores.
    }
    ```
 
+<br/>
+
+
 5. Ejecuta la aplicación para verificar que arranca correctamente:
 
    ```bash
@@ -1578,6 +1648,9 @@ Al ejecutar `./mvnw compile`, el proyecto debe compilar sin errores.
    # En Windows (PowerShell)
    .\mvnw.cmd spring-boot:run
    ```
+
+<br/>
+
 
 6. En otra terminal, prueba los endpoints con `curl`:
 
@@ -1611,6 +1684,8 @@ Al ejecutar `./mvnw compile`, el proyecto debe compilar sin errores.
    Invoke-RestMethod -Uri "http://localhost:8080/api/v1/productos" -Method POST -Body $body -ContentType "application/json"
    ```
 
+<br/>
+
 7. Haz commit del controlador y configuraciones:
 
    ```bash
@@ -1619,6 +1694,9 @@ Al ejecutar `./mvnw compile`, el proyecto debe compilar sin errores.
    git commit -m "feat: implementar controlador REST, manejo global de errores y datos iniciales"
    git push origin main
    ```
+
+<br/>
+
 
 **Salida Esperada:**
 
@@ -1636,6 +1714,8 @@ Started InventarioApiApplication in 2.345 seconds
 Datos de prueba cargados: 5 productos
 ```
 
+<br/>
+
 **Verificación:**
 
 - [ ] La aplicación arranca sin errores en el puerto 8080
@@ -1645,15 +1725,11 @@ Datos de prueba cargados: 5 productos
 - [ ] `POST` con datos inválidos (nombre vacío) devuelve código 400 con detalles de validación
 - [ ] `GET http://localhost:8080/api/v1/productos/999` devuelve código 404
 
----
+<br/>
+<br/>
+
 
 ### Paso 7: Escribir Pruebas Unitarias para la Capa de Servicio con JUnit 5 y Mockito
-
-**Objetivo:** Implementar pruebas unitarias completas para `ProductoServiceImpl` usando Mockito para simular el repositorio, cubriendo los escenarios de éxito y de error.
-
-> ⚠️ **Importante:** Las pruebas unitarias son un entregable obligatorio de este laboratorio. No las omitas. Dedica el tiempo necesario a comprenderlas y ejecutarlas.
-
-**Instrucciones:**
 
 1. Crea la clase de prueba `ProductoServiceImplTest` en `src/test/java/com/empresa/inventario/service/`:
 
@@ -1954,6 +2030,8 @@ Datos de prueba cargados: 5 productos
    }
    ```
 
+<br/>
+
 2. Ejecuta las pruebas unitarias:
 
    ```bash
@@ -1964,13 +2042,19 @@ Datos de prueba cargados: 5 productos
    .\mvnw.cmd test
    ```
 
+<br/>
+
 3. Verifica el reporte de pruebas en la terminal. Debes ver algo similar a:
 
    ```
    [INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0
    ```
 
+<br/>
+
 4. También puedes ejecutar las pruebas desde IntelliJ haciendo clic derecho sobre la clase `ProductoServiceImplTest` → **Run 'ProductoServiceImplTest'**. Verás el árbol de pruebas con los nombres descriptivos definidos con `@DisplayName`.
+
+<br/>
 
 5. Haz commit de las pruebas:
 
@@ -1978,6 +2062,7 @@ Datos de prueba cargados: 5 productos
    git add src/test/
    git commit -m "test: agregar pruebas unitarias para ProductoServiceImpl con JUnit 5 y Mockito"
    ```
+<br/>
 
 **Salida Esperada:**
 
@@ -1991,19 +2076,20 @@ Datos de prueba cargados: 5 productos
 [INFO] BUILD SUCCESS
 ```
 
+<br/>
+
 **Verificación:**
 
 - [ ] Los 10 tests pasan exitosamente (0 Failures, 0 Errors)
 - [ ] En IntelliJ, todos los tests aparecen en verde en el árbol de resultados
 - [ ] El reporte en `target/surefire-reports/` contiene el archivo XML con los resultados
 
----
+
+<br/>
+<br/>
+
 
 ### Paso 8: Escribir Pruebas de Controlador con MockMvc
-
-**Objetivo:** Implementar pruebas de integración ligera para el controlador REST usando MockMvc, verificando que los endpoints respondan correctamente a diferentes escenarios.
-
-**Instrucciones:**
 
 1. Crea la clase de prueba `ProductoControllerTest` en `src/test/java/com/empresa/inventario/controller/`:
 
@@ -2266,6 +2352,8 @@ Datos de prueba cargados: 5 productos
    }
    ```
 
+<br/>
+
 2. Ejecuta todas las pruebas (servicio + controlador):
 
    ```bash
@@ -2276,12 +2364,16 @@ Datos de prueba cargados: 5 productos
    .\mvnw.cmd test
    ```
 
+<br/>
+
 3. Verifica que todas las pruebas pasen:
 
    ```bash
    # Ver resumen de pruebas
    ./mvnw test | grep -E "Tests run:|BUILD"
    ```
+
+<br/>
 
 4. Haz el commit final de las pruebas del controlador:
 
@@ -2290,6 +2382,8 @@ Datos de prueba cargados: 5 productos
    git commit -m "test: agregar pruebas de controlador con MockMvc para ProductoController"
    git push origin main
    ```
+
+<br/>
 
 **Salida Esperada:**
 
@@ -2301,6 +2395,8 @@ Datos de prueba cargados: 5 productos
 [INFO] BUILD SUCCESS
 ```
 
+<br/>
+
 **Verificación:**
 
 - [ ] Los 19 tests (10 de servicio + 9 de controlador) pasan exitosamente
@@ -2308,13 +2404,11 @@ Datos de prueba cargados: 5 productos
 - [ ] Los tests de controlador verifican códigos de estado HTTP correctos (200, 201, 204, 400, 404)
 - [ ] `BUILD SUCCESS` al final de `./mvnw test`
 
----
+
+<br/>
+<br/>
 
 ### Paso 9: Pruebas Manuales con Postman y Empaquetado Final
-
-**Objetivo:** Realizar pruebas manuales completas de la API con Postman, verificar todos los endpoints y generar el artefacto JAR ejecutable con Maven.
-
-**Instrucciones:**
 
 1. Inicia la aplicación:
 
@@ -2326,22 +2420,32 @@ Datos de prueba cargados: 5 productos
    .\mvnw.cmd spring-boot:run
    ```
 
+<br/>
+
 2. Abre Postman (o Thunder Client en VS Code) y realiza las siguientes pruebas. Crea una colección llamada **"Inventario API"** con las siguientes requests:
+
+<br/>
 
    **Request 1: Obtener todos los productos**
    - Method: `GET`
    - URL: `http://localhost:8080/api/v1/productos`
    - Expected: Status 200, array JSON con 5 productos
 
+<br/>
+
    **Request 2: Obtener producto por ID (existente)**
    - Method: `GET`
    - URL: `http://localhost:8080/api/v1/productos/1`
    - Expected: Status 200, objeto JSON del producto
 
+<br/>
+
    **Request 3: Obtener producto por ID (inexistente)**
    - Method: `GET`
    - URL: `http://localhost:8080/api/v1/productos/9999`
    - Expected: Status 404, JSON con campo `mensaje`
+
+<br/>
 
    **Request 4: Crear producto válido**
    - Method: `POST`
@@ -2359,11 +2463,15 @@ Datos de prueba cargados: 5 productos
      ```
    - Expected: Status 201, JSON con `id` asignado
 
+<br/>
+
    **Request 5: Crear producto con nombre duplicado**
    - Method: `POST`
    - URL: `http://localhost:8080/api/v1/productos`
    - Body: mismo JSON que Request 4
    - Expected: Status 409, JSON con mensaje de conflicto
+
+<br/>
 
    **Request 6: Crear producto con datos inválidos**
    - Method: `POST`
@@ -2379,6 +2487,8 @@ Datos de prueba cargados: 5 productos
      ```
    - Expected: Status 400, JSON con array `detalles` que lista los errores de validación
 
+<br/>
+
    **Request 7: Actualizar producto**
    - Method: `PUT`
    - URL: `http://localhost:8080/api/v1/productos/1`
@@ -2391,25 +2501,36 @@ Datos de prueba cargados: 5 productos
      ```
    - Expected: Status 200, JSON con precio y stock actualizados
 
+<br/>
+
    **Request 8: Buscar por categoría**
    - Method: `GET`
    - URL: `http://localhost:8080/api/v1/productos/buscar?categoria=ELECTRONICA`
    - Expected: Status 200, array con productos de categoría ELECTRONICA
+
+<br/>
 
    **Request 9: Obtener bajo stock**
    - Method: `GET`
    - URL: `http://localhost:8080/api/v1/productos/bajo-stock?umbral=10`
    - Expected: Status 200, array con productos cuyo stock < 10
 
+<br/>
+
    **Request 10: Eliminar producto**
    - Method: `DELETE`
    - URL: `http://localhost:8080/api/v1/productos/4`
    - Expected: Status 204 (sin body)
 
+<br/>
+
    **Request 11: Verificar eliminación lógica**
    - Method: `GET`
    - URL: `http://localhost:8080/api/v1/productos/4`
    - Expected: Status 404 (el producto fue desactivado, ya no es visible)
+
+<br/>
+<br/>
 
 3. Accede a la consola H2 para inspeccionar los datos directamente en la base de datos:
    - Abre el navegador en: `http://localhost:8080/h2-console`
@@ -2417,6 +2538,8 @@ Datos de prueba cargados: 5 productos
    - Username: `sa`
    - Password: (vacío)
    - Ejecuta: `SELECT * FROM PRODUCTOS;`
+
+<br/>
 
 4. Detén la aplicación (`Ctrl+C`) y genera el artefacto JAR ejecutable:
 
@@ -2428,6 +2551,8 @@ Datos de prueba cargados: 5 productos
    .\mvnw.cmd clean package
    ```
 
+<br/>
+
 5. Verifica que el JAR fue generado correctamente:
 
    ```bash
@@ -2438,11 +2563,15 @@ Datos de prueba cargados: 5 productos
    Get-ChildItem target\*.jar | Select-Object Name, Length
    ```
 
+<br/>
+
 6. Ejecuta el JAR directamente para verificar que es autocontenido:
 
    ```bash
    java -jar target/inventario-api-1.0.0-SNAPSHOT.jar
    ```
+
+<br/>
 
 7. Haz el commit y push final:
 
@@ -2453,6 +2582,8 @@ Datos de prueba cargados: 5 productos
    git push origin main
    ```
 
+<br/>
+
 **Salida Esperada:**
 
 ```
@@ -2462,6 +2593,8 @@ Datos de prueba cargados: 5 productos
 
 El archivo JAR debe tener un tamaño aproximado de 18-25 MB (incluye Tomcat embebido y todas las dependencias).
 
+<br/>
+
 **Verificación:**
 
 - [ ] Todas las 11 requests de Postman devuelven los códigos de estado esperados
@@ -2470,7 +2603,9 @@ El archivo JAR debe tener un tamaño aproximado de 18-25 MB (incluye Tomcat embe
 - [ ] `java -jar target/inventario-api-1.0.0-SNAPSHOT.jar` inicia la aplicación correctamente
 - [ ] El repositorio GitHub tiene todos los commits del laboratorio
 
----
+
+<br/>
+<br/>
 
 ## Validación y Pruebas
 
@@ -2488,13 +2623,19 @@ El archivo JAR debe tener un tamaño aproximado de 18-25 MB (incluye Tomcat embe
 - [ ] El JAR ejecutable se genera con `./mvnw clean package`
 - [ ] El repositorio GitHub contiene todos los commits del laboratorio
 
+<br/>
+
 ### Procedimiento de Pruebas
 
 1. Ejecutar suite completa de pruebas automatizadas:
    ```bash
    ./mvnw clean test
    ```
+<br/>
+
    **Resultado Esperado:** `Tests run: 19, Failures: 0, Errors: 0, Skipped: 0`
+
+<br/>
 
 2. Verificar arranque de la aplicación:
    ```bash
@@ -2502,13 +2643,22 @@ El archivo JAR debe tener un tamaño aproximado de 18-25 MB (incluye Tomcat embe
    sleep 10
    curl -s http://localhost:8080/api/v1/productos | python3 -m json.tool
    ```
+<br/>
+
    **Resultado Esperado:** Array JSON con 5 productos
+
+<br/>
 
 3. Verificar manejo de errores:
    ```bash
    curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/api/v1/productos/9999
    ```
+
+<br/>
+
    **Resultado Esperado:** `404`
+
+<br/>
 
 4. Verificar validaciones:
    ```bash
@@ -2517,16 +2667,25 @@ El archivo JAR debe tener un tamaño aproximado de 18-25 MB (incluye Tomcat embe
      -d '{"nombre":"","precio":-1,"stock":-5,"categoria":""}' \
      | python3 -m json.tool
    ```
+
+<br/>
+
    **Resultado Esperado:** Status 400 con array `detalles` con mensajes de validación
+
+<br/>
 
 5. Verificar empaquetado:
    ```bash
    ./mvnw clean package -DskipTests
    ls -lh target/inventario-api-1.0.0-SNAPSHOT.jar
    ```
+
+<br/>
+
    **Resultado Esperado:** Archivo JAR de más de 15 MB
 
----
+<br/>
+<br/>
 
 ## Solución de Problemas
 
@@ -2537,8 +2696,12 @@ El archivo JAR debe tener un tamaño aproximado de 18-25 MB (incluye Tomcat embe
 - El mensaje de error dice `cannot find symbol: method getNombre()`
 - El código compila con Maven desde la terminal pero no en IntelliJ
 
+<br/>
+
 **Causa:**
-El plugin de Lombok en IntelliJ no está habilitado o el procesamiento de anotaciones (Annotation Processing) está desactivado.
+- El plugin de Lombok en IntelliJ no está habilitado o el procesamiento de anotaciones (Annotation Processing) está desactivado.
+
+<br/>
 
 **Solución:**
 ```
@@ -2549,7 +2712,9 @@ El plugin de Lombok en IntelliJ no está habilitado o el procesamiento de anotac
 5. Reiniciar IntelliJ: File → Invalidate Caches → Invalidate and Restart
 ```
 
----
+<br/>
+<br/>
+
 
 ### Problema 2: Error al arrancar - "Port 8080 was already in use"
 
@@ -2557,8 +2722,12 @@ El plugin de Lombok en IntelliJ no está habilitado o el procesamiento de anotac
 - La aplicación no arranca
 - El log muestra: `Web server failed to start. Port 8080 was already in use`
 
+<br/>
+
 **Causa:**
-Otra instancia de la aplicación (u otro proceso) ya está usando el puerto 8080.
+- Otra instancia de la aplicación (u otro proceso) ya está usando el puerto 8080.
+
+<br/>
 
 **Solución:**
 ```bash
@@ -2574,7 +2743,8 @@ taskkill /PID <PID_ENCONTRADO> /F
 # server.port=8081
 ```
 
----
+<br/>
+<br/>
 
 ### Problema 3: Tests fallan con "No qualifying bean of type ProductoFacade"
 
@@ -2582,11 +2752,16 @@ taskkill /PID <PID_ENCONTRADO> /F
 - Los tests de `ProductoControllerTest` fallan con error de contexto Spring
 - Mensaje: `No qualifying bean of type 'com.empresa.inventario.facade.ProductoFacade'`
 
+<br/>
+
 **Causa:**
-`@WebMvcTest` solo carga la capa web. Si el `ProductoFacade` no está declarado como `@MockBean` en el test, Spring no lo encuentra.
+- `@WebMvcTest` solo carga la capa web. Si el `ProductoFacade` no está declarado como `@MockBean` en el test, Spring no lo encuentra.
+
+<br/>
 
 **Solución:**
-Verifica que la clase `ProductoControllerTest` tenga la anotación `@MockBean` sobre el campo `productoFacade`:
+- Verifica que la clase `ProductoControllerTest` tenga la anotación `@MockBean` sobre el campo `productoFacade`:
+
 
 ```java
 // Esto DEBE estar presente en ProductoControllerTest
@@ -2596,7 +2771,8 @@ private ProductoFacade productoFacade;
 
 Si el error persiste, verifica que `ProductoFacade` tenga la anotación `@Component` en la clase.
 
----
+<br/>
+<br/>
 
 ### Problema 4: Error de compilación "package jakarta.persistence does not exist"
 
@@ -2604,8 +2780,12 @@ Si el error persiste, verifica que `ProductoFacade` tenga la anotación `@Compon
 - Error de compilación en la clase `Producto`
 - Mensaje: `package jakarta.persistence does not exist`
 
+<br/>
+
 **Causa:**
-Se está usando Spring Boot 2.x (que usa `javax.persistence`) en lugar de Spring Boot 3.x (que usa `jakarta.persistence`). O el `pom.xml` tiene una versión incorrecta.
+- Se está usando Spring Boot 2.x (que usa `javax.persistence`) en lugar de Spring Boot 3.x (que usa `jakarta.persistence`). O el `pom.xml` tiene una versión incorrecta.
+
+<br/>
 
 **Solución:**
 ```bash
@@ -2616,7 +2796,10 @@ grep -A2 "spring-boot-starter-parent" pom.xml
 # Si es 2.x, actualizar a 3.2.5 en pom.xml y recargar Maven en IntelliJ
 ```
 
+<br/>
+
 En el `pom.xml`, asegúrate de que el parent sea:
+
 ```xml
 <parent>
     <groupId>org.springframework.boot</groupId>
@@ -2625,7 +2808,8 @@ En el `pom.xml`, asegúrate de que el parent sea:
 </parent>
 ```
 
----
+<br/>
+<br/>
 
 ### Problema 5: H2 Console no accesible en `http://localhost:8080/h2-console`
 
@@ -2633,8 +2817,12 @@ En el `pom.xml`, asegúrate de que el parent sea:
 - El navegador muestra 404 o la página no carga
 - La aplicación está corriendo correctamente
 
+<br/>
+
 **Causa:**
-La consola H2 no está habilitada en `application.properties` o Spring Security está bloqueando el acceso.
+- La consola H2 no está habilitada en `application.properties` o Spring Security está bloqueando el acceso.
+
+<br/>
 
 **Solución:**
 Verifica que `application.properties` contenga:
@@ -2642,6 +2830,8 @@ Verifica que `application.properties` contenga:
 spring.h2.console.enabled=true
 spring.h2.console.path=/h2-console
 ```
+
+<br/>
 
 Si el problema persiste con Spring Security (si lo agregaste), añade esta configuración en `config/`:
 ```java
@@ -2655,11 +2845,13 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 }
 ```
 
----
+<br/>
+<br/>
 
 ## Limpieza
 
 Al finalizar el laboratorio, detén todos los procesos y limpia los artefactos generados:
+
 
 ```bash
 # 1. Detener la aplicación Spring Boot (si está corriendo)
@@ -2682,11 +2874,15 @@ git log --oneline -10
 # Debe mostrar todos los commits del laboratorio
 ```
 
-> ⚠️ **Advertencia:** No elimines el directorio del proyecto. El código generado en este laboratorio es la base del proyecto integrador que se usará en los laboratorios 4, 5, 6 y 7. Asegúrate de que el último estado esté commiteado y pusheado a GitHub antes de cerrar.
 
-> ⚠️ **Nota sobre la base de datos H2:** La base de datos H2 en memoria se destruye automáticamente al detener la aplicación (configuración `create-drop`). Esto es intencional para el entorno de desarrollo. En el Laboratorio 4 se migrará a PostgreSQL con persistencia real.
+> **Advertencia:** No elimines el directorio del proyecto. El código generado en este laboratorio es la base del proyecto integrador que se usará en los laboratorios 4, 5, 6 y 7. Asegúrate de que el último estado esté commiteado y pusheado a GitHub antes de cerrar.
 
----
+> **Nota sobre la base de datos H2:** La base de datos H2 en memoria se destruye automáticamente al detener la aplicación (configuración `create-drop`). Esto es intencional para el entorno de desarrollo. En el Laboratorio 4 se migrará a PostgreSQL con persistencia real.
+
+
+<br/>
+<br/>
+
 
 ## Resumen
 
@@ -2704,6 +2900,9 @@ git log --oneline -10
 
 - **Pruebas unitarias obligatorias:** Escribiste 19 tests automatizados: 10 pruebas unitarias para `ProductoServiceImpl` con Mockito (simulando el repositorio sin base de datos) y 9 pruebas de controlador con MockMvc (verificando endpoints sin servidor real).
 
+<br/>
+<br/>
+
 ### Conceptos Clave
 
 - **Maven y la estructura de directorios:** La separación `src/main/java` (código de producción) vs `src/test/java` (código de pruebas) garantiza que las clases de test nunca lleguen al artefacto final. El directorio `target/` se regenera con `mvn clean package` y nunca va a Git.
@@ -2716,21 +2915,26 @@ git log --oneline -10
 
 - **Testing con Mockito:** `@Mock` crea objetos simulados que no ejecutan código real. `when(...).thenReturn(...)` define el comportamiento esperado. `verify(...)` confirma que los métodos fueron llamados correctamente.
 
-### Próximos Pasos
 
-- **Laboratorio 4:** Migrar la base de datos de H2 en memoria a PostgreSQL con Docker, configurar Spring Data JPA con una base de datos real, y agregar transacciones ACID.
-- **Laboratorio 5:** Implementar Spring Batch para procesamiento masivo de productos (importación desde CSV), con manejo de errores, reintentos y monitoreo de jobs.
-- **Laboratorio 6:** Desarrollar el frontend con Web Components y Lit que consuma la API REST construida en este laboratorio.
+<br/>
+<br/>
 
----
 
 ## Recursos Adicionales
 
 - [Spring Boot Reference Documentation](https://docs.spring.io/spring-boot/docs/3.2.x/reference/html/) — Documentación oficial de Spring Boot 3.2, incluyendo configuración de propiedades y autoconfiguración
+
 - [Spring Data JPA Reference](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/) — Referencia completa de Spring Data JPA, métodos de query derivados y JPQL
+
 - [Maven Getting Started Guide](https://maven.apache.org/guides/getting-started/index.html) — Guía oficial de Apache Maven con ejemplos de ciclo de vida y configuración de plugins
+
 - [JUnit 5 User Guide](https://junit.org/junit5/docs/current/user-guide/) — Documentación completa de JUnit 5 con anotaciones, aserciones y extensiones
+
 - [Mockito Documentation](https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html) — Referencia de la API de Mockito con ejemplos de mocking, stubbing y verificación
-- [MockMvc Reference](https://docs.spring.io/spring-framework/reference/testing/spring-mvc-test-framework.html) — Guía de Spring MVC Test Framework para pruebas de controladores REST
+
+- [MockMvc Reference](https://docs.spring.io/spring-framework/reference/testing/spring-mvc-test-framework.html) — Guía 
+de Spring MVC Test Framework para pruebas de controladores REST
+
 - [Lombok Features](https://projectlombok.org/features/) — Catálogo completo de anotaciones Lombok con ejemplos del código que generan
+
 - [Bean Validation 3.0 Specification](https://jakarta.ee/specifications/bean-validation/3.0/) — Especificación completa de Jakarta Bean Validation con todas las restricciones disponibles

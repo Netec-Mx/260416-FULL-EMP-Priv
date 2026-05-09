@@ -3,7 +3,6 @@
 <br/>
 <br/>
 
-
 ## Descripción General
 
 En este laboratorio aplicarás las características fundamentales del JavaScript moderno (ES6+) para resolver problemas prácticos del mundo empresarial, implementarás una jerarquía de clases orientada a objetos que modela un sistema de empleados, explorarás conceptos equivalentes en Java 17 comparando ambos lenguajes, y configurarás un repositorio Git local conectado a GitHub que servirá como base para todos los laboratorios del curso.
@@ -13,7 +12,7 @@ Este laboratorio es el punto de partida del curso y establece las competencias t
 <br/>
 <br/>
 
-## Objetivos de Aprendizaje
+## Objetivos
 
 Al completar este laboratorio, serás capaz de:
 

@@ -1,42 +1,30 @@
----LAB_START---
-LAB_ID: 02-00-01
----MARKDOWN---
 # Laboratorio 2. Proyecto Integrado usando tecnologías Frontend
 
-## Metadatos
-
-| Campo            | Valor                                                                 |
-|------------------|-----------------------------------------------------------------------|
-| **Duración**     | 260 minutos (recomendado: 3 sesiones de ~90 min con pausas)          |
-| **Complejidad**  | Alta                                                                  |
-| **Nivel Bloom**  | Crear                                                                 |
-| **Módulo**       | Módulo 2 — Tecnologías Frontend Modernas                             |
-| **Laboratorio**  | Lab 02-00-01                                                          |
-
----
+<br/>
+<br/>
 
 ## Descripción General
 
 En este laboratorio construirás una **aplicación web de página única (SPA)** que funciona como catálogo interactivo de productos empresariales. Comenzarás desde cero con HTML5 semántico y CSS3 avanzado, añadirás interactividad con JavaScript ES6+, refactorizarás la interfaz hacia Web Components nativos y finalmente migrarás los componentes a **Lit 3.x** con propiedades reactivas y Shadow DOM. Al finalizar, tendrás un proyecto frontend modular, probado con Vitest y listo para integrarse con el backend del Laboratorio 7.
 
-> **Punto de pausa sugerido para el instructor:**
-> - **Sesión 1 (0–90 min):** Pasos 1–3 (Entorno, HTML5 y CSS3)
-> - **Sesión 2 (90–180 min):** Pasos 4–6 (JavaScript, Web Components nativos)
-> - **Sesión 3 (180–260 min):** Pasos 7–9 (Lit, comunicación entre componentes, pruebas)
+<br/>
+<br/>
 
----
+## Objetivos
 
-## Objetivos de Aprendizaje
+- Construir la estructura HTML5 semántica completa de una SPA usando elementos como `<header>`, `<main>`, `<section>`, `<article>`, `<aside>` y `<footer>`, aplicando atributos `data-*` para enlazar datos con comportamiento JavaScript.
+- Aplicar CSS3 avanzado con Flexbox, CSS Grid, Custom Properties (variables CSS) y animaciones para crear una interfaz responsiva y visualmente coherente.
+- Implementar Web Components nativos con el ciclo de vida completo (`connectedCallback`, `disconnectedCallback`, `attributeChangedCallback`) y Shadow DOM para encapsular estilos y comportamiento.
+- Desarrollar componentes Lit con `@property`, `@state`, directivas `repeat` e `ifDefined`, y establecer comunicación padre-hijo mediante `CustomEvent`.
+- Configurar un entorno profesional con Vite como bundler y escribir pruebas unitarias de componentes con Vitest.
 
-- [ ] Construir la estructura HTML5 semántica completa de una SPA usando elementos como `<header>`, `<main>`, `<section>`, `<article>`, `<aside>` y `<footer>`, aplicando atributos `data-*` para enlazar datos con comportamiento JavaScript.
-- [ ] Aplicar CSS3 avanzado con Flexbox, CSS Grid, Custom Properties (variables CSS) y animaciones para crear una interfaz responsiva y visualmente coherente.
-- [ ] Implementar Web Components nativos con el ciclo de vida completo (`connectedCallback`, `disconnectedCallback`, `attributeChangedCallback`) y Shadow DOM para encapsular estilos y comportamiento.
-- [ ] Desarrollar componentes Lit con `@property`, `@state`, directivas `repeat` e `ifDefined`, y establecer comunicación padre-hijo mediante `CustomEvent`.
-- [ ] Configurar un entorno profesional con Vite como bundler y escribir pruebas unitarias de componentes con Vitest.
+<br/>
+<br/>
 
----
 
 ## Prerrequisitos
+
+<br/>
 
 ### Conocimientos
 
@@ -47,39 +35,8 @@ En este laboratorio construirás una **aplicación web de página única (SPA)**
 | POO                      | Clases, herencia, encapsulamiento                           |
 | Terminal/Línea de comandos | Navegación básica, ejecución de comandos npm               |
 
-### Software y Acceso
 
-| Herramienta          | Versión mínima | Verificación                     |
-|----------------------|----------------|----------------------------------|
-| Node.js              | 20.x LTS       | `node -v`                        |
-| npm                  | 10.x           | `npm -v`                         |
-| Visual Studio Code   | 1.88+          | Extensiones: Lit-plugin, ESLint  |
-| Google Chrome        | Última estable | DevTools disponibles             |
-| Git                  | 2.44+          | `git --version`                  |
-
-> **Checkpoint de recuperación:** Si no completaste un laboratorio anterior, clona la rama de inicio:
-> ```bash
-> git clone https://github.com/curso-fullstack/labs.git
-> cd labs
-> git checkout lab02-start
-> ```
-
----
-
-## Entorno de Laboratorio
-
-### Verificación del Entorno
-
-Antes de comenzar, ejecuta los siguientes comandos en tu terminal para confirmar que el entorno está listo:
-
-```bash
-# Verificar Node.js y npm
-node -v    # Debe mostrar v20.x.x
-npm -v     # Debe mostrar 10.x.x
-
-# Verificar Git
-git --version   # Debe mostrar 2.44.x o superior
-```
+<br/>
 
 ### Extensiones de VS Code Recomendadas
 
@@ -99,17 +56,14 @@ code --install-extension dbaeumer.vscode-eslint
 code --install-extension esbenp.prettier-vscode
 ```
 
----
+<br/>
+<br/>
 
 ## Instrucciones  
 
----
+<br/>
 
 ### Paso 1 — Inicialización del Proyecto con Vite
-
-**Objetivo:** Crear la estructura base del proyecto usando Vite como bundler y configurar las herramientas de calidad de código.
-
-**Instrucciones:**
 
 1. Abre una terminal en el directorio donde deseas crear el proyecto y ejecuta:
 
@@ -118,6 +72,8 @@ npm create vite@latest catalogo-productos -- --template vanilla
 cd catalogo-productos
 npm install
 ```
+
+<br/>
 
 2. Instala las dependencias principales del proyecto:
 
@@ -128,6 +84,8 @@ npm install lit
 # Dependencias de desarrollo
 npm install -D vitest @web/test-runner eslint prettier eslint-config-prettier
 ```
+
+<br/>
 
 3. Reemplaza el contenido de `package.json` con la siguiente configuración completa:
 
@@ -159,6 +117,8 @@ npm install -D vitest @web/test-runner eslint prettier eslint-config-prettier
 }
 ```
 
+<br/>
+
 4. Crea el archivo de configuración de Vite `vite.config.js` en la raíz del proyecto:
 
 ```javascript
@@ -181,6 +141,8 @@ export default defineConfig({
 });
 ```
 
+<br/>
+
 5. Crea el archivo `.eslintrc.json` en la raíz:
 
 ```json
@@ -201,6 +163,8 @@ export default defineConfig({
 }
 ```
 
+<br/>
+
 6. Crea el archivo `.prettierrc` en la raíz:
 
 ```json
@@ -213,6 +177,8 @@ export default defineConfig({
 }
 ```
 
+<br/>
+
 7. Limpia los archivos de ejemplo que genera Vite:
 
 ```bash
@@ -220,6 +186,8 @@ export default defineConfig({
 rm src/main.js src/style.css src/counter.js
 rm public/vite.svg
 ```
+
+<br/>
 
 8. Crea la estructura de directorios del proyecto:
 
@@ -245,7 +213,11 @@ catalogo-productos/
 └── .prettierrc
 ```
 
+<br/>
+
 **Resultado Esperado:** El directorio `catalogo-productos` contiene la estructura de proyecto completa sin errores de instalación.
+
+<br/>
 
 **Verificación:**
 
@@ -255,13 +227,11 @@ npm run dev
 # Presiona Ctrl+C para detenerlo
 ```
 
----
+<br/>
+<br/>
 
 ### Paso 2 — Estructura HTML5 Semántica
 
-**Objetivo:** Construir el documento HTML5 base de la SPA con estructura semántica completa, usando los elementos aprendidos en la Lección 2.1.
-
-**Instrucciones:**
 
 1. Reemplaza el contenido de `index.html` en la raíz del proyecto con la siguiente estructura semántica completa:
 
@@ -596,17 +566,19 @@ npm run dev
 </html>
 ```
 
+<br/>
+ 
 **Resultado Esperado:** El archivo `index.html` contiene una estructura HTML5 semántica completa con `<header>`, `<nav>`, `<main>`, múltiples `<section>`, `<aside>`, `<footer>` y atributos ARIA correctos.
+
+<br/>
 
 **Verificación:** Abre Chrome DevTools (F12) → pestaña **Elements** y verifica que el árbol DOM muestra la jerarquía semántica correcta. En la pestaña **Accessibility** verifica que el árbol de accesibilidad reconoce los landmarks.
 
----
+<br/>
+<br/>
 
 ### Paso 3 — Estilos CSS3 con Variables, Flexbox y Grid
 
-**Objetivo:** Aplicar CSS3 avanzado para crear la interfaz visual responsiva usando Custom Properties, Flexbox y CSS Grid.
-
-**Instrucciones:**
 
 1. Crea el archivo `src/styles/main.css`:
 
@@ -1384,17 +1356,18 @@ body {
 }
 ```
 
+<br/>
+
 **Resultado Esperado:** La aplicación muestra la interfaz visual completa con header, sección de búsqueda, catálogo y footer con estilos aplicados.
+
+<br/>
 
 **Verificación:** Ejecuta `npm run dev` y abre `http://localhost:3000`. La página debe mostrar el header con navegación, la barra de búsqueda y filtros. Redimensiona la ventana para verificar el comportamiento responsivo.
 
----
+<br/>
+<br/>
 
 ### Paso 4 — Datos y Lógica JavaScript ES6+
-
-**Objetivo:** Crear el módulo de datos de productos y el controlador principal de la aplicación usando JavaScript ES6+ moderno.
-
-**Instrucciones:**
 
 1. Crea `src/data/productos.js` con los datos iniciales del catálogo:
 
@@ -1498,6 +1471,8 @@ export function etiquetaCategoria(categoria) {
   return etiquetas[categoria] ?? categoria;
 }
 ```
+
+<br/>
 
 2. Crea `src/utils/dom.js` con utilidades de manipulación del DOM:
 
@@ -2000,17 +1975,19 @@ function inicializar() {
 document.addEventListener('DOMContentLoaded', inicializar);
 ```
 
+<br/>
+
 **Resultado Esperado:** La aplicación muestra el catálogo de 6 productos con funcionalidad de búsqueda, filtros, carrito y formulario operativos.
+
+<br/>
 
 **Verificación:** En el navegador, verifica que: (1) los 6 productos se muestran en el grid, (2) el filtro "Electrónica" muestra solo 2 productos, (3) agregar un producto al carrito actualiza el contador del header, (4) el formulario valida campos vacíos.
 
----
+
+<br/>
+<br/>
 
 ### Paso 5 — Web Component Nativo: `<product-card>`
-
-**Objetivo:** Refactorizar la tarjeta de producto hacia un Web Component nativo con Shadow DOM y ciclo de vida completo.
-
-**Instrucciones:**
 
 1. Crea `src/components/product-card.js`:
 
