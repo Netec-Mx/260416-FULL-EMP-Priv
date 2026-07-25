@@ -1,4 +1,4 @@
-# Laboratorio 4. Proyecto Integrador — Procesamiento por Lotes con Spring Batch
+# Laboratorio 4. Procesamiento por Lotes con Spring Batch
 
 <br/><br/>
 
@@ -41,11 +41,10 @@ Al completar este laboratorio, serás capaz de:
 
 ## Entorno de Laboratorio
 
-
 ### Requisitos de Software
 
 | Software | Versión | Propósito |
-|<br/><br/><br/><br/><br/><br/>-|<br/><br/><br/><br/><br/><br/>|<br/><br/><br/><br/><br/><br/>--|
+|----------|---------|-----------| 
 | Java JDK | 17 LTS | Compilación y ejecución del proyecto |
 | Apache Maven | 3.9.x | Gestión de dependencias y build |
 | Spring Boot | 3.2.x | Framework base de la aplicación |
