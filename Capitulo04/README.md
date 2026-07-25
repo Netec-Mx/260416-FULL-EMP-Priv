@@ -73,10 +73,10 @@ Test-NetConnection -ComputerName localhost -Port 5432
 
 ```sql
 -- Conectarse como superusuario y ejecutar:
-CREATE DATABASE empresa_batch_db;
+CREATE DATABASE netect_batch_db;
 CREATE USER batch_user WITH ENCRYPTED PASSWORD 'batch_pass_2024';
-GRANT ALL PRIVILEGES ON DATABASE empresa_batch_db TO batch_user;
-\c empresa_batch_db
+GRANT ALL PRIVILEGES ON DATABASE netect_batch_db TO batch_user;
+\c netect_batch_db
 GRANT ALL ON SCHEMA public TO batch_user;
 ```
 
@@ -87,7 +87,7 @@ GRANT ALL ON SCHEMA public TO batch_user;
 ```bash
 docker run -d \
   --name postgres-batch \
-  -e POSTGRES_DB=empresa_batch_db \
+  -e POSTGRES_DB=netect_batch_db \
   -e POSTGRES_USER=batch_user \
   -e POSTGRES_PASSWORD=batch_pass_2024 \
   -p 5432:5432 \
@@ -99,7 +99,7 @@ docker run -d \
 docker ps | grep postgres-batch
 
 # Verificar conectividad
-docker exec -it postgres-batch psql -U batch_user -d empresa_batch_db -c "SELECT version();"
+docker exec -it postgres-batch psql -U batch_user -d netect_batch_db -c "SELECT version();"
 ```
 
 <br/>
@@ -302,9 +302,9 @@ idea64.exe .
 
 ```
 BUILD SUCCESS
-[INFO] <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+[INFO] -----------------------------------------------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
-[INFO] <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+[INFO] -----------------------------------------------------------------------------------------------------------------
 [INFO] Total time: XX.XXX s
 ```
 
@@ -334,7 +334,7 @@ server.port=8080
 # ============================================================
 # Configuración de Base de Datos PostgreSQL
 # ============================================================
-spring.datasource.url=jdbc:postgresql://localhost:5432/empresa_batch_db
+spring.datasource.url=jdbc:postgresql://localhost:5432/netect_batch_db
 spring.datasource.username=batch_user
 spring.datasource.password=batch_pass_2024
 spring.datasource.driver-class-name=org.postgresql.Driver
@@ -393,23 +393,6 @@ com.empresa.batch
 └── service         (servicios de negocio)
 ```
 
-Puedes crear todos los paquetes con este comando desde la raíz del proyecto:
-
-```bash
-# Linux/macOS
-mkdir -p src/main/java/com/empresa/batch/{config,controller,domain,reader,processor,writer,tasklet,listener,service}
-mkdir -p src/main/resources/data
-mkdir -p src/test/java/com/empresa/batch/{config,processor,tasklet}
-
-# Windows PowerShell
-$baseDir = "src\main\java\com\empresa\batch"
-@("config","controller","domain","reader","processor","writer","tasklet","listener","service") | ForEach-Object {
-    New-Item -ItemType Directory -Path "$baseDir\$_" -Force
-}
-New-Item -ItemType Directory -Path "src\main\resources\data" -Force
-```
-
-
 <br/>
 
 3. Crea el archivo SQL para el esquema de negocio en `src/main/resources/schema-negocio.sql`:
@@ -467,13 +450,13 @@ CREATE TABLE IF NOT EXISTS batch_reportes (
 
 ```bash
 # Linux/macOS
-psql -h localhost -U batch_user -d empresa_batch_db -f src/main/resources/schema-negocio.sql
+psql -h localhost -U batch_user -d netec_batch_db -f src/main/resources/schema-negocio.sql
 
 # Windows PowerShell
-psql -h localhost -U batch_user -d empresa_batch_db -f src/main/resources/schema-negocio.sql
+psql -h localhost -U batch_user -d netec_batch_db -f src/main/resources/schema-negocio.sql
 
 # Alternativa con Docker
-docker exec -i postgres-batch psql -U batch_user -d empresa_batch_db < src/main/resources/schema-negocio.sql
+docker exec -i postgres-batch psql -U batch_user -d netec_batch_db < src/main/resources/schema-negocio.sql
 ```
 
 
@@ -2017,13 +2000,13 @@ INFO  com.empresa.batch.BatchProcessorApplication - Started BatchProcessorApplic
 3. Verifica en PostgreSQL que las tablas de metadata de Spring Batch fueron creadas:
 
 ```bash
-psql -h localhost -U batch_user -d empresa_batch_db -c "\dt"
+psql -h localhost -U batch_user -d netec_batch_db -c "\dt"
 ```
 
 Debes ver tablas como:
 ```
  Schema |             Name              | Type  |   Owner    
-<br/><br/><br/><br/>--+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>-+<br/><br/><br/><br/>-+<br/><br/><br/><br/><br/><br/><br/><br/>
+--------+-------------------------------+-------+------------
  public | batch_job_execution           | table | batch_user
  public | batch_job_execution_context   | table | batch_user
  public | batch_job_execution_params    | table | batch_user
@@ -2129,13 +2112,13 @@ Content-Type: application/json
 10. Verifica en PostgreSQL que los datos fueron insertados correctamente:
 
 ```bash
-psql -h localhost -U batch_user -d empresa_batch_db -c \
+psql -h localhost -U batch_user -d netec_batch_db -c \
   "SELECT nombre, apellido, departamento, salario FROM empleados ORDER BY departamento, apellido LIMIT 10;"
 ```
 
 ```bash
 # También verifica el reporte generado
-psql -h localhost -U batch_user -d empresa_batch_db -c \
+psql -h localhost -U batch_user -d netec_batch_db -c \
   "SELECT job_name, total_leidos, total_escritos, total_saltados, estado FROM batch_reportes;"
 ```
 
@@ -2530,7 +2513,7 @@ mvn test
 
 1. **Verificar el estado de la base de datos antes de ejecutar:**
    ```bash
-   psql -h localhost -U batch_user -d empresa_batch_db -c "SELECT COUNT(*) FROM empleados;"
+   psql -h localhost -U batch_user -d netec_batch_db -c "SELECT COUNT(*) FROM empleados;"
    ```
 
 
@@ -2556,7 +2539,7 @@ mvn test
 
 3. **Verificar datos insertados en PostgreSQL:**
    ```bash
-   psql -h localhost -U batch_user -d empresa_batch_db \
+   psql -h localhost -U batch_user -d netec_batch_db \
      -c "SELECT departamento, COUNT(*), AVG(salario) FROM empleados GROUP BY departamento ORDER BY departamento;"
    ```
 
@@ -2570,7 +2553,7 @@ mvn test
 
 4. **Verificar que los salarios tienen el aumento aplicado (Tecnología debe tener +8%):**
    ```bash
-   psql -h localhost -U batch_user -d empresa_batch_db \
+   psql -h localhost -U batch_user -d netec_batch_db \
      -c "SELECT nombre, apellido, salario FROM empleados WHERE departamento = 'Tecnología' ORDER BY apellido;"
    ```
 
@@ -2584,7 +2567,7 @@ mvn test
 
 5. **Consultar el reporte generado:**
    ```bash
-   psql -h localhost -U batch_user -d empresa_batch_db \
+   psql -h localhost -U batch_user -d netec_batch_db \
      -c "SELECT * FROM batch_reportes ORDER BY created_at DESC LIMIT 1;"
    ```
 
@@ -2655,7 +2638,7 @@ docker ps | grep postgres-batch
 docker start postgres-batch
 
 # Verificar credenciales conectándose manualmente:
-psql -h localhost -p 5432 -U batch_user -d empresa_batch_db
+psql -h localhost -p 5432 -U batch_user -d netec_batch_db
 
 # Windows: iniciar servicio PostgreSQL
 net start postgresql-x64-16
@@ -2827,7 +2810,7 @@ cd ~/proyectos/batch-processor
 mvn clean
 
 # 3. Limpiar los datos de prueba de PostgreSQL (opcional, mantiene el schema)
-psql -h localhost -U batch_user -d empresa_batch_db -c "
+psql -h localhost -U batch_user -d netec_batch_db -c "
   TRUNCATE TABLE empleados CASCADE;
   TRUNCATE TABLE empleados_procesados CASCADE;
   TRUNCATE TABLE batch_reportes CASCADE;
