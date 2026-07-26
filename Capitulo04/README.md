@@ -6,13 +6,13 @@
 
 Al completar este laboratorio, serás capaz de:
 
-- Diseñar e implementar un Job de Spring Batch con múltiples Steps secuenciales usando configuración Java moderna (Spring Boot 3.2 / Spring Batch 5)
-- Implementar el patrón Chunk-oriented con `FlatFileItemReader`, `ItemProcessor` personalizado y `JdbcBatchItemWriter` para transformar datos de un archivo CSV hacia PostgreSQL
-- Desarrollar `Tasklet`s para operaciones atómicas como validación de entorno y generación de reportes de resumen
-- Aplicar políticas de skip y retry con backoff exponencial para garantizar resiliencia en el procesamiento batch
-- Utilizar `ExecutionContext` a nivel de Job para compartir métricas entre Steps y soportar reinicio desde el punto de falla
-- Exponer endpoints REST con Spring MVC para lanzar Jobs, consultar estado de ejecución y listar ejecuciones históricas
-- Configurar `JobRepository` con PostgreSQL para persistir metadata de ejecución de forma durable
+- Diseñar e implementar un Job de Spring Batch con múltiples Steps secuenciales usando configuración Java moderna.
+- Implementar el patrón Chunk-oriented con `FlatFileItemReader`, `ItemProcessor` personalizado y `JdbcBatchItemWriter` para transformar datos de un archivo CSV hacia PostgreSQL.
+- Desarrollar `Tasklet`s para operaciones atómicas como validación de entorno y generación de reportes de resumen.
+- Aplicar políticas de skip y retry con backoff exponencial para garantizar resiliencia en el procesamiento batch.
+- Utilizar `ExecutionContext` a nivel de Job para compartir métricas entre Steps y soportar reinicio desde el punto de falla.
+- Exponer endpoints REST con Spring MVC para lanzar Jobs, consultar estado de ejecución y listar ejecuciones históricas.
+- Configurar `JobRepository` con PostgreSQL para persistir metadata de ejecución de forma durable.
 
 <br/><br/>
 
@@ -47,8 +47,8 @@ Al completar este laboratorio, serás capaz de:
 |----------|---------|-----------| 
 | Java JDK | 17 LTS | Compilación y ejecución del proyecto |
 | Apache Maven | 3.9.x | Gestión de dependencias y build |
-| Spring Boot | 3.2.x | Framework base de la aplicación |
-| Spring Batch | 5.x (incluido en Spring Boot 3.2) | Motor de procesamiento batch |
+| Spring Boot | 4.1.0 | Framework base de la aplicación |
+| Spring Batch | 6.x (incluido en Spring Boot 4.1.0) | Motor de procesamiento batch |
 | PostgreSQL | 16.x | Persistencia de datos y metadata de Batch |
 | IntelliJ IDEA | 2024.1 Community o Ultimate | IDE principal |
 | Postman | 11.x | Prueba de endpoints REST |
@@ -128,12 +128,12 @@ mvn -version
 2. Configura el proyecto con los siguientes valores:
    - **Project:** Maven
    - **Language:** Java
-   - **Spring Boot:** 3.2.5
-   - **Group:** `com.empresa`
+   - **Spring Boot:** 4.1.0
+   - **Group:** `com.netec`
    - **Artifact:** `batch-processor`
-   - **Name:** `batch-processor`
+   - **Name:** `batch_processor`
    - **Description:** `Módulo de procesamiento por lotes del proyecto integrador`
-   - **Package name:** `com.empresa.batch`
+   - **Package name:** `com.netec.batch_processor`
    - **Packaging:** Jar
    - **Java:** 17
 
@@ -191,108 +191,169 @@ idea64.exe .
 7. Verifica el `pom.xml` generado. Debe contener estas dependencias clave:
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-         https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.5</version>
-        <relativePath/>
-    </parent>
-    
-    <groupId>com.empresa</groupId>
-    <artifactId>batch-processor</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+ <?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>4.1.0</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
+	<groupId>com.netec</groupId>
+	<artifactId>batch-processor</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
     <name>batch-processor</name>
     <description>Módulo de procesamiento por lotes del proyecto integrador</description>
-    
-    <properties>
-        <java.version>17</java.version>
-    </properties>
-    
-    <dependencies>
+	<url/>
+	<licenses>
+		<license/>
+	</licenses>
+	<developers>
+		<developer/>
+	</developers>
+	<scm>
+		<connection/>
+		<developerConnection/>
+		<tag/>
+		<url/>
+	</scm>
+	<properties>
+		<java.version>17</java.version>
+	</properties>
+	<dependencies>
         <!-- Spring Batch -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-batch</artifactId>
-        </dependency>
-        
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-h2console</artifactId>
+		</dependency>
+        <!-- Actuator para métricas -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+        <!-- Spring Batch -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-batch</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-batch-jdbc</artifactId>
+		</dependency>
+        <!-- Spring Data JPA -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
         <!-- Spring Web para endpoints REST -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        
-        <!-- Spring Data JPA -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        
-        <!-- PostgreSQL Driver -->
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        
-        <!-- Lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-        
-        <!-- Actuator para métricas -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        
         <!-- H2 para tests -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>test</scope>
-        </dependency>
-        
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
+        <!-- PostgreSQL Driver -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-batch-jdbc-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+        <!-- Spring Batch Test -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-batch-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa-test</artifactId>
+			<scope>test</scope>
+		</dependency>
         <!-- Spring Boot Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        
-        <!-- Spring Batch Test -->
-        <dependency>
-            <groupId>org.springframework.batch</groupId>
-            <artifactId>spring-batch-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-    
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-compile</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<configuration>
+							<annotationProcessorPaths>
+								<path>
+									<groupId>org.projectlombok</groupId>
+									<artifactId>lombok</artifactId>
+								</path>
+							</annotationProcessorPaths>
+						</configuration>
+					</execution>
+					<execution>
+						<id>default-testCompile</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>testCompile</goal>
+						</goals>
+						<configuration>
+							<annotationProcessorPaths>
+								<path>
+									<groupId>org.projectlombok</groupId>
+									<artifactId>lombok</artifactId>
+								</path>
+							</annotationProcessorPaths>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>
+
 ```
 
 
@@ -314,7 +375,7 @@ BUILD SUCCESS
 **Verificación:**
 
 - El proyecto se abre en IntelliJ sin errores de Maven
-- La clase `BatchProcessorApplication.java` existe en `src/main/java/com/empresa/batch/`
+- La clase `BatchProcessorApplication.java` existe en `src/main/java/com/netec/batch/`
 - Maven muestra BUILD SUCCESS al ejecutar `mvn validate`
 
 <br/><br/>
@@ -370,7 +431,7 @@ management.endpoint.health.show-details=always
 # ============================================================
 # Configuración de Logging
 # ============================================================
-logging.level.com.empresa.batch=DEBUG
+logging.level.com.netec.batch=DEBUG
 logging.level.org.springframework.batch=INFO
 logging.level.org.springframework.batch.core.step=DEBUG
 ```
@@ -378,10 +439,10 @@ logging.level.org.springframework.batch.core.step=DEBUG
 
 <br/>
 
-2. Crea la estructura de paquetes del proyecto. En IntelliJ, haz clic derecho sobre `com.empresa.batch` y crea los siguientes sub-paquetes:
+2. Crea la estructura de paquetes del proyecto. En IntelliJ, haz clic derecho sobre `com.netec.batch` y crea los siguientes sub-paquetes:
 
 ```
-com.empresa.batch
+com.netec.batch
 ├── config          (configuración de Jobs y Batch)
 ├── controller      (endpoints REST)
 ├── domain          (entidades y DTOs)
@@ -484,10 +545,10 @@ CREATE TABLE
 ### Paso 3. Crear el Dominio de Datos y el Archivo CSV de Prueba
 
 
-1. Crea la entidad `Empleado` en `src/main/java/com/empresa/batch/domain/Empleado.java`:
+1. Crea la entidad `Empleado` en `src/main/java/com/netec/batch_processor/domain/Empleado.java`:
 
 ```java
-package com.empresa.batch.domain;
+package com.netec.batch_processor.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -551,10 +612,10 @@ public class Empleado {
 
 <br/>
 
-2. Crea el DTO para lectura del CSV en `src/main/java/com/empresa/batch/domain/EmpleadoCsvDto.java`:
+2. Crea el DTO para lectura del CSV en `src/main/java/com/netec/batch_processor/domain/EmpleadoCsvDto.java`:
 
 ```java
-package com.empresa.batch.domain;
+package com.netec.batch_processor.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -584,61 +645,10 @@ public class EmpleadoCsvDto {
 
 <br/>
 
-3. Crea el DTO para el resultado del procesamiento en `src/main/java/com/empresa/batch/domain/EmpleadoProcesado.java`:
+4. Crea el DTO de respuesta para la API REST en `src/main/java/com/netec/batch-processor/domain/JobStatusDto.java`:
 
 ```java
-package com.empresa.batch.domain;
-
-import jakarta.persistence.*;
-import lombok.*;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
-@Entity
-@Table(name = "empleados_procesados")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class EmpleadoProcesado {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "empleado_id")
-    private Long empleadoId;
-
-    @Column(name = "nombre_completo", length = 200)
-    private String nombreCompleto;
-
-    @Column(length = 50)
-    private String departamento;
-
-    @Column(name = "salario_anterior", precision = 12, scale = 2)
-    private BigDecimal salarioAnterior;
-
-    @Column(name = "salario_nuevo", precision = 12, scale = 2)
-    private BigDecimal salarioNuevo;
-
-    @Column(name = "porcentaje_aumento", precision = 5, scale = 2)
-    private BigDecimal porcentajeAumento;
-
-    @Column(name = "job_execution_id")
-    private Long jobExecutionId;
-
-    @Column(name = "fecha_procesamiento")
-    private LocalDateTime fechaProcesamiento;
-}
-```
-
-
-<br/>
-
-4. Crea el DTO de respuesta para la API REST en `src/main/java/com/empresa/batch/domain/JobStatusDto.java`:
-
-```java
-package com.empresa.batch.domain;
+package com.netec.batch_processor.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -673,7 +683,7 @@ nombre,apellido,email,departamento,salario,fechaContratacion,activo
 Juan,García,juan.garcia@empresa.com,Tecnología,55000.00,2020-03-15,true
 María,López,maria.lopez@empresa.com,Recursos Humanos,48000.00,2019-07-22,true
 Carlos,Martínez,carlos.martinez@empresa.com,Finanzas,62000.00,2018-01-10,true
-Ana,Rodríguez,ana.rodriguez@empresa.com,Tecnología,58000.00,2021-05-03,true
+Greta,Rodríguez,greta.rodriguez@empresa.com,Tecnología,58000.00,2021-05-03,true
 Pedro,Sánchez,pedro.sanchez@empresa.com,Marketing,45000.00,2022-02-14,true
 Laura,González,laura.gonzalez@empresa.com,Finanzas,67000.00,2017-09-28,true
 Miguel,Fernández,miguel.fernandez@empresa.com,Tecnología,72000.00,2016-11-05,true
@@ -721,15 +731,15 @@ BUILD SUCCESSFUL in Xs
 
 ### Paso 4. Implementar el ItemReader, ItemProcessor y Tasklets
 
-1. Crea el `ItemProcessor` personalizado en `src/main/java/com/empresa/batch/processor/EmpleadoItemProcessor.java`:
+1. Crea el `ItemProcessor` personalizado en `src/main/java/com/netec/batch-processor/processor/EmpleadoItemProcessor.java`:
 
 ```java
-package com.empresa.batch.processor;
+package com.netec.batch_processor.processor;
 
-import com.empresa.batch.domain.Empleado;
-import com.empresa.batch.domain.EmpleadoCsvDto;
+import com.netec.batch_processor.domain.Empleado;
+import com.netec.batch_processor.domain.EmpleadoCsvDto;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.item.ItemProcessor;
+import org.springframework.batch.infrastructure.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -741,14 +751,14 @@ import java.time.format.DateTimeParseException;
 /**
  * Processor que transforma un EmpleadoCsvDto (datos crudos del CSV)
  * en una entidad Empleado con las reglas de negocio aplicadas.
- * 
+ *
  * Reglas de negocio implementadas:
  * - Aumento de salario del 8% para departamento Tecnología
  * - Aumento de salario del 5% para departamento Finanzas
  * - Aumento de salario del 3% para otros departamentos
  * - Validación de formato de email
  * - Validación de salario positivo
- * 
+ *
  * Si un registro es inválido, lanza IllegalArgumentException
  * que será capturada por la política de skip configurada en el Job.
  */
@@ -756,9 +766,9 @@ import java.time.format.DateTimeParseException;
 @Component
 public class EmpleadoItemProcessor implements ItemProcessor<EmpleadoCsvDto, Empleado> {
 
-    private static final DateTimeFormatter FORMATO_FECHA = 
-        DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    
+    private static final DateTimeFormatter FORMATO_FECHA =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
     // Porcentajes de aumento por departamento
     private static final BigDecimal AUMENTO_TECNOLOGIA = new BigDecimal("0.08");
     private static final BigDecimal AUMENTO_FINANZAS = new BigDecimal("0.05");
@@ -774,13 +784,13 @@ public class EmpleadoItemProcessor implements ItemProcessor<EmpleadoCsvDto, Empl
             salarioOriginal = new BigDecimal(dto.getSalario().trim());
             if (salarioOriginal.compareTo(BigDecimal.ZERO) <= 0) {
                 throw new IllegalArgumentException(
-                    "Salario inválido (debe ser positivo) para: " + dto.getEmail()
+                        "Salario inválido (debe ser positivo) para: " + dto.getEmail()
                 );
             }
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(
-                "Formato de salario inválido '" + dto.getSalario() + 
-                "' para empleado: " + dto.getNombre() + " " + dto.getApellido()
+                    "Formato de salario inválido '" + dto.getSalario() +
+                            "' para empleado: " + dto.getNombre() + " " + dto.getApellido()
             );
         }
 
@@ -790,38 +800,38 @@ public class EmpleadoItemProcessor implements ItemProcessor<EmpleadoCsvDto, Empl
             fechaContratacion = LocalDate.parse(dto.getFechaContratacion().trim(), FORMATO_FECHA);
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException(
-                "Formato de fecha inválido '" + dto.getFechaContratacion() + 
-                "' para empleado: " + dto.getNombre() + " " + dto.getApellido()
+                    "Formato de fecha inválido '" + dto.getFechaContratacion() +
+                            "' para empleado: " + dto.getNombre() + " " + dto.getApellido()
             );
         }
 
         // Validación 3: Email no puede estar vacío
         if (dto.getEmail() == null || dto.getEmail().trim().isEmpty()) {
             throw new IllegalArgumentException(
-                "Email vacío para empleado: " + dto.getNombre() + " " + dto.getApellido()
+                    "Email vacío para empleado: " + dto.getNombre() + " " + dto.getApellido()
             );
         }
 
         // Aplicar regla de negocio: aumento de salario según departamento
         BigDecimal porcentajeAumento = determinarPorcentajeAumento(dto.getDepartamento());
         BigDecimal salarioNuevo = salarioOriginal
-            .multiply(BigDecimal.ONE.add(porcentajeAumento))
-            .setScale(2, RoundingMode.HALF_UP);
+                .multiply(BigDecimal.ONE.add(porcentajeAumento))
+                .setScale(2, RoundingMode.HALF_UP);
 
         log.debug("Empleado {} {}: salario {} → {} (aumento {}%)",
-            dto.getNombre(), dto.getApellido(),
-            salarioOriginal, salarioNuevo,
-            porcentajeAumento.multiply(new BigDecimal("100")).toPlainString());
+                dto.getNombre(), dto.getApellido(),
+                salarioOriginal, salarioNuevo,
+                porcentajeAumento.multiply(new BigDecimal("100")).toPlainString());
 
         return Empleado.builder()
-            .nombre(dto.getNombre().trim())
-            .apellido(dto.getApellido().trim())
-            .email(dto.getEmail().trim().toLowerCase())
-            .departamento(dto.getDepartamento().trim())
-            .salario(salarioNuevo)
-            .fechaContratacion(fechaContratacion)
-            .activo(Boolean.parseBoolean(dto.getActivo().trim()))
-            .build();
+                .nombre(dto.getNombre().trim())
+                .apellido(dto.getApellido().trim())
+                .email(dto.getEmail().trim().toLowerCase())
+                .departamento(dto.getDepartamento().trim())
+                .salario(salarioNuevo)
+                .fechaContratacion(fechaContratacion)
+                .activo(Boolean.parseBoolean(dto.getActivo().trim()))
+                .build();
     }
 
     private BigDecimal determinarPorcentajeAumento(String departamento) {
@@ -838,26 +848,30 @@ public class EmpleadoItemProcessor implements ItemProcessor<EmpleadoCsvDto, Empl
 
 <br/>
 
-2. Crea el Tasklet de validación inicial en `src/main/java/com/empresa/batch/tasklet/ValidacionInicialTasklet.java`:
+2. Crea el Tasklet de validación inicial en `src/main/java/com/netec/batch-processor/tasklet/ValidacionInicialTasklet.java`:
 
 ```java
-package com.empresa.batch.tasklet;
+
+package com.netec.batch_processor.tasklet;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.StepContribution;
+
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
-import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+
+// Correcto en Spring Batch 6
+import org.springframework.batch.core.step.StepContribution;
+import org.springframework.batch.infrastructure.repeat.RepeatStatus;
 
 import java.time.LocalDateTime;
 
 /**
  * Tasklet de Step 1: Valida que el archivo CSV de entrada existe
  * y es accesible antes de iniciar el procesamiento batch.
- * 
+ *
  * También inicializa el ExecutionContext del Job con metadatos
  * de inicio que serán usados por Steps posteriores.
  */
@@ -869,9 +883,9 @@ public class ValidacionInicialTasklet implements Tasklet {
     private String archivoEntrada;
 
     @Override
-    public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) 
+    public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext)
             throws Exception {
-        
+
         log.info("=== STEP 1: Iniciando validación del entorno batch ===");
         log.info("Timestamp de inicio: {}", LocalDateTime.now());
         log.info("Archivo a procesar: {}", archivoEntrada);
@@ -879,8 +893,8 @@ public class ValidacionInicialTasklet implements Tasklet {
         // Validar que el archivo CSV existe en el classpath
         ClassPathResource recurso = new ClassPathResource(archivoEntrada);
         if (!recurso.exists()) {
-            String mensaje = "ARCHIVO NO ENCONTRADO: " + archivoEntrada + 
-                             ". Verifique que el archivo existe en src/main/resources/";
+            String mensaje = "ARCHIVO NO ENCONTRADO: " + archivoEntrada +
+                    ". Verifique que el archivo existe en src/main/resources/";
             log.error(mensaje);
             throw new IllegalStateException(mensaje);
         }
@@ -894,25 +908,25 @@ public class ValidacionInicialTasklet implements Tasklet {
 
         // Guardar metadatos en el ExecutionContext del Job para uso posterior
         chunkContext.getStepContext()
-            .getStepExecution()
-            .getJobExecution()
-            .getExecutionContext()
-            .put("archivoEntrada", archivoEntrada);
-        
-        chunkContext.getStepContext()
-            .getStepExecution()
-            .getJobExecution()
-            .getExecutionContext()
-            .put("timestampInicio", LocalDateTime.now().toString());
+                .getStepExecution()
+                .getJobExecution()
+                .getExecutionContext()
+                .put("archivoEntrada", archivoEntrada);
 
         chunkContext.getStepContext()
-            .getStepExecution()
-            .getJobExecution()
-            .getExecutionContext()
-            .putLong("tamanoArchivo", tamanoArchivo);
+                .getStepExecution()
+                .getJobExecution()
+                .getExecutionContext()
+                .put("timestampInicio", LocalDateTime.now().toString());
+
+        chunkContext.getStepContext()
+                .getStepExecution()
+                .getJobExecution()
+                .getExecutionContext()
+                .putLong("tamanoArchivo", tamanoArchivo);
 
         log.info("=== STEP 1: Validación completada exitosamente ===");
-        
+
         // RepeatStatus.FINISHED indica que el Tasklet terminó y no debe repetirse
         return RepeatStatus.FINISHED;
     }
@@ -922,27 +936,30 @@ public class ValidacionInicialTasklet implements Tasklet {
 
 <br/>
 
-3. Crea el Tasklet de generación de reporte en `src/main/java/com/empresa/batch/tasklet/GeneracionReporteTasklet.java`:
+3. Crea el Tasklet de generación de reporte en `src/main/java/com/netec/batch-processor/tasklet/GeneracionReporteTasklet.java`:
 
 ```java
-package com.empresa.batch.tasklet;
+package com.netec.batch_processor.tasklet;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
-import org.springframework.batch.item.ExecutionContext;
-import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+
+// Correctos en Spring Batch 6
+// Correctos en Spring Batch 6
+import org.springframework.batch.core.step.StepContribution;
+import org.springframework.batch.infrastructure.item.ExecutionContext;
+import org.springframework.batch.infrastructure.repeat.RepeatStatus;
 
 import java.time.LocalDateTime;
 
 /**
  * Tasklet de Step 3: Genera un reporte de resumen de la ejecución batch
  * y lo persiste en la tabla batch_reportes para auditoría.
- * 
+ *
  * Lee las métricas del ExecutionContext del Job que fueron
  * escritas por el Step 2 (procesamiento chunk-oriented).
  */
@@ -954,35 +971,35 @@ public class GeneracionReporteTasklet implements Tasklet {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) 
+    public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext)
             throws Exception {
-        
+
         log.info("=== STEP 3: Generando reporte de resumen ===");
 
         // Leer métricas del ExecutionContext del Job (escritas por Step 2)
         ExecutionContext jobContext = chunkContext.getStepContext()
-            .getStepExecution()
-            .getJobExecution()
-            .getExecutionContext();
+                .getStepExecution()
+                .getJobExecution()
+                .getExecutionContext();
 
         Long jobExecutionId = chunkContext.getStepContext()
-            .getStepExecution()
-            .getJobExecution()
-            .getId();
+                .getStepExecution()
+                .getJobExecution()
+                .getId();
 
         String jobName = chunkContext.getStepContext()
-            .getStepExecution()
-            .getJobExecution()
-            .getJobInstance()
-            .getJobName();
+                .getStepExecution()
+                .getJobExecution()
+                .getJobInstance()
+                .getJobName();
 
         // Leer métricas del Step 2 del ExecutionContext
         int totalLeidos     = jobContext.containsKey("totalLeidos")     ? jobContext.getInt("totalLeidos")     : 0;
         int totalProcesados = jobContext.containsKey("totalProcesados") ? jobContext.getInt("totalProcesados") : 0;
         int totalEscritos   = jobContext.containsKey("totalEscritos")   ? jobContext.getInt("totalEscritos")   : 0;
         int totalSaltados   = jobContext.containsKey("totalSaltados")   ? jobContext.getInt("totalSaltados")   : 0;
-        String timestampInicio = jobContext.containsKey("timestampInicio") 
-            ? jobContext.getString("timestampInicio") : "N/A";
+        String timestampInicio = jobContext.containsKey("timestampInicio")
+                ? jobContext.getString("timestampInicio") : "N/A";
 
         log.info("<br/><br/> Resumen de Ejecución <br/><br/>");
         log.info("Job: {}", jobName);
@@ -1004,18 +1021,18 @@ public class GeneracionReporteTasklet implements Tasklet {
             """;
 
         jdbcTemplate.update(sql,
-            jobName,
-            jobExecutionId,
-            totalLeidos,
-            totalProcesados,
-            totalEscritos,
-            0,
-            totalSaltados,
-            LocalDateTime.parse(timestampInicio.equals("N/A") ? LocalDateTime.now().toString() : timestampInicio),
-            LocalDateTime.now(),
-            "COMPLETADO",
-            String.format("Procesamiento finalizado. Leídos: %d, Procesados: %d, Escritos: %d, Saltados: %d",
-                totalLeidos, totalProcesados, totalEscritos, totalSaltados)
+                jobName,
+                jobExecutionId,
+                totalLeidos,
+                totalProcesados,
+                totalEscritos,
+                0,
+                totalSaltados,
+                LocalDateTime.parse(timestampInicio.equals("N/A") ? LocalDateTime.now().toString() : timestampInicio),
+                LocalDateTime.now(),
+                "COMPLETADO",
+                String.format("Procesamiento finalizado. Leídos: %d, Procesados: %d, Escritos: %d, Saltados: %d",
+                        totalLeidos, totalProcesados, totalEscritos, totalSaltados)
         );
 
         log.info("Reporte persistido en tabla batch_reportes.");
@@ -1051,15 +1068,17 @@ BUILD SUCCESSFUL
 
 ### Paso 5. Implementar el JobExecutionListener y StepExecutionListener
 
-1. Crea el listener de Job en `src/main/java/com/empresa/batch/listener/EmpleadosJobListener.java`:
+1. Crea el listener de Job en `src/main/java/com/netec/batch-processor/listener/EmpleadosJobListener.java`:
 
 ```java
-package com.empresa.batch.listener;
+package com.netec.batch_processor.listener;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.stereotype.Component;
+
+// Spring Batch
+import org.springframework.batch.core.job.JobExecution;
+import org.springframework.batch.core.listener.JobExecutionListener;
 
 /**
  * Listener a nivel de Job que registra el inicio y fin de cada ejecución.
@@ -1072,29 +1091,29 @@ public class EmpleadosJobListener implements JobExecutionListener {
     @Override
     public void beforeJob(JobExecution jobExecution) {
         log.info("╔══════════════════════════════════════════════════════╗");
-        log.info("║     INICIANDO JOB: {}                                ", 
-            jobExecution.getJobInstance().getJobName());
-        log.info("║     Execution ID: {}                                 ", 
-            jobExecution.getId());
-        log.info("║     Parámetros: {}                                   ", 
-            jobExecution.getJobParameters());
+        log.info("║     INICIANDO JOB: {}                                ",
+                jobExecution.getJobInstance().getJobName());
+        log.info("║     Execution ID: {}                                 ",
+                jobExecution.getId());
+        log.info("║     Parámetros: {}                                   ",
+                jobExecution.getJobParameters());
         log.info("╚══════════════════════════════════════════════════════╝");
     }
 
     @Override
     public void afterJob(JobExecution jobExecution) {
         log.info("╔══════════════════════════════════════════════════════╗");
-        log.info("║     JOB FINALIZADO: {}                               ", 
-            jobExecution.getJobInstance().getJobName());
-        log.info("║     Estado: {}                                       ", 
-            jobExecution.getStatus());
-        log.info("║     Exit Status: {}                                  ", 
-            jobExecution.getExitStatus().getExitCode());
-        
+        log.info("║     JOB FINALIZADO: {}                               ",
+                jobExecution.getJobInstance().getJobName());
+        log.info("║     Estado: {}                                       ",
+                jobExecution.getStatus());
+        log.info("║     Exit Status: {}                                  ",
+                jobExecution.getExitStatus().getExitCode());
+
         if (!jobExecution.getAllFailureExceptions().isEmpty()) {
             log.error("║     EXCEPCIONES REGISTRADAS:                        ");
-            jobExecution.getAllFailureExceptions().forEach(ex -> 
-                log.error("║       - {}", ex.getMessage()));
+            jobExecution.getAllFailureExceptions().forEach(ex ->
+                    log.error("║       - {}", ex.getMessage()));
         }
         log.info("╚══════════════════════════════════════════════════════╝");
     }
@@ -1104,15 +1123,15 @@ public class EmpleadosJobListener implements JobExecutionListener {
 
 <br/>
 
-2. Crea el listener de Step en `src/main/java/com/empresa/batch/listener/EmpleadosStepListener.java`:
+2. Crea el listener de Step en `src/main/java/com/netec/batch-processor/listener/EmpleadosStepListener.java`:
 
 ```java
-package com.empresa.batch.listener;
+package com.netec.batch_processor.listener;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.ExitStatus;
-import org.springframework.batch.core.StepExecution;
-import org.springframework.batch.core.StepExecutionListener;
+import org.springframework.batch.core.listener.StepExecutionListener;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.stereotype.Component;
 
 /**
@@ -1140,14 +1159,14 @@ public class EmpleadosStepListener implements StepExecutionListener {
         // Solo para el Step de procesamiento chunk-oriented, guardar métricas en JobContext
         if (stepExecution.getStepName().equals("stepProcesarEmpleados")) {
             stepExecution.getJobExecution().getExecutionContext()
-                .putInt("totalLeidos", stepExecution.getReadCount());
+                    .putInt("totalLeidos", (int) stepExecution.getReadCount());
             stepExecution.getJobExecution().getExecutionContext()
-                .putInt("totalProcesados", stepExecution.getWriteCount());
+                    .putInt("totalProcesados", (int) stepExecution.getWriteCount());
             stepExecution.getJobExecution().getExecutionContext()
-                .putInt("totalEscritos", stepExecution.getWriteCount());
+                    .putInt("totalEscritos", (int) stepExecution.getWriteCount());
             stepExecution.getJobExecution().getExecutionContext()
-                .putInt("totalSaltados", stepExecution.getSkipCount());
-            
+                    .putInt("totalSaltados", (int) stepExecution.getSkipCount());
+
             log.info("    Métricas guardadas en ExecutionContext del Job.");
         }
 
@@ -1176,29 +1195,30 @@ Compilación exitosa. Las dos clases listener están disponibles como beans de S
 
 ### Paso 6. Configurar el Job Principal con Tres Steps y Políticas de Tolerancia a Fallos
 
-1. Crea la clase de configuración del Job en `src/main/java/com/empresa/batch/config/EmpleadosJobConfig.java`:
+1. Crea la clase de configuración del Job en `src/main/java/com/netec/batch-processor/config/EmpleadosJobConfig.java`:
 
 ```java
-package com.empresa.batch.config;
+package com.netec.batch_processor.config;
 
-import com.empresa.batch.domain.Empleado;
-import com.empresa.batch.domain.EmpleadoCsvDto;
-import com.empresa.batch.listener.EmpleadosJobListener;
-import com.empresa.batch.listener.EmpleadosStepListener;
-import com.empresa.batch.processor.EmpleadoItemProcessor;
-import com.empresa.batch.tasklet.GeneracionReporteTasklet;
-import com.empresa.batch.tasklet.ValidacionInicialTasklet;
+import com.netec.batch_processor.domain.Empleado;
+import com.netec.batch_processor.domain.EmpleadoCsvDto;
+import com.netec.batch_processor.listener.EmpleadosJobListener;
+import com.netec.batch_processor.listener.EmpleadosStepListener;
+import com.netec.batch_processor.processor.EmpleadoItemProcessor;
+import com.netec.batch_processor.tasklet.GeneracionReporteTasklet;
+import com.netec.batch_processor.tasklet.ValidacionInicialTasklet;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.Step;
+import org.springframework.batch.core.job.Job;
+import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.batch.item.database.JdbcBatchItemWriter;
-import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
-import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
+import org.springframework.batch.infrastructure.item.database.JdbcBatchItemWriter;
+import org.springframework.batch.infrastructure.item.database.builder.JdbcBatchItemWriterBuilder;
+import org.springframework.batch.infrastructure.item.file.FlatFileItemReader;
+import org.springframework.batch.infrastructure.item.file.builder.FlatFileItemReaderBuilder;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -1208,7 +1228,7 @@ import javax.sql.DataSource;
 
 /**
  * Configuración principal del Job de procesamiento de empleados.
- * 
+ *
  * Arquitectura del Job:
  * ┌─────────────────────────────────────────────────────────────┐
  * │              procesarEmpleadosJob                           │
@@ -1239,14 +1259,14 @@ public class EmpleadosJobConfig {
 
     @Bean
     public Job procesarEmpleadosJob(Step stepValidacionInicial,
-                                     Step stepProcesarEmpleados,
-                                     Step stepGenerarReporte) {
+                                    Step stepProcesarEmpleados,
+                                    Step stepGenerarReporte) {
         return new JobBuilder("procesarEmpleadosJob", jobRepository)
-            .listener(empleadosJobListener)
-            .start(stepValidacionInicial)
-            .next(stepProcesarEmpleados)
-            .next(stepGenerarReporte)
-            .build();
+                .listener(empleadosJobListener)
+                .start(stepValidacionInicial)
+                .next(stepProcesarEmpleados)
+                .next(stepGenerarReporte)
+                .build();
     }
 
     // =========================================================
@@ -1256,8 +1276,8 @@ public class EmpleadosJobConfig {
     @Bean
     public Step stepValidacionInicial() {
         return new StepBuilder("stepValidacionInicial", jobRepository)
-            .tasklet(validacionInicialTasklet, transactionManager)
-            .build();
+                .tasklet(validacionInicialTasklet, transactionManager)
+                .build();
     }
 
     // =========================================================
@@ -1266,7 +1286,7 @@ public class EmpleadosJobConfig {
 
     /**
      * Step principal de procesamiento.
-     * 
+     *
      * Configuración de tolerancia a fallos:
      * - skip: Salta registros con IllegalArgumentException (datos inválidos del CSV)
      *   Máximo 5 registros saltados antes de fallar el Job.
@@ -1275,22 +1295,22 @@ public class EmpleadosJobConfig {
      */
     @Bean
     public Step stepProcesarEmpleados(FlatFileItemReader<EmpleadoCsvDto> empleadoCsvReader,
-                                       JdbcBatchItemWriter<Empleado> empleadoWriter) {
+                                      JdbcBatchItemWriter<Empleado> empleadoWriter) {
         return new StepBuilder("stepProcesarEmpleados", jobRepository)
-            .<EmpleadoCsvDto, Empleado>chunk(10, transactionManager)
-            .reader(empleadoCsvReader)
-            .processor(empleadoItemProcessor)
-            .writer(empleadoWriter)
-            // Política de Skip: omitir registros con datos inválidos
-            .faultTolerant()
-            .skip(IllegalArgumentException.class)
-            .skipLimit(5)
-            // Política de Retry: reintentar ante errores transitorios de BD
-            .retry(org.springframework.dao.DataAccessException.class)
-            .retryLimit(3)
-            // Listener para capturar métricas del Step
-            .listener(empleadosStepListener)
-            .build();
+                .<EmpleadoCsvDto, Empleado>chunk(10, transactionManager)
+                .reader(empleadoCsvReader)
+                .processor(empleadoItemProcessor)
+                .writer(empleadoWriter)
+                // Política de Skip: omitir registros con datos inválidos
+                .faultTolerant()
+                .skip(IllegalArgumentException.class)
+                .skipLimit(5)
+                // Política de Retry: reintentar ante errores transitorios de BD
+                .retry(org.springframework.dao.DataAccessException.class)
+                .retryLimit(3)
+                // Listener para capturar métricas del Step
+                .listener(empleadosStepListener)
+                .build();
     }
 
     // =========================================================
@@ -1300,8 +1320,8 @@ public class EmpleadosJobConfig {
     @Bean
     public Step stepGenerarReporte() {
         return new StepBuilder("stepGenerarReporte", jobRepository)
-            .tasklet(generacionReporteTasklet, transactionManager)
-            .build();
+                .tasklet(generacionReporteTasklet, transactionManager)
+                .build();
     }
 
     // =========================================================
@@ -1310,7 +1330,7 @@ public class EmpleadosJobConfig {
 
     /**
      * FlatFileItemReader configurado para leer el archivo empleados.csv.
-     * 
+     *
      * Configuración:
      * - linesToSkip(1): Omite la primera línea (encabezado del CSV)
      * - delimited(): Usa coma como delimitador
@@ -1320,15 +1340,15 @@ public class EmpleadosJobConfig {
     @Bean
     public FlatFileItemReader<EmpleadoCsvDto> empleadoCsvReader() {
         return new FlatFileItemReaderBuilder<EmpleadoCsvDto>()
-            .name("empleadoCsvReader")
-            .resource(new ClassPathResource("data/empleados.csv"))
-            .linesToSkip(1) // Saltar la línea de encabezado
-            .delimited()
-            .delimiter(",")
-            .names("nombre", "apellido", "email", "departamento", 
-                   "salario", "fechaContratacion", "activo")
-            .targetType(EmpleadoCsvDto.class)
-            .build();
+                .name("empleadoCsvReader")
+                .resource(new ClassPathResource("data/empleados.csv"))
+                .linesToSkip(1) // Saltar la línea de encabezado
+                .delimited()
+                .delimiter(",")
+                .names("nombre", "apellido", "email", "departamento",
+                        "salario", "fechaContratacion", "activo")
+                .targetType(EmpleadoCsvDto.class)
+                .build();
     }
 
     // =========================================================
@@ -1337,7 +1357,7 @@ public class EmpleadosJobConfig {
 
     /**
      * JdbcBatchItemWriter que inserta empleados procesados en PostgreSQL.
-     * 
+     *
      * Usa BeanPropertyItemSqlParameterSourceProvider para mapear
      * automáticamente los campos del objeto Empleado a los parámetros
      * con nombre (:nombre, :apellido, etc.) del SQL.
@@ -1345,8 +1365,8 @@ public class EmpleadosJobConfig {
     @Bean
     public JdbcBatchItemWriter<Empleado> empleadoWriter(DataSource dataSource) {
         return new JdbcBatchItemWriterBuilder<Empleado>()
-            .dataSource(dataSource)
-            .sql("""
+                .dataSource(dataSource)
+                .sql("""
                 INSERT INTO empleados 
                     (nombre, apellido, email, departamento, salario, 
                      fecha_contratacion, activo)
@@ -1357,8 +1377,8 @@ public class EmpleadosJobConfig {
                     salario = EXCLUDED.salario,
                     updated_at = CURRENT_TIMESTAMP
                 """)
-            .beanMapped()
-            .build();
+                .beanMapped()
+                .build();
     }
 }
 ```
@@ -1389,14 +1409,14 @@ mvn compile
 ### Paso 7. Implementar el Segundo Job con Flujo Condicional
 
 
-1. Crea el Decider en `src/main/java/com/empresa/batch/config/EmpleadosJobDecider.java`:
+1. Crea el Decider en `src/main/java/com/netec/batch-processor/config/EmpleadosJobDecider.java`:
 
 ```java
-package com.empresa.batch.config;
+package com.netec.batch_processor.config;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.job.JobExecution;
+import org.springframework.batch.core.step.StepExecution;
 import org.springframework.batch.core.job.flow.FlowExecutionStatus;
 import org.springframework.batch.core.job.flow.JobExecutionDecider;
 import org.springframework.stereotype.Component;
@@ -1404,7 +1424,7 @@ import org.springframework.stereotype.Component;
 /**
  * Decider que evalúa el resultado del procesamiento batch y determina
  * el flujo de ejecución del Job condicional.
- * 
+ *
  * Lógica de decisión:
  * - Si se saltaron registros (skips > 0): flujo "CON_ERRORES"
  * - Si todos los registros se procesaron correctamente: flujo "EXITOSO"
@@ -1416,27 +1436,36 @@ public class EmpleadosJobDecider implements JobExecutionDecider {
 
     @Override
     public FlowExecutionStatus decide(JobExecution jobExecution, StepExecution stepExecution) {
-        
+
         int totalEscritos = jobExecution.getExecutionContext()
-            .containsKey("totalEscritos") 
-            ? jobExecution.getExecutionContext().getInt("totalEscritos") 
-            : 0;
-        
+                .containsKey("totalEscritos")
+                ? jobExecution.getExecutionContext().getInt("totalEscritos")
+                : 0;
+
         int totalSaltados = jobExecution.getExecutionContext()
-            .containsKey("totalSaltados") 
-            ? jobExecution.getExecutionContext().getInt("totalSaltados") 
-            : 0;
+                .containsKey("totalSaltados")
+                ? jobExecution.getExecutionContext().getInt("totalSaltados")
+                : 0;
 
         log.info("Decider evaluando: escritos={}, saltados={}", totalEscritos, totalSaltados);
 
-        if (totalEscritos == 0) {
-            log.warn("Decider → SIN_DATOS: No se procesó ningún registro.");
-            return new FlowExecutionStatus("SIN_DATOS");
-        } else if (totalSaltados > 0) {
-            log.warn("Decider → CON_ERRORES: {} registros fueron saltados.", totalSaltados);
+        if (totalSaltados > 0) {
+            log.warn(
+                    "Decider → CON_ERRORES: {} registros fueron saltados.",
+                    totalSaltados
+            );
             return new FlowExecutionStatus("CON_ERRORES");
+
+        } else if (totalEscritos == 0) {
+            log.warn(
+                    "Decider → SIN_DATOS: No se procesó ningún registro."
+            );
+            return new FlowExecutionStatus("SIN_DATOS");
+
         } else {
-            log.info("Decider → EXITOSO: Todos los registros procesados correctamente.");
+            log.info(
+                    "Decider → EXITOSO: Todos los registros fueron procesados correctamente."
+            );
             return new FlowExecutionStatus("EXITOSO");
         }
     }
@@ -1446,16 +1475,16 @@ public class EmpleadosJobDecider implements JobExecutionDecider {
 
 <br/>
 
-2. Crea los Tasklets para las rutas condicionales en `src/main/java/com/empresa/batch/tasklet/NotificacionExitoTasklet.java`:
+2. Crea los Tasklets para las rutas condicionales en `src/main/java/com/netec/batch-processor/tasklet/NotificacionExitoTasklet.java`:
 
 ```java
-package com.empresa.batch.tasklet;
+package com.netec.batch_processor.tasklet;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.StepContribution;
+import org.springframework.batch.core.step.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
-import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.batch.infrastructure.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -1467,16 +1496,16 @@ import org.springframework.stereotype.Component;
 public class NotificacionExitoTasklet implements Tasklet {
 
     @Override
-    public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) 
+    public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext)
             throws Exception {
         int totalEscritos = chunkContext.getStepContext()
-            .getStepExecution().getJobExecution()
-            .getExecutionContext().getInt("totalEscritos");
-        
+                .getStepExecution().getJobExecution()
+                .getExecutionContext().getInt("totalEscritos");
+
         log.info("NOTIFICACIÓN DE ÉXITO: Procesamiento completado sin errores.");
         log.info("   Total de empleados procesados: {}", totalEscritos);
         log.info("   [SIMULACIÓN] Email enviado a: operaciones@empresa.com");
-        
+
         return RepeatStatus.FINISHED;
     }
 }
@@ -1485,16 +1514,16 @@ public class NotificacionExitoTasklet implements Tasklet {
 
 <br/>
 
-3. Crea `src/main/java/com/empresa/batch/tasklet/NotificacionErrorTasklet.java`:
+3. Crea `src/main/java/com/netec/batch-processor/tasklet/NotificacionErrorTasklet.java`:
 
 ```java
-package com.empresa.batch.tasklet;
+package com.netec.batch_processor.tasklet;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.StepContribution;
+import org.springframework.batch.core.step.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
-import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.batch.infrastructure.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -1506,17 +1535,17 @@ import org.springframework.stereotype.Component;
 public class NotificacionErrorTasklet implements Tasklet {
 
     @Override
-    public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) 
+    public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext)
             throws Exception {
         int totalSaltados = chunkContext.getStepContext()
-            .getStepExecution().getJobExecution()
-            .getExecutionContext().getInt("totalSaltados");
-        
+                .getStepExecution().getJobExecution()
+                .getExecutionContext().getInt("totalSaltados");
+
         log.warn("  NOTIFICACIÓN DE ADVERTENCIA: Procesamiento completado con errores.");
         log.warn("   Registros saltados por datos inválidos: {}", totalSaltados);
         log.warn("   [SIMULACIÓN] Alerta enviada a: calidad-datos@empresa.com");
         log.warn("   Revisar archivo de log para detalles de registros saltados.");
-        
+
         return RepeatStatus.FINISHED;
     }
 }
@@ -1525,28 +1554,28 @@ public class NotificacionErrorTasklet implements Tasklet {
 
 <br/>
 
-4. Crea la configuración del segundo Job en `src/main/java/com/empresa/batch/config/EmpleadosCondicionalJobConfig.java`:
+4. Crea la configuración del segundo Job en `src/main/java/com/netec/batch-processor/config/EmpleadosCondicionalJobConfig.java`:
 
 ```java
-package com.empresa.batch.config;
+package com.netec.batch_processor.config;
 
-import com.empresa.batch.domain.Empleado;
-import com.empresa.batch.domain.EmpleadoCsvDto;
-import com.empresa.batch.listener.EmpleadosJobListener;
-import com.empresa.batch.listener.EmpleadosStepListener;
-import com.empresa.batch.processor.EmpleadoItemProcessor;
-import com.empresa.batch.tasklet.GeneracionReporteTasklet;
-import com.empresa.batch.tasklet.NotificacionErrorTasklet;
-import com.empresa.batch.tasklet.NotificacionExitoTasklet;
-import com.empresa.batch.tasklet.ValidacionInicialTasklet;
+import com.netec.batch_processor.domain.Empleado;
+import com.netec.batch_processor.domain.EmpleadoCsvDto;
+import com.netec.batch_processor.listener.EmpleadosJobListener;
+import com.netec.batch_processor.listener.EmpleadosStepListener;
+import com.netec.batch_processor.processor.EmpleadoItemProcessor;
+import com.netec.batch_processor.tasklet.GeneracionReporteTasklet;
+import com.netec.batch_processor.tasklet.NotificacionErrorTasklet;
+import com.netec.batch_processor.tasklet.NotificacionExitoTasklet;
+import com.netec.batch_processor.tasklet.ValidacionInicialTasklet;
 import lombok.RequiredArgsConstructor;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.Step;
+import org.springframework.batch.core.job.Job;
+import org.springframework.batch.core.step.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.batch.item.database.JdbcBatchItemWriter;
-import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.infrastructure.item.database.JdbcBatchItemWriter;
+import org.springframework.batch.infrastructure.item.file.FlatFileItemReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -1554,7 +1583,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 /**
  * Configuración del Job condicional que usa JobExecutionDecider
  * para determinar el flujo de ejecución según el resultado del procesamiento.
- * 
+ *
  * Flujo:
  * ┌──────────────────────────────────────────────────────────────────┐
  * │                  procesarEmpleadosCondicionalJob                  │
@@ -1590,50 +1619,50 @@ public class EmpleadosCondicionalJobConfig {
 
         // Steps locales para este Job (reutilizando los mismos Tasklets/Processors)
         Step stepValidacion = new StepBuilder("stepValidacionCondicional", jobRepository)
-            .tasklet(validacionInicialTasklet, transactionManager)
-            .build();
+                .tasklet(validacionInicialTasklet, transactionManager)
+                .build();
 
         Step stepProcesar = new StepBuilder("stepProcesarCondicional", jobRepository)
-            .<EmpleadoCsvDto, Empleado>chunk(10, transactionManager)
-            .reader(empleadoCsvReader)
-            .processor(empleadoItemProcessor)
-            .writer(empleadoWriter)
-            .faultTolerant()
-            .skip(IllegalArgumentException.class)
-            .skipLimit(5)
-            .retry(org.springframework.dao.DataAccessException.class)
-            .retryLimit(3)
-            .listener(empleadosStepListener)
-            .build();
+                .<EmpleadoCsvDto, Empleado>chunk(10, transactionManager)
+                .reader(empleadoCsvReader)
+                .processor(empleadoItemProcessor)
+                .writer(empleadoWriter)
+                .faultTolerant()
+                .skip(IllegalArgumentException.class)
+                .skipLimit(5)
+                .retry(org.springframework.dao.DataAccessException.class)
+                .retryLimit(3)
+                .listener(empleadosStepListener)
+                .build();
 
         Step stepNotificacionExito = new StepBuilder("stepNotificacionExito", jobRepository)
-            .tasklet(notificacionExitoTasklet, transactionManager)
-            .build();
+                .tasklet(notificacionExitoTasklet, transactionManager)
+                .build();
 
         Step stepNotificacionError = new StepBuilder("stepNotificacionError", jobRepository)
-            .tasklet(notificacionErrorTasklet, transactionManager)
-            .build();
+                .tasklet(notificacionErrorTasklet, transactionManager)
+                .build();
 
         Step stepReporteFinal = new StepBuilder("stepReporteCondicional", jobRepository)
-            .tasklet(generacionReporteTasklet, transactionManager)
-            .build();
+                .tasklet(generacionReporteTasklet, transactionManager)
+                .build();
 
         return new JobBuilder("procesarEmpleadosCondicionalJob", jobRepository)
-            .listener(empleadosJobListener)
-            .start(stepValidacion)
-            .next(stepProcesar)
-            // Aplicar el Decider después del Step de procesamiento
-            .next(empleadosJobDecider)
+                .listener(empleadosJobListener)
+                .start(stepValidacion)
+                .next(stepProcesar)
+                // Aplicar el Decider después del Step de procesamiento
+                .next(empleadosJobDecider)
                 .on("EXITOSO").to(stepNotificacionExito)
-            .from(empleadosJobDecider)
+                .from(empleadosJobDecider)
                 .on("CON_ERRORES").to(stepNotificacionError)
-            .from(empleadosJobDecider)
+                .from(empleadosJobDecider)
                 .on("SIN_DATOS").end()
-            // Después de cualquier notificación, ir al reporte final
-            .from(stepNotificacionExito).next(stepReporteFinal)
-            .from(stepNotificacionError).next(stepReporteFinal)
-            .end()
-            .build();
+                // Después de cualquier notificación, ir al reporte final
+                .from(stepNotificacionExito).next(stepReporteFinal)
+                .from(stepNotificacionError).next(stepReporteFinal)
+                .end()
+                .build();
     }
 }
 ```
@@ -1662,21 +1691,27 @@ mvn compile
 ### Paso 8. Crear los Endpoints REST para Operar los Jobs
 
 
-1. Crea el servicio de Jobs en `src/main/java/com/empresa/batch/service/BatchJobService.java`:
+1. Crea el servicio de Jobs en `src/main/java/com/netec/batch-processor/service/BatchJobService.java`:
 
 ```java
-package com.empresa.batch.service;
+package com.netec.batch_processor.service;
 
-import com.empresa.batch.domain.JobStatusDto;
+import com.netec.batch_processor.domain.JobStatusDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.*;
-import org.springframework.batch.core.explore.JobExplorer;
+import org.springframework.batch.core.job.Job;
+import org.springframework.batch.core.job.JobExecution;
+import org.springframework.batch.core.job.parameters.JobParameters;
+import org.springframework.batch.core.job.parameters.JobParametersBuilder;
+import org.springframework.batch.core.repository.explore.JobExplorer;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
-import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
-import org.springframework.batch.core.repository.JobRestartException;
+import org.springframework.batch.core.launch.JobExecutionAlreadyRunningException;
+import org.springframework.batch.core.launch.JobInstanceAlreadyCompleteException;
+import org.springframework.batch.core.launch.JobRestartException;
 import org.springframework.stereotype.Service;
+
+import org.springframework.batch.core.configuration.JobRegistry;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -1698,6 +1733,9 @@ public class BatchJobService {
     private final Job procesarEmpleadosJob;
     private final Job procesarEmpleadosCondicionalJob;
 
+    //
+    private final JobRegistry jobRegistry;
+
     /**
      * Lanza el Job principal de procesamiento de empleados.
      * Cada ejecución requiere parámetros únicos (timestamp) para que
@@ -1706,13 +1744,13 @@ public class BatchJobService {
     public JobStatusDto lanzarJobPrincipal() {
         try {
             JobParameters params = new JobParametersBuilder()
-                .addLocalDateTime("timestamp", LocalDateTime.now())
-                .addString("origen", "REST_API")
-                .toJobParameters();
+                    .addLocalDateTime("timestamp", LocalDateTime.now())
+                    .addString("origen", "REST_API")
+                    .toJobParameters();
 
             log.info("Lanzando procesarEmpleadosJob con parámetros: {}", params);
             JobExecution execution = jobLauncher.run(procesarEmpleadosJob, params);
-            
+
             return mapearADto(execution);
 
         } catch (JobExecutionAlreadyRunningException e) {
@@ -1736,13 +1774,13 @@ public class BatchJobService {
     public JobStatusDto lanzarJobCondicional() {
         try {
             JobParameters params = new JobParametersBuilder()
-                .addLocalDateTime("timestamp", LocalDateTime.now())
-                .addString("origen", "REST_API_CONDICIONAL")
-                .toJobParameters();
+                    .addLocalDateTime("timestamp", LocalDateTime.now())
+                    .addString("origen", "REST_API_CONDICIONAL")
+                    .toJobParameters();
 
             log.info("Lanzando procesarEmpleadosCondicionalJob con parámetros: {}", params);
             JobExecution execution = jobLauncher.run(procesarEmpleadosCondicionalJob, params);
-            
+
             return mapearADto(execution);
 
         } catch (Exception e) {
@@ -1767,43 +1805,47 @@ public class BatchJobService {
      */
     public List<JobStatusDto> listarEjecuciones(String jobName) {
         return jobExplorer.getJobInstances(jobName, 0, 50)
-            .stream()
-            .flatMap(instance -> jobExplorer.getJobExecutions(instance).stream())
-            .sorted(Comparator.comparing(JobExecution::getId).reversed())
-            .map(this::mapearADto)
-            .collect(Collectors.toList());
+                .stream()
+                .flatMap(instance -> jobExplorer.getJobExecutions(instance).stream())
+                .sorted(Comparator.comparing(JobExecution::getId).reversed())
+                .map(this::mapearADto)
+                .collect(Collectors.toList());
     }
 
     /**
      * Lista todos los nombres de Jobs registrados en el JobRepository.
      */
     public List<String> listarNombresJobs() {
-        return jobExplorer.getJobNames();
+       // return jobExplorer.getJobNames();
+        return jobRegistry.getJobNames()
+                .stream()
+                .sorted()
+                .toList();
     }
 
     // Mapea un JobExecution a un DTO para la respuesta REST
     private JobStatusDto mapearADto(JobExecution execution) {
         Map<String, Object> contextMap = new HashMap<>();
         execution.getExecutionContext().entrySet()
-            .forEach(entry -> contextMap.put(entry.getKey(), entry.getValue()));
+                .forEach(entry -> contextMap.put(entry.getKey(), entry.getValue()));
 
         String excepcion = execution.getAllFailureExceptions().isEmpty() ? null
-            : execution.getAllFailureExceptions().get(0).getMessage();
+                : execution.getAllFailureExceptions().get(0).getMessage();
 
         return JobStatusDto.builder()
-            .jobExecutionId(execution.getId())
-            .jobName(execution.getJobInstance().getJobName())
-            .status(execution.getStatus().name())
-            .exitStatus(execution.getExitStatus().getExitCode())
-            .startTime(execution.getStartTime() != null
-                ? execution.getStartTime().atZone(ZoneId.systemDefault()).toLocalDateTime()
-                : null)
-            .endTime(execution.getEndTime() != null
-                ? execution.getEndTime().atZone(ZoneId.systemDefault()).toLocalDateTime()
-                : null)
-            .executionContext(contextMap)
-            .failureException(excepcion)
-            .build();
+                .jobExecutionId(execution.getId())
+                .jobName(execution.getJobInstance().getJobName())
+                .status(execution.getStatus().name())
+                .exitStatus(execution.getExitStatus().getExitCode())
+                .startTime(execution.getStartTime() != null
+                        ? execution.getStartTime().atZone(ZoneId.systemDefault()).toLocalDateTime()
+                        : null)
+                .endTime(execution.getEndTime() != null
+                        ? execution.getEndTime().atZone(ZoneId.systemDefault()).toLocalDateTime()
+                        : null)
+                .executionContext(contextMap)
+                .failureException(excepcion)
+                .build();
     }
 }
 ```
@@ -1811,13 +1853,13 @@ public class BatchJobService {
 
 <br/>
 
-2. Crea el controlador REST en `src/main/java/com/empresa/batch/controller/BatchJobController.java`:
+2. Crea el controlador REST en `src/main/java/com/netec/batch-processor/controller/BatchJobController.java`:
 
 ```java
-package com.empresa.batch.controller;
+package com.netec.batch_processor.controller;
 
-import com.empresa.batch.domain.JobStatusDto;
-import com.empresa.batch.service.BatchJobService;
+import com.netec.batch_processor.domain.JobStatusDto;
+import com.netec.batch_processor.service.BatchJobService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -1828,7 +1870,7 @@ import java.util.Map;
 
 /**
  * Controlador REST para gestión de Jobs de Spring Batch.
- * 
+ * <p>
  * Endpoints disponibles:
  * POST /api/batch/jobs/empleados/ejecutar          - Lanza el Job principal
  * POST /api/batch/jobs/empleados-condicional/ejecutar - Lanza el Job condicional
@@ -1883,8 +1925,8 @@ public class BatchJobController {
     public ResponseEntity<JobStatusDto> consultarEjecucion(@PathVariable Long jobExecutionId) {
         log.info("Consultando estado de ejecución ID: {}", jobExecutionId);
         return batchJobService.consultarEjecucion(jobExecutionId)
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     /**
@@ -1905,21 +1947,20 @@ public class BatchJobController {
     public ResponseEntity<Map<String, Object>> listarJobs() {
         List<String> nombres = batchJobService.listarNombresJobs();
         return ResponseEntity.ok(Map.of(
-            "jobs", nombres,
-            "total", nombres.size(),
-            "descripcion", "Jobs registrados en el JobRepository de Spring Batch"
+                "jobs", nombres,
+                "total", nombres.size(),
+                "descripcion", "Jobs disponibles en la aplicación"
         ));
     }
 }
 ```
 
-
 <br/>
 
-3. Configura CORS para desarrollo local. Crea `src/main/java/com/empresa/batch/config/WebConfig.java`:
+3. Configura CORS para desarrollo local. Crea `src/main/java/com/netec/batch-processor/config/WebConfig.java`:
 
 ```java
-package com.empresa.batch.config;
+package com.netec.batch_processor.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -1927,7 +1968,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * Configuración de CORS para desarrollo local.
- * 
+ *
  * ADVERTENCIA: Esta configuración es SOLO para desarrollo.
  * En producción, reemplazar allowedOrigins("*") por los dominios
  * específicos de la aplicación frontend.
@@ -1938,10 +1979,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
-            .allowedOrigins("*")  // Solo para desarrollo local
-            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-            .allowedHeaders("*")
-            .maxAge(3600);
+                .allowedOrigins("*")  // Solo para desarrollo local
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .maxAge(3600);
     }
 }
 ```
@@ -1991,7 +2032,7 @@ java -jar target/batch-processor-0.0.1-SNAPSHOT.jar
 # Debes ver estas líneas en los logs de arranque:
 INFO  o.s.b.c.r.s.JobRepositoryFactoryBean - No database type set, using meta data indicating: POSTGRES
 INFO  o.s.b.c.l.support.SimpleJobLauncher - No TaskExecutor has been set, defaulting to synchronous executor.
-INFO  com.empresa.batch.BatchProcessorApplication - Started BatchProcessorApplication in X.XXX seconds
+INFO  com.netec.batch_processor.BatchProcessorApplication - Started BatchProcessorApplication in X.XXX seconds
 ```
 
 
@@ -2112,14 +2153,13 @@ Content-Type: application/json
 10. Verifica en PostgreSQL que los datos fueron insertados correctamente:
 
 ```bash
-psql -h localhost -U batch_user -d netec_batch_db -c \
-  "SELECT nombre, apellido, departamento, salario FROM empleados ORDER BY departamento, apellido LIMIT 10;"
+# Utiliza la contraseña usada en application.properties
+psql -h localhost -U batch_user -d netec_batch_db -c "SELECT nombre, apellido, departamento, salario FROM empleados ORDER BY departamento, apellido LIMIT 10;"
 ```
 
 ```bash
 # También verifica el reporte generado
-psql -h localhost -U batch_user -d netec_batch_db -c \
-  "SELECT job_name, total_leidos, total_escritos, total_saltados, estado FROM batch_reportes;"
+psql -h localhost -U batch_user -d netec_batch_db -c "SELECT job_name, total_leidos, total_escritos, total_saltados, estado FROM batch_reportes;"
 ```
 
 
@@ -2161,13 +2201,13 @@ INFO  c.e.b.tasklet.GeneracionReporteTasklet - Registros saltados:    2
 
 ### Paso 10. Escribir Pruebas Unitarias para el Processor y los Tasklets
 
-1. Crea el archivo de pruebas para el Processor en `src/test/java/com/empresa/batch/processor/EmpleadoItemProcessorTest.java`:
+1. Crea el archivo de pruebas para el Processor en `src/test/java/com/netec/batch-processor/processor/EmpleadoItemProcessorTest.java`:
 
 ```java
-package com.empresa.batch.processor;
+package com.netec.batch_processor.processor;
 
-import com.empresa.batch.domain.Empleado;
-import com.empresa.batch.domain.EmpleadoCsvDto;
+import com.netec.batch_processor.domain.Empleado;
+import com.netec.batch_processor.domain.EmpleadoCsvDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -2200,9 +2240,9 @@ class EmpleadoItemProcessorTest {
     @DisplayName("Debe aplicar aumento del 8% para departamento Tecnología")
     void debeAplicarAumentoDel8PorCientoParaTecnologia() throws Exception {
         EmpleadoCsvDto dto = crearDtoValido("Tecnología", "50000.00");
-        
+
         Empleado resultado = processor.process(dto);
-        
+
         assertThat(resultado).isNotNull();
         // 50000 * 1.08 = 54000.00
         assertThat(resultado.getSalario()).isEqualByComparingTo(new BigDecimal("54000.00"));
@@ -2212,9 +2252,9 @@ class EmpleadoItemProcessorTest {
     @DisplayName("Debe aplicar aumento del 5% para departamento Finanzas")
     void debeAplicarAumentoDel5PorCientoParaFinanzas() throws Exception {
         EmpleadoCsvDto dto = crearDtoValido("Finanzas", "60000.00");
-        
+
         Empleado resultado = processor.process(dto);
-        
+
         assertThat(resultado).isNotNull();
         // 60000 * 1.05 = 63000.00
         assertThat(resultado.getSalario()).isEqualByComparingTo(new BigDecimal("63000.00"));
@@ -2224,9 +2264,9 @@ class EmpleadoItemProcessorTest {
     @DisplayName("Debe aplicar aumento del 3% para departamento Marketing")
     void debeAplicarAumentoDel3PorCientoParaOtrosDepartamentos() throws Exception {
         EmpleadoCsvDto dto = crearDtoValido("Marketing", "45000.00");
-        
+
         Empleado resultado = processor.process(dto);
-        
+
         assertThat(resultado).isNotNull();
         // 45000 * 1.03 = 46350.00
         assertThat(resultado.getSalario()).isEqualByComparingTo(new BigDecimal("46350.00"));
@@ -2237,9 +2277,9 @@ class EmpleadoItemProcessorTest {
     void debeNormalizarEmailAMinusculas() throws Exception {
         EmpleadoCsvDto dto = crearDtoValido("Tecnología", "50000.00");
         dto.setEmail("JUAN.GARCIA@EMPRESA.COM");
-        
+
         Empleado resultado = processor.process(dto);
-        
+
         assertThat(resultado.getEmail()).isEqualTo("juan.garcia@empresa.com");
     }
 
@@ -2247,9 +2287,9 @@ class EmpleadoItemProcessorTest {
     @DisplayName("Debe mapear correctamente todos los campos del DTO a la entidad")
     void debeMapearCorrectamenteTodosLosCampos() throws Exception {
         EmpleadoCsvDto dto = crearDtoValido("Recursos Humanos", "48000.00");
-        
+
         Empleado resultado = processor.process(dto);
-        
+
         assertThat(resultado.getNombre()).isEqualTo("María");
         assertThat(resultado.getApellido()).isEqualTo("López");
         assertThat(resultado.getDepartamento()).isEqualTo("Recursos Humanos");
@@ -2266,20 +2306,20 @@ class EmpleadoItemProcessorTest {
     @DisplayName("Debe lanzar IllegalArgumentException para salarios con formato inválido")
     void debeLanzarExcepcionParaSalariosInvalidos(String salarioInvalido) {
         EmpleadoCsvDto dto = crearDtoValido("Tecnología", salarioInvalido);
-        
+
         assertThatThrownBy(() -> processor.process(dto))
-            .isInstanceOf(IllegalArgumentException.class)
-            .satisfies(ex -> assertThat(ex.getMessage()).contains("salario"));
+                .isInstanceOf(IllegalArgumentException.class)
+                .satisfies(ex -> assertThat(ex.getMessage()).contains("salario"));
     }
 
     @Test
     @DisplayName("Debe lanzar IllegalArgumentException para salario negativo")
     void debeLanzarExcepcionParaSalarioNegativo() {
         EmpleadoCsvDto dto = crearDtoValido("Tecnología", "-1000.00");
-        
+
         assertThatThrownBy(() -> processor.process(dto))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("positivo");
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("positivo");
     }
 
     @Test
@@ -2287,10 +2327,10 @@ class EmpleadoItemProcessorTest {
     void debeLanzarExcepcionParaFechaInvalida() {
         EmpleadoCsvDto dto = crearDtoValido("Tecnología", "50000.00");
         dto.setFechaContratacion("15/03/2020"); // Formato incorrecto, debe ser yyyy-MM-dd
-        
+
         assertThatThrownBy(() -> processor.process(dto))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("fecha");
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("fecha");
     }
 
     @Test
@@ -2298,10 +2338,10 @@ class EmpleadoItemProcessorTest {
     void debeLanzarExcepcionParaEmailVacio() {
         EmpleadoCsvDto dto = crearDtoValido("Tecnología", "50000.00");
         dto.setEmail("");
-        
+
         assertThatThrownBy(() -> processor.process(dto))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("Email");
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Email");
     }
 
     // =========================================================
@@ -2310,14 +2350,14 @@ class EmpleadoItemProcessorTest {
 
     private EmpleadoCsvDto crearDtoValido(String departamento, String salario) {
         return EmpleadoCsvDto.builder()
-            .nombre("María")
-            .apellido("López")
-            .email("maria.lopez@empresa.com")
-            .departamento(departamento)
-            .salario(salario)
-            .fechaContratacion("2020-03-15")
-            .activo("true")
-            .build();
+                .nombre("María")
+                .apellido("López")
+                .email("maria.lopez@empresa.com")
+                .departamento(departamento)
+                .salario(salario)
+                .fechaContratacion("2020-03-15")
+                .activo("true")
+                .build();
     }
 }
 ```
@@ -2325,102 +2365,125 @@ class EmpleadoItemProcessorTest {
 
 <br/>
 
-2. Crea las pruebas para el Tasklet de validación en `src/test/java/com/empresa/batch/tasklet/ValidacionInicialTaskletTest.java`:
+2. Crea las pruebas para el Tasklet de validación en `src/test/java/com/netec/batch-processor/tasklet/ValidacionInicialTaskletTest.java`:
 
 ```java
-package com.empresa.batch.tasklet;
+package com.netec.batch_processor.tasklet;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.batch.core.*;
+import org.springframework.batch.core.job.JobExecution;
+import org.springframework.batch.core.job.JobInstance;
+import org.springframework.batch.core.job.parameters.JobParameters;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.scope.context.StepContext;
-import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.batch.core.step.StepContribution;
+import org.springframework.batch.core.step.StepExecution;
+import org.springframework.batch.infrastructure.item.ExecutionContext;
+import org.springframework.batch.infrastructure.repeat.RepeatStatus;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.Date;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-/**
- * Pruebas unitarias para ValidacionInicialTasklet.
- * Verifica que el Tasklet valida correctamente la existencia del archivo
- * y que maneja apropiadamente los casos de error.
- */
-@ExtendWith(MockitoExtension.class)
 @DisplayName("ValidacionInicialTasklet - Pruebas Unitarias")
 class ValidacionInicialTaskletTest {
 
     private ValidacionInicialTasklet tasklet;
-
-    @Mock
-    private StepContribution stepContribution;
-
-    @Mock
-    private ChunkContext chunkContext;
-
-    @Mock
-    private StepContext stepContext;
-
-    @Mock
-    private StepExecution stepExecution;
-
-    @Mock
     private JobExecution jobExecution;
+    private ChunkContext chunkContext;
+    private StepContribution stepContribution;
 
     @BeforeEach
     void setUp() {
         tasklet = new ValidacionInicialTasklet();
-        
-        // Configurar la cadena de mocks para el ExecutionContext
-        when(chunkContext.getStepContext()).thenReturn(stepContext);
-        when(stepContext.getStepExecution()).thenReturn(stepExecution);
-        when(stepExecution.getJobExecution()).thenReturn(jobExecution);
-        when(jobExecution.getExecutionContext()).thenReturn(new ExecutionContext());
+
+        JobInstance jobInstance =
+                new JobInstance(1L, "procesarEmpleadosJob");
+
+        jobExecution = new JobExecution(
+                1L,
+                jobInstance,
+                new JobParameters()
+        );
+
+        // Garantiza que el ExecutionContext nunca sea null
+        jobExecution.setExecutionContext(new ExecutionContext());
+
+        StepExecution stepExecution = new StepExecution(
+                1L,
+                "validacionInicialStep",
+                jobExecution
+        );
+
+        StepContext stepContext =
+                new StepContext(stepExecution);
+
+        chunkContext =
+                new ChunkContext(stepContext);
+
+        stepContribution =
+                stepExecution.createStepContribution();
     }
 
     @Test
     @DisplayName("Debe retornar FINISHED cuando el archivo CSV existe")
     void debeRetornarFinishedCuandoArchivoExiste() throws Exception {
-        // Configurar el archivo que SÍ existe en el classpath de pruebas
-        ReflectionTestUtils.setField(tasklet, "archivoEntrada", "data/empleados.csv");
-        
-        RepeatStatus resultado = tasklet.execute(stepContribution, chunkContext);
-        
-        assertThat(resultado).isEqualTo(RepeatStatus.FINISHED);
+        ReflectionTestUtils.setField(
+                tasklet,
+                "archivoEntrada",
+                "data/empleados.csv"
+        );
+
+        RepeatStatus resultado =
+                tasklet.execute(stepContribution, chunkContext);
+
+        assertThat(resultado)
+                .isEqualTo(RepeatStatus.FINISHED);
     }
 
     @Test
     @DisplayName("Debe lanzar IllegalStateException cuando el archivo NO existe")
     void debeLanzarExcepcionCuandoArchivoNoExiste() {
-        // Configurar un archivo que NO existe
-        ReflectionTestUtils.setField(tasklet, "archivoEntrada", "data/archivo-inexistente.csv");
-        
-        assertThatThrownBy(() -> tasklet.execute(stepContribution, chunkContext))
-            .isInstanceOf(IllegalStateException.class)
-            .hasMessageContaining("ARCHIVO NO ENCONTRADO");
+        ReflectionTestUtils.setField(
+                tasklet,
+                "archivoEntrada",
+                "data/archivo-inexistente.csv"
+        );
+
+        assertThatThrownBy(
+                () -> tasklet.execute(stepContribution, chunkContext)
+        )
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("ARCHIVO NO ENCONTRADO");
     }
 
     @Test
     @DisplayName("Debe guardar metadatos en el ExecutionContext del Job")
     void debeGuardarMetadatosEnExecutionContext() throws Exception {
-        ReflectionTestUtils.setField(tasklet, "archivoEntrada", "data/empleados.csv");
-        
-        ExecutionContext executionContext = new ExecutionContext();
-        when(jobExecution.getExecutionContext()).thenReturn(executionContext);
-        
+        ReflectionTestUtils.setField(
+                tasklet,
+                "archivoEntrada",
+                "data/empleados.csv"
+        );
+
+        ExecutionContext executionContext =
+                jobExecution.getExecutionContext();
+
         tasklet.execute(stepContribution, chunkContext);
-        
-        // Verificar que se guardaron los metadatos esperados
-        assertThat(executionContext.containsKey("archivoEntrada")).isTrue();
-        assertThat(executionContext.containsKey("timestampInicio")).isTrue();
-        assertThat(executionContext.containsKey("tamanoArchivo")).isTrue();
-        assertThat(executionContext.getString("archivoEntrada")).isEqualTo("data/empleados.csv");
+
+        assertThat(executionContext.containsKey("archivoEntrada"))
+                .isTrue();
+
+        assertThat(executionContext.containsKey("timestampInicio"))
+                .isTrue();
+
+        assertThat(executionContext.containsKey("tamanoArchivo"))
+                .isTrue();
+
+        assertThat(executionContext.getString("archivoEntrada"))
+                .isEqualTo("data/empleados.csv");
     }
 }
 ```
@@ -2436,7 +2499,7 @@ class ValidacionInicialTaskletTest {
 spring.datasource.url=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
 spring.datasource.driver-class-name=org.h2.Driver
 spring.datasource.username=sa
-spring.datasource.password=
+spring.datasource.password=""
 
 spring.jpa.hibernate.ddl-auto=create-drop
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect
@@ -2445,7 +2508,7 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect
 spring.batch.jdbc.initialize-schema=always
 spring.batch.job.enabled=false
 
-logging.level.com.empresa.batch=DEBUG
+logging.level.com.netec.batch_processor=DEBUG
 logging.level.org.springframework.batch=WARN
 ```
 
@@ -2464,14 +2527,14 @@ mvn test
 **Salida Esperada:**
 
 ```
-[INFO] <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>-
+[INFO] --------------------------------------------------------------------------------------------
 [INFO]  T E S T S
-[INFO] <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>-
-[INFO] Running com.empresa.batch.processor.EmpleadoItemProcessorTest
+[INFO] --------------------------------------------------------------------------------------------
+[INFO] Running com.netec.batch-processor.processor.EmpleadoItemProcessorTest
 [INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0
-[INFO] Running com.empresa.batch.tasklet.ValidacionInicialTaskletTest
+[INFO] Running com.netec.batch-processor.tasklet.ValidacionInicialTaskletTest
 [INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0
-[INFO] <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>-
+[INFO] --------------------------------------------------------------------------------------------
 [INFO] Results:
 [INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0
 [INFO] BUILD SUCCESS
@@ -2526,8 +2589,7 @@ mvn test
 
 2. **Lanzar el Job principal y verificar respuesta:**
    ```bash
-   curl -X POST http://localhost:8080/api/batch/jobs/empleados/ejecutar \
-     -H "Content-Type: application/json"
+   curl -X POST http://localhost:8080/api/batch/jobs/empleados/ejecutar -H "Content-Type: application/json"
    ```
 
 <br/>
@@ -2539,8 +2601,7 @@ mvn test
 
 3. **Verificar datos insertados en PostgreSQL:**
    ```bash
-   psql -h localhost -U batch_user -d netec_batch_db \
-     -c "SELECT departamento, COUNT(*), AVG(salario) FROM empleados GROUP BY departamento ORDER BY departamento;"
+   psql -h localhost -U batch_user -d netec_batch_db -c "SELECT departamento, COUNT(*), AVG(salario) FROM empleados GROUP BY departamento ORDER BY departamento;"
    ```
 
 
@@ -2553,8 +2614,7 @@ mvn test
 
 4. **Verificar que los salarios tienen el aumento aplicado (Tecnología debe tener +8%):**
    ```bash
-   psql -h localhost -U batch_user -d netec_batch_db \
-     -c "SELECT nombre, apellido, salario FROM empleados WHERE departamento = 'Tecnología' ORDER BY apellido;"
+   psql -h localhost -U batch_user -d netec_batch_db -c "SELECT nombre, apellido, salario FROM empleados WHERE departamento = 'Tecnología' ORDER BY apellido;"
    ```
 
 
@@ -2567,8 +2627,7 @@ mvn test
 
 5. **Consultar el reporte generado:**
    ```bash
-   psql -h localhost -U batch_user -d netec_batch_db \
-     -c "SELECT * FROM batch_reportes ORDER BY created_at DESC LIMIT 1;"
+   psql -h localhost -U batch_user -d netec_batch_db -c "SELECT * FROM batch_reportes ORDER BY created_at DESC LIMIT 1;"
    ```
 
 
@@ -2846,7 +2905,7 @@ git commit -m "feat: implementación módulo Spring Batch - Lab 04-00-01"
 
 ### Lo que Lograste
 
-- **Proyecto Spring Batch completo**: Creaste desde cero un módulo de procesamiento por lotes con Spring Boot 3.2 y Spring Batch 5, configurando todas las dependencias necesarias y la estructura de paquetes empresarial
+- **Proyecto Spring Batch completo**: Creaste desde cero un módulo de procesamiento por lotes con Spring Boot y Spring Batch, configurando todas las dependencias necesarias y la estructura de paquetes empresarial
 
 - **Job principal con 3 Steps secuenciales**: Implementaste el patrón completo Tasklet → Chunk-oriented → Tasklet, con flujo de datos entre Steps usando `ExecutionContext`
 
