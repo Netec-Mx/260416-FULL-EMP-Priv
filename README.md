@@ -1,3 +1,5 @@
+<img src="images/neteclogo (2).png" alt="logo" width="300"/>
+
 # Full Stack Empresarial
 
 Este curso intensivo tiene como objetivo desarrollar en los participantes las habilidades necesarias para diseñar, construir e integrar aplicaciones modernas de manera integral, abarcando desde la capa de presentación hasta el procesamiento de datos y su despliegue.
@@ -54,9 +56,16 @@ El enfoque del curso es práctico y progresivo, permitiendo que los participante
 - [Laboratorio 7. Proyecto integrador](Capitulo07/README.md#laboratorio-7-proyecto-integrador)
   - Descripción: Implementación e integración práctica de los conceptos del módulo en una solución funcional.
   - Duración estimada: 80 min
+  
+------------
 
-## Flujo de colaboración
 
-- Trabajar en `changes_course`.
-- Crear Pull Request hacia `main`.
-- Merge por `Squash and merge`.
+## 📬 Contacto y más información
+
+Si tienes alguna pregunta o necesitas soporte durante la realización de los laboratorios, no dudes en **contactar al equipo de Netec**. También puedes encontrar más recursos y cursos en nuestra página oficial:
+
+👉 https://netec.com
+
+---
+
+¡Bienvenido! Te recomendamos realizar los laboratorios en el orden presentado, ya que cada práctica construye la infraestructura y los conocimientos necesarios para la siguiente, culminando con un escenario completo de migración y operación.
